@@ -1,0 +1,58 @@
+site_name: BlackSheep
+site_author: Roberto Prevato
+site_description: The official website of BlackSheep, a fast ASGI web framework for Python asyncio.
+site_url: https://www.neoteroi.dev/blacksheep/
+repo_name: Neoteroi/BlackSheep
+repo_url: https://github.com/Neoteroi/BlackSheep
+edit_uri: ""
+
+nav:
+  - Overview: index.md
+  - "Getting started: basics": getting-started.md
+  - "Getting started: MVC": mvc-project-template.md
+  - Dependency injection: dependency-injection.md
+  - OpenAPI Docs: openapi.md
+  - Application: application.md
+  - Routing: routing.md
+  - Request handlers: request-handlers.md
+  - Requests: requests.md
+  - Responses: responses.md
+  - Testing: testing.md
+  - Templating: templating.md
+  - Controllers: controllers.md
+  - Middlewares: middlewares.md
+  - Serving static files: static-files.md
+  - Authentication: authentication.md
+  - Authorization: authorization.md
+  - OpenID Connect: openid-connect.md
+  - Sessions: sessions.md
+  - CORS: cors.md
+  - Binders: binders.md
+  - Remotes: remotes.md
+  - Data protection: dataprotection.md
+  - Background tasks: background-tasks.md
+  - Settings: settings.md
+  - Mounting apps: mounting.md
+  - Develop using HTTPS: develop-with-https.md
+  - HTTP Client: client.md
+  - ASGI: asgi.md
+  - Extensions: extensions.md
+  - Contributing: contributing.md
+  - About: about.md
+
+theme:
+  name: "material"
+  custom_dir: overrides/
+  highlightjs: true
+  favicon: img/blacksheep-favicon-white.png
+  logo: img/logow.svg
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - css/extra.css
+
+markdown_extensions:
+  - markdown.extensions.codehilite:
+      guess_lang: false
+# google_analytics: ["G-T65MX5XNF2", "https://www.neoteroi.dev"]
