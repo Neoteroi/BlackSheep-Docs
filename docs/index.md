@@ -2,7 +2,7 @@
 
 <div class="img-auto-width"></div>
 <p align="left">
-  <a href="#blacksheep"><img width="320" height="271" src="/img/blacksheep.png" alt="Black Sheep"></a>
+  <a href="#blacksheep"><img width="320" height="271" src="./img/blacksheep.png" alt="Black Sheep"></a>
 </p>
 
 ```shell
