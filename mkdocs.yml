@@ -21,6 +21,7 @@ nav:
   - Templating: templating.md
   - Controllers: controllers.md
   - Middlewares: middlewares.md
+  - WebSocket: websocket.md
   - Serving static files: static-files.md
   - Authentication: authentication.md
   - Authorization: authorization.md
@@ -53,6 +54,12 @@ extra_css:
   - css/extra.css
 
 markdown_extensions:
+  - admonition
   - markdown.extensions.codehilite:
       guess_lang: false
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
 # google_analytics: ["G-T65MX5XNF2", "https://www.neoteroi.dev"]
