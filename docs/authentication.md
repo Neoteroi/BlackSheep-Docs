@@ -10,12 +10,9 @@ describes:
 * How to use the built-in support for JWT Bearer authentication.
 * How to read the user's context in request handlers.
 
-> **Note:** the word "user" is usually used only to refer to human users, while
-> the word "service" is used to describe non-human clients. In Java and .NET, a
-> common word to describe a generic client is "principal".
-
-> ❗ using JWT Bearer and OpenID integrations requires more dependencies: use
-> `pip install blacksheep[full]` to use these features
+!!! warning
+    Using JWT Bearer and OpenID integrations requires more dependencies: use
+    `pip install blacksheep[full]` to use these features
 
 ## Underlying library
 The authentication and authorization logic implemented for BlackSheep was
@@ -33,6 +30,11 @@ Examples of common strategies to identify users in web applications include:
 
 The next paragraphs explain first how to use the built-in support for JWT
 Bearer tokens, and how to write a custom authentication handler.
+
+!!! info
+    The word "user" is usually used only to refer to human users, while
+    the word "service" is used to describe non-human clients. In Java and .NET, a
+    common word to describe a generic client is "principal".
 
 ## OIDC
 
@@ -145,16 +147,15 @@ def example():
 
 ```
 
-> 🚀 New in version 1.2.1
-
 The built-in handler for JWT Bearer authentication does not support JWTs signed
 with symmetric keys. Support for symmetric keys might be added in the future,
 inside **[guardpost](https://github.com/Neoteroi/guardpost)** library.
 
-> 💡 It is possible to configure several JWTBearerAuthentication handlers,
-> for applications that need to support more than one identity provider. For
-> example, for applications that need to support sign-in through Auth0, Azure
-> Active Directory, Azure Active Directory B2C.
+!!! info
+    💡 It is possible to configure several JWTBearerAuthentication handlers,
+    for applications that need to support more than one identity provider. For
+    example, for applications that need to support sign-in through Auth0, Azure
+    Active Directory, Azure Active Directory B2C.
 
 ## Writing a custom authentication handler
 
@@ -241,31 +242,31 @@ Kowalski"}
 
 _The application has been started on port 44555 (e.g. `uvicorn server:app --port=44555`)._
 
-## Reading user's context from the request
+## Reading user's context
 The example below show how the user's identity can be read from the web
 request
 
-*Directly from the request:*
+=== "Using binders (recommended)"
 
-```python
-
-@get("/")
-async def for_anybody(request: Request):
-    user = request.identity
-    # user can be None or an instance of Identity (set in the authentication
-    # handler)
-```
-
-*Using binders*:
-
-```python
-from guardpost.authentication import Identity
+    ```python
+    from guardpost.authentication import Identity
 
 
-@get("/")
-async def for_anybody(user: Optional[Identity]):
-    ...
-```
+    @get("/")
+    async def for_anybody(user: Optional[Identity]):
+        ...
+    ```
+
+=== "Directly from the request"
+
+    ```python
+
+    @get("/")
+    async def for_anybody(request: Request):
+        user = request.identity
+        # user can be None or an instance of Identity (set in the authentication
+        # handler)
+    ```
 
 ## Next
 While authentication deals with identifying users, authorization deals with

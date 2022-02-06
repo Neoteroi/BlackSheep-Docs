@@ -168,6 +168,7 @@ absolute_url = get_request_absolute_url(request)
 absolute_url_to_path = get_absolute_url_to_path(request, "/example")
 ```
 
-> 💡 When configuring [OpenID Connect](../authentication/#oidc) authentication,
-> it can be necessary to handle forward headers, so that the application can
-> generate correct `redirect_uri` for authorization servers.
+!!! warning
+    When configuring [OpenID Connect](../authentication/#oidc) authentication,
+    it can be necessary to handle forward headers, so that the application can
+    generate correct `redirect_uri` for authorization servers.

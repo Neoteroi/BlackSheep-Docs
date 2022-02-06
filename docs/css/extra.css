@@ -10,7 +10,7 @@
   background-color: #333;
 }
 
-.p + .n, .o + .n {
+.p + .n, .o + .n, .highlight .kc, .highlight .n {
   color: deeppink;
 }
 

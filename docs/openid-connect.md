@@ -17,10 +17,9 @@ This page documents:
 * How tokens are protected and how to configure applications to support
   multiple instances and regions
 
-> 🚀 New in version 1.2.1
-
-> ❗ using OpenID integration requires more dependencies: use
-> `pip install blacksheep[full]`
+!!! warning
+    Using JWT Bearer and OpenID integrations requires more dependencies: use
+    `pip install blacksheep[full]` to use these features
 
 ## Basic example
 
@@ -111,8 +110,9 @@ Notes:
 * 🍒 this should be changed when configuring more than one OIDC identity
   provider.
 
-> 💡 `access_token`s issued for APIs can be validated using
-  [JWT Bearer authentication](../authentication/#jwt-bearer)
+!!! info
+    `access_token`s issued for APIs can be validated using
+    [JWT Bearer authentication](../authentication/#jwt-bearer)
 
 ## Examples using custom scopes
 

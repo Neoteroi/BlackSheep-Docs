@@ -38,9 +38,10 @@ json.use(
 )
 ```
 
-> **Note:** BlackSheep uses by default a friendlier handling of `json.dumps`
-> that supports serialization of common objects such as `UUID`, `date`,
-> `datetime`, `bytes`, `@dataclass`, `pydantic` models, etc.
+!!! info
+    BlackSheep uses by default a friendlier handling of `json.dumps`
+    that supports serialization of common objects such as `UUID`, `date`,
+    `datetime`, `bytes`, `@dataclass`, `pydantic` models, etc.
 
 ### Example: using orjson
 
@@ -143,5 +144,3 @@ json_plugin.use(
     dumps=custom_dumps,
 )
 ```
-
-> 🚀 New in version 1.0.9

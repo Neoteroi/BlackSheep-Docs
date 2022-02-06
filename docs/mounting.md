@@ -9,8 +9,6 @@ components, across web applications. This page describes:
 * Details about mounting, and handling of application events.
 * An example using [Piccolo Admin](https://github.com/piccolo-orm/piccolo_admin)
 
-> 🚀 New in version 1.0.9
-
 ## How to use mounts
 
 To mount an application in another application, use the `mount` method:
@@ -67,8 +65,9 @@ is started, a GET request to the route "/a" produces the greetings message
 from `app_a`. A GET request to the route "/" instead is replied with the text
 "Hello, from Application B".
 
-> Try to create a file `server.py` like in the example above, and run the
-> applications using `uvicorn`, to verify how they work in practice.
+!!! info
+    Try to create a file `server.py` like in the example above, and run the
+    applications using `uvicorn`, to verify how they work in practice.
 
 ## Side effects of mounting
 Even though mounting can enable interesting scenarios, it comes at a price.
@@ -173,9 +172,10 @@ This ensures that when the main application handles `lifespan` messages from
 the ASGI HTTP Server, the mounted app is also notified properly of those
 events.
 
-> **Note:** the way the mounted app must be started and stopped depend on the
-> web framework used to implement it. The example above is correct when `app_a`
-> is an instance of BlackSheep Application.
+!!! info
+    The way the mounted app must be started and stopped depend on the
+    web framework used to implement it. The example above is correct when `app_a`
+    is an instance of BlackSheep Application.
 
 ## Examples
 To see a working example where `mount` is used, see [the Piccolo Admin example

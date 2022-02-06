@@ -76,7 +76,7 @@ def home():
 
 Note that, when a request handler doesn't specify a `Response` return type with
 type annotations, the framework checks the function's return type at each call
-(incurring in a small performance fee!), and automatically prepares a `Response`
+(causing a small performance fee!), and automatically prepares a `Response`
 if necessary.
 
 ## Functions in `blacksheep.server.responses`
@@ -111,9 +111,10 @@ provided in the code.
 
 ![Type hints](../img/type-hints-functions.png)
 
-> **Note:** using an IDE like JetBrains PyCharm, or Visual Studio Code (as in
-> the screenshot above), enables automatic completion and hints thanks to type
-> annotations.
+!!! info
+    Using an IDE like JetBrains PyCharm, or Visual Studio Code (as in
+    the screenshot above), enables automatic completion and hints thanks to type
+    annotations.
 
 ## Response headers
 
@@ -138,7 +139,8 @@ def home():
 Note that `BlackSheep` enforces specifying header names and values as `bytes`,
 not strings.
 
-> **⚠️** This might change in a future version.
+!!! warning
+    This might change in a future version.
 
 ## Setting cookies
 
@@ -280,8 +282,8 @@ a `Set-Cookie` header.
 
 ## Chunked encoding
 
-The following example shows how chunked encoding can be used in responses:
-defining an `Content` object bound to a generator yielding bytes.
+The following example shows how chunked encoding can be used in responses,
+using a `StreamedContent` object bound to a generator yielding bytes.
 
 ```python
 import asyncio
@@ -333,5 +335,5 @@ async def get_chunked_text(request):
     )
 ```
 
-> **Note:** BlackSheep uses chunked encoding by default when serving static
-> files.
+!!! info
+    BlackSheep uses chunked encoding by default when serving static files.

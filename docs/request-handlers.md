@@ -181,13 +181,14 @@ example, if information are fetched from a database or a remote API when
 handling a web request handler, it is a good practice to use asynchronous code
 to reduce RAM consumption and not impede the event loop of the web application.
 
-> **Note:** if an operation is CPU intensive (e.g. involving file operations,
-> resizing a picture), the request handlers that initiate such operation should
-> be async, and use a [thread or process
-> pool](https://docs.python.org/3/library/asyncio-eventloop.html#executing-code-in-thread-or-process-pools)
-> to not block the web app's event loop.
-> Similarly, request handlers that initiate I/O bound operations (e.g. web
-> requests to external APIs, connecting to a database) should also be `async`.
+!!! warning
+    If an operation is CPU intensive (e.g. involving file operations,
+    resizing a picture), the request handlers that initiate such operation should
+    be async, and use a [thread or process
+    pool](https://docs.python.org/3/library/asyncio-eventloop.html#executing-code-in-thread-or-process-pools)
+    to not block the web app's event loop.
+    Similarly, request handlers that initiate I/O bound operations (e.g. web
+    requests to external APIs, connecting to a database) should also be `async`.
 
 ## Next
 The next pages describe [requests](../requests/) and [responses](../responses/)

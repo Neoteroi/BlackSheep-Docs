@@ -11,7 +11,7 @@ be used with `pytest` to test an API. It covers the following:
 
 **TL;DR** A complete example with testing configured for `pytest` is
 available at:
-[https://github.com/Neoteroi/BlackSheep-Examples/tree/main/testing-api](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/testing-api).
+[./testing-api](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/testing-api).
 Those who don't want to follow the tutorial on this page can read the code
 in the example.
 
@@ -77,12 +77,11 @@ A test client provides the following methods:
 | **options** | Simulates an HTTP OPTIONS request. |
 | **trace**   | Simulates an HTTP TRACE request.   |
 
-> 🚀 The `TestClient` is new in version 1.0.7
-
-> 💡 Note: By default a `TestClient` simulates web requests creating `ASGI` scopes,
-> however it can be configured with a custom implementation of
-> `AbstractTestSimulator` to generate real HTTP requests against a real HTTP
-> server. For simplicity, this is not documented here.
+!!! info
+    By default a `TestClient` simulates web requests creating `ASGI` scopes,
+    however it can be configured with a custom implementation of
+    `AbstractTestSimulator` to generate real HTTP requests against a real HTTP
+    server. For simplicity, this is not documented here.
 
 ## Tutorial
 
@@ -170,8 +169,9 @@ post = router.post
 delete = router.delete
 ```
 
-> 💡 Declaring the router in a dedicated file is useful to reduce code verbosity
-> when defining request handlers.
+!!! info
+    💡 Declaring the router in a dedicated file is useful to reduce code verbosity
+    when defining request handlers.
 
 Then create a `todos.py` file in `app.routes` package, that will contain the
 definition of the TODOs API. Start with the following contents:
@@ -404,10 +404,11 @@ Note how the file contains three fixtures:
 
 These fixtures enable testing all request handlers defined in the application.
 
-> 💡 It is possible to apply special configuration to the application server,
-> for example overriding services in the DI container just for tests, for
-> example replacing a class that interacts with a PostgreSQL Server to use
-> instead SQLite for tests.
+!!! info
+    💡 It is possible to apply special configuration to the application server,
+    for example overriding services in the DI container just for tests, for
+    example replacing a class that interacts with a PostgreSQL Server to use
+    instead SQLite for tests.
 
 Finally, define a first test for the TODOs API:
 
@@ -626,5 +627,6 @@ async def test_get(client_session):
 
 ```
 
-> 💡 Fixtures can be defined in a dedicated module, to keep the tests code
-> clean.
+!!! info
+    Fixtures can be defined in a dedicated module, to keep the tests code
+    clean.

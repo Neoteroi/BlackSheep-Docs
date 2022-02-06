@@ -4,8 +4,6 @@ BlackSheep implements built-in support for sessions, which are handled through
 digitally signed cookies. This page describes how to use sessions with the
 built-in classes.
 
-> 🚀 Added in version 1.0.1
-
 ## Enabling sessions
 To enable sessions, use the `app.use_sessions` method as in the example below:
 

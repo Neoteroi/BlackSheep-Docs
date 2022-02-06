@@ -128,187 +128,188 @@ kinds.
 
 #### Reading JSON
 
-*Using binders (recommended)*:
+===  "Using binders (recommended)"
 
-```python
-from dataclasses import dataclass
+    ```python
+    from dataclasses import dataclass
 
-from blacksheep.server.bindings import FromJSON
-
-
-@dataclass
-class SomethingInput:
-    name: str
-    foo: bool
+    from blacksheep.server.bindings import FromJSON
 
 
-@post("/something")
-async def create_something(input: FromJSON[SomethingInput]):
-    data = input.value
+    @dataclass
+    class SomethingInput:
+        name: str
+        foo: bool
 
-    # data is already deserialized from JSON into an instance of
-    # `SomethingInput`
-```
 
-The type parameter for the `FromJSON` binder can be a dataclass, a model from
-[`pydantic`](https://github.com/samuelcolvin/pydantic), a regular class with an
-`__init__` method.
+    @post("/something")
+    async def create_something(input: FromJSON[SomethingInput]):
+        data = input.value
 
-Note that when mapping the request's payload to an instance of the desired
-type, the type's constructor with `cls(**data)` is used. If it necessary to
-parse dates or other complex types this must be done in the constructor of the
-class. To handle gracefully a payload with extra properties, use `*args` in
-your class constructor: `__init__(one, two, three, *args)__`.
+        # data is already deserialized from JSON into an instance of
+        # `SomethingInput`
+    ```
 
-To read the JSON payload as a regular dictionary, use `dict` as type argument:
+    The type parameter for the `FromJSON` binder can be a dataclass, a model from
+    [`pydantic`](https://github.com/samuelcolvin/pydantic), a regular class with an
+    `__init__` method.
 
-```python
-@post("/something")
-async def create_something(input: FromJSON[dict]):
-    ...
-```
+    Note that when mapping the request's payload to an instance of the desired
+    type, the type's constructor with `cls(**data)` is used. If it necessary to
+    parse dates or other complex types this must be done in the constructor of the
+    class. To handle gracefully a payload with extra properties, use `*args` in
+    your class constructor: `__init__(one, two, three, *args)__`.
 
----
+    To read the JSON payload as a regular dictionary, use `dict` as type argument:
 
-*Directly from the request:*
+    ```python
+    @post("/something")
+    async def create_something(input: FromJSON[dict]):
+        ...
+    ```
 
-```python
-@post("/something")
-async def create_something(request: Request):
-    data = await request.json()
+=== "Directly from the request"
 
-    # data is a dictionary
-```
+    When the JSON is read from the request object, it is always treated as
+    the raw deserialized object (usually a dictionary or a list).
+
+    ```python
+    @post("/something")
+    async def create_something(request: Request):
+        data = await request.json()
+
+        # data is the deserialized object
+    ```
 
 #### Reading form
 
-*Using binders (recommended)*:
+===  "Using binders (recommended)"
 
-```python
-from blacksheep.server.bindings import FromForm
-
-
-class SomethingInput:
-    name: str
-    foo: bool
-
-    def __init__(self, name: str, foo: str) -> None:
-        self.name = name
-        self.foo = bool(foo)
+    ```python
+    from blacksheep.server.bindings import FromForm
 
 
-@post("/something")
-async def create_something(input: FromForm[SomethingInput]):
-    data = input.value
+    class SomethingInput:
+        name: str
+        foo: bool
 
-    # data is already deserialized from form into an instance of
-    # `SomethingInput` - however some properties need to be parsed
-    # from str into the desired type in the class definition -
-    # see __init__ above
-```
+        def __init__(self, name: str, foo: str) -> None:
+            self.name = name
+            self.foo = bool(foo)
 
 
-*Directly from the request:*
+    @post("/something")
+    async def create_something(input: FromForm[SomethingInput]):
+        data = input.value
 
-```python
-@post("/something")
-async def create_something(request: Request):
-    data = await request.form()
+        # data is already deserialized from form into an instance of
+        # `SomethingInput` - however some properties need to be parsed
+        # from str into the desired type in the class definition -
+        # see __init__ above
+    ```
 
-    # data is a dictionary
-```
+
+=== "Directly from the request"
+
+    ```python
+    @post("/something")
+    async def create_something(request: Request):
+        data = await request.form()
+
+        # data is a dictionary
+    ```
 
 #### Reading text
 
-*Using binders (recommended)*:
+===  "Using binders (recommended)"
 
-```python
-from blacksheep.server.bindings import FromText
+    ```python
+    from blacksheep.server.bindings import FromText
 
 
-@post("/something")
-async def store_text(text: FromText):
-    data = text.value
-```
+    @post("/something")
+    async def store_text(text: FromText):
+        data = text.value
+    ```
 
-*Directly from the request:*
+=== "Directly from the request"
 
-```python
-@post("/text")
-async def create_text(request: Request):
-    data = await request.text()
+    ```python
+    @post("/text")
+    async def create_text(request: Request):
+        data = await request.text()
 
-    # data is a string
-```
+        # data is a string
+    ```
 
 #### Reading raw bytes
 
-*Using binders (recommended)*:
+===  "Using binders (recommended)"
 
-```python
-from blacksheep.server.bindings import FromBytes
+    ```python
+    from blacksheep.server.bindings import FromBytes
 
 
-@post("/something")
-async def example(payload: FromBytes):
-    data = payload.value
-```
+    @post("/something")
+    async def example(payload: FromBytes):
+        data = payload.value
+    ```
 
-*Directly from the request:*
+=== "Directly from the request"
 
-```python
-@post("/text")
-async def example(request: Request):
-    data = await request.read()
+    ```python
+    @post("/text")
+    async def example(request: Request):
+        data = await request.read()
 
-    # data is bytes
-```
+        # data is bytes
+    ```
 
 #### Reading files
 Files read from `multipart/form-data` payload.
 
-*Using binders (recommended)*:
+===  "Using binders (recommended)"
 
-```python
-from blacksheep.server.bindings import FromFiles
+    ```python
+    from blacksheep.server.bindings import FromFiles
 
 
-@post("/something")
-async def post_files(files: FromFiles):
-    data = files.value
-```
+    @post("/something")
+    async def post_files(files: FromFiles):
+        data = files.value
+    ```
 
-*Directly from the request:*
+=== "Directly from the request"
 
-```python
-@post("/upload-files")
-async def upload_files(request: Request):
-    files = await request.files()
+    ```python
+    @post("/upload-files")
+    async def upload_files(request: Request):
+        files = await request.files()
 
-    for part in files:
-        file_bytes = part.data
-        file_name = file.file_name.decode()
+        for part in files:
+            file_bytes = part.data
+            file_name = file.file_name.decode()
 
-    ...
-```
+        ...
+    ```
 
 #### Reading streams
 Reading streams enables reading bodies of big size using asynchronous
 generator. The example below saves a file of arbitrary size without blocking
 the event loop:
 
-*Directly from the request:*
+=== "Directly from the request"
 
-```python
-from blacksheep.server.responses import created
+    ```python
+    from blacksheep.server.responses import created
 
 
-@post("/upload")
-async def save_big_file(request: Request):
+    @post("/upload")
+    async def save_big_file(request: Request):
 
-    with open("./data/0001.dat", mode="wb") as saved_file:
-        async for chunk in request.stream():
-            saved_file.write(chunk)
+        with open("./data/0001.dat", mode="wb") as saved_file:
+            async for chunk in request.stream():
+                saved_file.write(chunk)
 
-    return created()
-```
+        return created()
+    ```

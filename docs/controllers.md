@@ -44,15 +44,15 @@ in subclasses of `Controller` and they remove the need to import functions.
 | **view_async**         | Returns a view rendered asynchronously.                                                                                                                                                                    |
 | **file**               | Returns a binary file response with given content type and optional file name, for download (attachment) (default HTTP 200 OK). This method supports both call with bytes, or a generator yielding chunks. |
 
-
 For information on how to use these methods, refer to the type annotations
 provided in the code.
 
 ![Type hints](../img/type-hints.png)
 
-> **Note:** using an IDE like JetBrains PyCharm, or Visual Studio Code (as in
-> the screenshot above), enables automatic completion and hints thanks to type
-> annotations.
+!!! info
+    Using an IDE like JetBrains PyCharm, or Visual Studio Code (as in
+    the screenshot above), enables automatic completion and hints thanks to type
+    annotations.
 
 ### on_request and on_response
 

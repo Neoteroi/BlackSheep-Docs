@@ -247,10 +247,11 @@ integers, it is possible to define route parameters this way:
 "/api/movies/{int:movie_id}/actors/{int:actor_id}"
 ```
 
-> **Note:** value patterns only affect the regular expression used to match
-> requests' URLs. They don't affect the type of the parameter after a web
-> request is matched. Use type annotations as described above to enforce types
-> of the variables as they are passed to the request handler.
+!!! warning
+    Value patterns only affect the regular expression used to match
+    requests' URLs. They don't affect the type of the parameter after a web
+    request is matched. Use type annotations as described above to enforce types
+    of the variables as they are passed to the request handler.
 
 The following value patterns are built-in:
 
