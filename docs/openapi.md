@@ -213,11 +213,11 @@ and the whole docstring as description.
 
 ![OpenAPI description and summary](./img/openapi-description-summary.png)
 
-> **Note:** most of the BlackSheep code base is typed using the `typing` module,
-> thus IDEs and text editors like Visual Studio Code and PyCharm can provide
-> user's friendly hints for code completion (see the screenshot below).
-
-![Type hints](./img/openapi-docs-type-hints.png)
+!!! info
+    Most of the BlackSheep code base is typed using the `typing` module,
+    thus IDEs and text editors like Visual Studio Code and PyCharm can provide
+    user's friendly hints for code completion (see the screenshot below).
+    ![Type hints](./img/openapi-docs-type-hints.png)
 
 ### Ignoring endpoints
 
@@ -598,11 +598,12 @@ components:
                     nullable: false
 ```
 
-> **Note:** generic types, expressed in Python using `GenericType[T]`, are
-> represented with `GenericTypeOfT` to respect OpenAPI specification, saying
-> that `$ref values must be RFC3986-compliant percent-encoded URIs`.
-> A generic type with more arguments, like `Foo[T, U, X]` gets represented with
-> `FooOfTAndUAndX`.
+!!! info
+    Generic types, expressed in Python using `GenericType[T]`, are
+    represented with `GenericTypeOfT` to respect OpenAPI specification, saying
+    that `$ref values must be RFC3986-compliant percent-encoded URIs`.
+    A generic type with more arguments, like `Foo[T, U, X]` gets represented with
+    `FooOfTAndUAndX`.
 
 ### Describing parameters
 It is possible to describe parameters explicitly, or using docstrings.
@@ -647,73 +648,68 @@ async def get_orders(
 #### Documenting parameters using docstrings
 
 BlackSheep supports documenting parameters using docstrings, and the following
-styles are supported:
-* Epytext
-* ReStructuredText
-* NumpyDoc
+styles are supported: Epytext, ReStructuredText, NumpyDoc.
+The following sections show the previous example re-written to use docstrings.
 
-The following sections show the previous example re-written to use docstrings
-in the various styles.
+=== "Epytext"
 
-**Epytext**
+    ```python
 
-```python
+    @app.router.get("/api/orders")
+    async def get_orders(
+        page: FromQuery[int] = FromQuery(1),
+        page_size: FromQuery[int] = FromQuery(30),
+        search: FromQuery[str] = FromQuery(""),
+    ) -> PaginatedSet[Order]:
+        """
+        Returns a paginated set of orders.
 
-@app.router.get("/api/orders")
-async def get_orders(
-    page: FromQuery[int] = FromQuery(1),
-    page_size: FromQuery[int] = FromQuery(30),
-    search: FromQuery[str] = FromQuery(""),
-) -> PaginatedSet[Order]:
-    """
-    Returns a paginated set of orders.
+        @param page: Page number
+        @param page_size: The number of items to display per page
+        @param search: Optional text search
+        """
 
-    @param page: Page number
-    @param page_size: The number of items to display per page
-    @param search: Optional text search
-    """
+    ```
 
-```
+=== "ReStructuredText"
 
-**ReStructuredText**
+    ```python
 
-```python
+    @app.router.get("/api/orders")
+    async def get_orders(
+        page: FromQuery[int] = FromQuery(1),
+        page_size: FromQuery[int] = FromQuery(30),
+        search: FromQuery[str] = FromQuery(""),
+    ) -> PaginatedSet[Order]:
+        """
+        Returns a paginated set of orders.
 
-@app.router.get("/api/orders")
-async def get_orders(
-    page: FromQuery[int] = FromQuery(1),
-    page_size: FromQuery[int] = FromQuery(30),
-    search: FromQuery[str] = FromQuery(""),
-) -> PaginatedSet[Order]:
-    """
-    Returns a paginated set of orders.
+        :param page: Page number
+        :param page_size: The number of items to display per page
+        :param search: Optional text search
+        """
+    ```
 
-    :param page: Page number
-    :param page_size: The number of items to display per page
-    :param search: Optional text search
-    """
-```
+=== "NumpyDoc"
 
-**NumpyDoc**
+    ```python
 
-```python
+    @app.router.get("/api/orders")
+    async def get_orders(
+        page: FromQuery[int] = FromQuery(1),
+        page_size: FromQuery[int] = FromQuery(30),
+        search: FromQuery[str] = FromQuery(""),
+    ) -> PaginatedSet[Order]:
+        """
+        Returns a paginated set of orders.
 
-@app.router.get("/api/orders")
-async def get_orders(
-    page: FromQuery[int] = FromQuery(1),
-    page_size: FromQuery[int] = FromQuery(30),
-    search: FromQuery[str] = FromQuery(""),
-) -> PaginatedSet[Order]:
-    """
-    Returns a paginated set of orders.
-
-    Parameters
-    ----------
-    page : Page number
-    page_size : The number of items to display per page
-    search : Optional text search
-    """
-```
+        Parameters
+        ----------
+        page : Page number
+        page_size : The number of items to display per page
+        search : Optional text search
+        """
+    ```
 
 
 The logic that parses docstrings can also extract types information, but this

@@ -10,10 +10,11 @@ This page describes:
 * Returning views using [response functions]().
 * Returning views using the [MVC features]().
 
-> **Note:** the [BlackSheep MVC project
-> template](https://github.com/RobertoPrevato/BlackSheepMVC) includes a
-> ready-to-use solution having an application with templates and layout
-> configured.
+!!! info
+    The [BlackSheep MVC project
+    template](https://github.com/RobertoPrevato/BlackSheepMVC) includes a
+    ready-to-use solution having an application with templates and layout
+    configured.
 
 ## Configuration
 This example shows how to use Jinja2 templating engine with BlackSheep:

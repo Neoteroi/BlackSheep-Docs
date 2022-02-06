@@ -60,8 +60,11 @@ def crash_test():
 
 ```
 
-> **Note:** BlackSheep project templates use a library to handle application
-> settings and configuration roots, named [`roconfiguration`](https://github.com/RobertoPrevato/roconfiguration).
+!!! info
+    BlackSheep project templates use a library to handle application
+    settings and configuration roots. Consider using
+    [`essentials-configuration`](https://github.com/Neoteroi/essentials-configuration)
+    for this.
 
 ### Configuring exceptions handlers
 
@@ -103,9 +106,9 @@ async def home(request):
 
 ```
 
-Exceptions inheriting from `HTTPException` are mapped to handlers by their
-status code, using `int` keys; while user defined exceptions are mapped to
-handlers by their type.
+Exceptions inheriting from `HTTPException` can be mapped to handlers by their type or by
+their status code, using `int` keys; while user defined exceptions are mapped to handlers
+by their type.
 
 ### Configuring exception handlers using decorators
 
@@ -123,8 +126,6 @@ async def handler_example(self, request, exc: CustomException):
 
 ```
 
-> 🚀 New in version 1.0.4
-
 ---
 
 ## Application events
@@ -134,19 +135,20 @@ A BlackSheep application exposes three events: **on_start**, **after_start**,
 
 ### on_start
 This event should be used to configure things such as new request handlers,
-service registered in `app.services`.
+and service registered in `app.services`, such as database connection pools,
+HTTP client sessions.
 
 ### after_start
 This event should be used to configure things that must happen after request
 handlers are normalized. At this point, the application router contains information
 about actual routes handled by the web application, and routes can be inspected.
-For examples, the built-in generation of OpenAPI Documentation generates the
+For example, the built-in generation of OpenAPI Documentation generates the
 API specification file at this point.
 
 ### on_stop
 This event should be used to fire callbacks that need to happen when the application
 is stopped. For example, disposing of services that require disposal, such as
-DB Connection Pools, HTTP Connection Pools.
+database connection pools, HTTP client sessions using connection pools.
 
 ### Application life cycle
 
@@ -155,92 +157,86 @@ are fired, and the state of the application when they are executed.
 
 ![App life cycle](./img/app-life-cycle.svg)
 
-### Application events example
+### How to register event handlers
 
-```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Request, Response
+=== "Using decorators"
+    Event handlers can be registered using decorators.
 
-
-app = Application()
-get = app.router.get
-
-
-@get("/")
-async def home(request: Request) -> Response:
-    return text("Example Async")
+    ```python
+    from blacksheep.server import Application
+    from blacksheep.server.responses import text
+    from blacksheep.messages import Request, Response
 
 
-async def before_start(application: Application) -> None:
-    print("Before start")
+    app = Application()
+    get = app.router.get
 
 
-async def after_start(application: Application) -> None:
-    print("After start")
+    @get("/")
+    async def home(request: Request) -> Response:
+        return text("Example Async")
 
 
-async def on_stop(application: Application) -> None:
-    print("On stop")
+    @app.on_start
+    async def before_start(application: Application) -> None:
+        print("Before start")
 
 
-app.on_start += before_start
-app.after_start += after_start
-app.on_stop += on_stop
-```
-
-### Application events handled using decorators
-
-Since version `1.0.9`, it is also possible to register event handlers using
-decorators. The example above rewritten to use decorators looks as follows:
-
-```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Request, Response
+    @app.after_start
+    async def after_start(application: Application) -> None:
+        print("After start")
 
 
-app = Application()
-get = app.router.get
+    @app.on_stop
+    async def on_stop(application: Application) -> None:
+        print("On stop")
+
+    ```
+
+=== "Using +="
+    In alternative to decorators, event handlers can be registered using ` += `:
+
+    ```python
+    from blacksheep.server import Application
+    from blacksheep.server.responses import text
+    from blacksheep.messages import Request, Response
 
 
-@get("/")
-async def home(request: Request) -> Response:
-    return text("Example Async")
+    app = Application()
+    get = app.router.get
 
 
-@app.on_start
-async def before_start(application: Application) -> None:
-    print("Before start")
+    @get("/")
+    async def home(request: Request) -> Response:
+        return text("Example Async")
 
 
-@app.after_start
-async def after_start(application: Application) -> None:
-    print("After start")
+    async def before_start(application: Application) -> None:
+        print("Before start")
 
 
-@app.on_stop
-async def on_stop(application: Application) -> None:
-    print("On stop")
-
-```
-
-> 🚀 New in version 1.0.9
-
-### Example: after_start callback to log all routes
-
-To define an `after_start` callback that logs all routes registered in the
-application router:
-
-```python
-
-async def after_start_print_routes(application: Application) -> None:
-    print(application.router.routes)
+    async def after_start(application: Application) -> None:
+        print("After start")
 
 
-app.after_start += after_start_print_routes
+    async def on_stop(application: Application) -> None:
+        print("On stop")
 
-```
+
+    app.on_start += before_start
+    app.after_start += after_start
+    app.on_stop += on_stop
+    ```
+
+!!! info
+    For example, to define an `after_start` callback that logs all routes registered
+    in the application router:
+
+    ```python
+    @app.after_start
+    async def after_start_print_routes(application: Application) -> None:
+        print(application.router.routes)
+    ```
 
 ## Next
 Read about the details of [routing in BlackSheep](../routing).

@@ -14,8 +14,9 @@ This page covers:
 Middlewares enable the definition of callbacks that are executed for each web
 request in a specific order.
 
-> **Note:** When a function should be called only for certain routes, use
-> instead a [decorator function](../middlewares/#wrapping-request-handlers).
+!!! info
+    When a function should be called only for certain routes, use
+    instead a [decorator function](../middlewares/#wrapping-request-handlers).
 
 Middlewares are called in order: each receives the `Request` object as first
 parameter, and the next handler to be called as second parameter. Any
@@ -191,6 +192,7 @@ def headers(additional_headers: Tuple[Tuple[str, str], ...]):
     return decorator
 ```
 
-> **Note:** the `ensure_response` function is necessary to support scenarios
-> when the request handlers defined by the user doesn't return an instance of
-> Response class (see _[request handlers normalization](../request-handlers/)_).
+!!! warning
+    The `ensure_response` function is necessary to support scenarios
+    when the request handlers defined by the user doesn't return an instance of
+    Response class (see _[request handlers normalization](../request-handlers/)_).

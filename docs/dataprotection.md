@@ -10,8 +10,6 @@ This page documents:
 * How to handle secrets
 * Examples use of data protection
 
-> 🚀 New in version 1.2.1
-
 ## How to handle secrets
 
 Symmetric encryption is used to sign and encrypt information in several

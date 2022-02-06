@@ -30,8 +30,8 @@ and download its code in one of the following ways:
 
 ![MVC template](./img/mvc-template.png)
 
-> **Note:** if you have a GitHub account, you can use the _"Use this template"_ button to create a new project, then
-> clone it.
+!!! info
+    If you have a GitHub account, you can use the _"Use this template"_ button to create a new project, then clone it.
 
 Then create a Python virtual environment as explained in the [previous
 tutorial](./getting-started/#preparing-a-development-environment), for example
@@ -206,9 +206,9 @@ Copy the following contents into the `hello.html`:
 Now navigate to [http://localhost:44777/hello-view](http://localhost:44777/hello-view),
 to see the response from the new HTML view.
 
-Note how blacksheep uses convention over configuration, to determine it should
-use `./views/greetings/hello.html` file to haapp-life-cycle.svg
-> `./views/{CONTROLLER_NAME}/{METHOD_NAME}.html`
+Note how convention over configuration is used in this case, to determine that
+`./views/greetings/hello.html` file must be used, because of the convention:
+`./views/{CONTROLLER_NAME}/{METHOD_NAME}.html`.
 
 The view currently is an HTML fragment, not a full document. To make it a
 full page, modify `hello.html` to use the application layout:

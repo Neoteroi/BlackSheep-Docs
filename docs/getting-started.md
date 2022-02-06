@@ -28,13 +28,18 @@ python -m venv venv
 ```
 
 and activate it:
-```
-# on Linux or Mac:
-source venv/bin/activate
 
-# on Windows:
-venv\Scripts\activate
-```
+=== "On Linux or Mac"
+
+    ```
+    source venv/bin/activate
+    ```
+
+=== "On Windows"
+
+    ```
+    source venv\Scripts\activate
+    ```
 
 BlackSheep belongs to the category of
 [ASGI](https://asgi.readthedocs.io/en/latest/) web frameworks, therefore it
@@ -152,9 +157,10 @@ def post_example(request):
     return "POST Example"
 ```
 
-> **Note:** Thanks to `uvicorn`'s auto reload feature (used with `--reload` argument),
-> when the `server.py` file is updated, the application is automatically reloaded.
-> This is extremely useful during development.
+!!! info
+    Thanks to `uvicorn`'s auto reload feature (used with `--reload` argument),
+    when the `server.py` file is updated, the application is automatically reloaded.
+    This is extremely useful during development.
 
 Navigate again to `http://127.0.0.1:44777`, it should display the text:
 `"GET Example"`.
@@ -163,20 +169,23 @@ To verify that the `post_example` request handler is handling `POST` requests,
 use a tool to generate a POST HTTP request at the server's address.
 For example, using [`curl`](https://curl.haxx.se):
 
-```
-curl -X POST http://127.0.0.1:44777
-```
+=== "curl"
 
-Or [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7):
+    ```bash
+    curl -X POST http://127.0.0.1:44777
+    ```
 
-```ps1
-Invoke-WebRequest -Uri http://localhost:44777 -Method POST
-```
+=== "PowerShell"
 
-> **Note:** the application automatically handles requests for any path that
-> is not handled by the router, returning an `HTTP 404 Not Found` response; and
-> returns `HTTP 500 Internal Server Error` in case of unhandled exceptions
-> happening during code execution.
+    ```ps1
+    Invoke-WebRequest -Uri http://localhost:44777 -Method POST
+    ```
+
+!!! info
+    The application automatically handles requests for any path that
+    is not handled by the router, returning an `HTTP 404 Not Found` response; and
+    returns `HTTP 500 Internal Server Error` in case of unhandled exceptions
+    happening during code execution.
 
 ### Handling route parameters
 So far the examples only showed request handlers that didn't use any input
@@ -220,15 +229,26 @@ def only_numbers_here(number: int):
     return f"Lucky number: {number}\n"
 ```
 
-```
-curl http://127.0.0.1:44777/lucky-number/777
-Lucky number: 777
-```
+=== "curl"
+    ```
+    curl http://127.0.0.1:44777/lucky-number/777
+    Lucky number: 777
 
-```
-curl http://127.0.0.1:44777/lucky-number/x
-Bad Request: Invalid value ['x'] for parameter `number`; expected a valid int.
-```
+    curl http://127.0.0.1:44777/lucky-number/x
+    Bad Request: Invalid value ['x'] for parameter `number`; expected a valid int.
+    ```
+
+=== "PowerShell"
+    ```ps1
+    Invoke-WebRequest -Uri http://127.0.0.1:44777/lucky-number/777
+
+    StatusCode        : 200
+    StatusDescription : OK
+    Content           : Lucky number: 777
+
+    Invoke-WebRequest -Uri http://127.0.0.1:44777/lucky-number/x
+    Invoke-WebRequest: Bad Request: Invalid value ['x'] for parameter `number`; expected a valid int.
+    ```
 
 Several built-in types are handled automatically: e.g. `str`, `bool`, `int`,
 `float`, `uuid.UUID`, `datetime.date`, `datetime.datetime`, `List[T]`, `Set[T]`.
@@ -334,7 +354,8 @@ to see the result, it will look like this:
 {"id":"b697358e-0f74-4449-840a-32c8db839244","name":"Pilou","active":true}]
 ```
 
-> **Note**: try also the `pretty_json` function in `blacksheep.server.responses`.
+!!! info
+    Try also the `pretty_json` function in `blacksheep.server.responses`.
 
 For more granular control, it is possible to use the `blacksheep.messages.Response`
 class directly (read `blacksheep.server.responses` module for examples), and

@@ -67,8 +67,9 @@ Binding happens implicitly when parameters in the request handler's signature
 are not annotated with types, or are **not** annotated with types that inherit
 from `BoundValue` class, defined in `blacksheep.server.bindings`.
 
-> **Note:** a parameter with name "request" is always bound to the instance of
-> the `Request` of the web request.
+!!! warning
+    A parameter with name "request" is always bound to the instance of
+    the `Request` of the web request.
 
 ### Explicit binding
 Binders can be defined explicitly, using type annotations and classes from
