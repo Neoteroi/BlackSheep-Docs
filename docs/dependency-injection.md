@@ -4,12 +4,11 @@ injected directly in request handlers, by function signature. BlackSheep
 also supports dependency injection of services configured for the application.
 This page describes:
 
-<div class="check-list"></div>
-* An introduction to dependency injection in BlackSheep.
-* Service resolution.
-* Service lifetime.
-* Options to create services.
-* Examples of dependency injection.
+- [X] An introduction to dependency injection in BlackSheep.
+- [X] Service resolution.
+- [X] Service lifetime.
+- [X] Options to create services.
+- [X] Examples of dependency injection.
 
 ## Introduction
 

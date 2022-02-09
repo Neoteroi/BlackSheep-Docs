@@ -9,11 +9,10 @@ responses.
 
 This page describes:
 
-<div class="check-list"></div>
-* How to define request handlers.
-* How to use route parameters.
-* How to define a catch-all route.
-* How to define a fallback route.
+- [X] How to define request handlers.
+- [X] How to use route parameters.
+- [X] How to define a catch-all route.
+- [X] How to define a fallback route.
 
 ## Defining request handlers
 

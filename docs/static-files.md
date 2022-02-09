@@ -2,11 +2,10 @@
 
 This page covers:
 
-<div class="check-list"></div>
-* How to serve static files.
-* Options for static files.
-* Non-obvious features handled when serving static files.
-* How to serve a Single Page Application (SPA) that uses the HTML5 History API
+- [X] How to serve static files.
+- [X] Options for static files.
+- [X] Non-obvious features handled when serving static files.
+- [X] How to serve a Single Page Application (SPA) that uses the HTML5 History API
 
 ---
 

@@ -58,8 +58,9 @@ markdown_extensions:
   - markdown.extensions.codehilite:
       guess_lang: false
   - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
   - toc:
       permalink: true
-# google_analytics: ["G-T65MX5XNF2", "https://www.neoteroi.dev"]

@@ -3,12 +3,11 @@
 This tutorial explains how to create and start a minimal BlackSheep web
 application. <br> It provides a general view, covering the following topics:
 
-<div class="check-list"></div>
-* Creating a web application from scratch.
-* Running the web application.
-* Configuring routes.
-* Handling parameters.
-* Handling responses.
+- [X] Creating a web application from scratch.
+- [X] Running the web application.
+- [X] Configuring routes.
+- [X] Handling parameters.
+- [X] Handling responses.
 
 ### Requirements
 

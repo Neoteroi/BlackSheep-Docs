@@ -1,11 +1,10 @@
 # Requests
 This page describes:
 
-<div class="check-list"></div>
-* Handling requests.
-* Reading parameters from the request.
-* Reading request headers and cookies.
-* Reading request bodies.
+- [X] Handling requests.
+- [X] Reading parameters from the request.
+- [X] Reading request headers and cookies.
+- [X] Reading request bodies.
 
 ## The Request class
 BlackSheep handles requests as instances of `blacksheep.messages.Request`

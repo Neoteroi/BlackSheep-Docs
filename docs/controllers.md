@@ -7,9 +7,8 @@ type of controller.
 
 This page describes:
 
-<div class="check-list"></div>
-* Controller methods.
-* API Controllers.
+- [X] Controller methods.
+- [X] API Controllers.
 
 It is recommended to follow the [MVC tutorial](../mvc-project-template/) before
 reading this page.

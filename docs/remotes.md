@@ -23,11 +23,10 @@ client geolocation.
 This page documents how to configure BlackSheep to work with proxy servers and
 load balancers, using provided classes to handle:
 
-<div class="check-list"></div>
-* X-Forwarded headers
-* Forwarded header
-* Trusted hosts
-* How to read information about the original clients in web requests
+- [X] X-Forwarded headers
+- [X] Forwarded header
+- [X] Trusted hosts
+- [X] How to read information about the original clients in web requests
 
 ## Handling X-Forwarded headers
 `X-Forwarded` headers are the _de-facto_ standard headers to propagate

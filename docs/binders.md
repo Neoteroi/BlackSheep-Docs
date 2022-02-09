@@ -11,10 +11,9 @@ parameters are used by the request handlers (e.g. _headers, cookies, query_).
 
 This page describes:
 
-<div class="check-list"></div>
-* Implicit and explicit bindings.
-* Built-in binders.
-* How to define a custom binder.
+- [X] Implicit and explicit bindings.
+- [X] Built-in binders.
+- [X] How to define a custom binder.
 
 It is recommended to read the following pages before this one:
 

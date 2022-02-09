@@ -4,10 +4,9 @@ This page describes how a BlackSheep web application can be tested, documenting
 the built-in `TestClient` class and providing a tutorial that shows how it can
 be used with `pytest` to test an API. It covers the following:
 
-<div class="check-list"></div>
-* How to use the provided `TestClient`.
-* How to configure tests using `pytest`.
-* How to run integration tests using a server process.
+- [X] How to use the provided `TestClient`.
+- [X] How to configure tests using `pytest`.
+- [X] How to run integration tests using a server process.
 
 **TL;DR** A complete example with testing configured for `pytest` is
 available at:

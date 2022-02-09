@@ -4,11 +4,10 @@ to the ability to identify the user who is using the application. BlackSheep
 implements a built-in authentication strategy for request handlers. This page
 describes:
 
-<div class="check-list"></div>
-* How to use the built-in authentication strategy.
-* How to configure a custom authentication handler.
-* How to use the built-in support for JWT Bearer authentication.
-* How to read the user's context in request handlers.
+- [X] How to use the built-in authentication strategy.
+- [X] How to configure a custom authentication handler.
+- [X] How to use the built-in support for JWT Bearer authentication.
+- [X] How to read the user's context in request handlers.
 
 !!! warning
     Using JWT Bearer and OpenID integrations requires more dependencies: use

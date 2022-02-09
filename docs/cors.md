@@ -4,9 +4,8 @@ BlackSheep implements a strategy to handle [Cross-Origin Resource Sharing
 (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). This page
 describes:
 
-<div class="check-list"></div>
-* How to enable CORS globally.
-* How to enable CORS for specific endpoints.
+- [X] How to enable CORS globally.
+- [X] How to enable CORS for specific endpoints.
 
 ## Enabling CORS globally
 The example below shows how to enable CORS globally on a BlackSheep application:

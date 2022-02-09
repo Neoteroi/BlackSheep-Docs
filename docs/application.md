@@ -3,9 +3,8 @@ The `Application` class in BlackSheep is responsible of handling the
 application life cicle (start, working state, stop), routing, web requests,
 exceptions. This page describes details of the `Application` class:
 
-<div class="check-list"></div>
-* How to handle errors.
-* Application events and life cycle.
+- [X] How to handle errors.
+- [X] Application events and life cycle.
 
 ## Handling errors
 

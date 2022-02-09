@@ -5,9 +5,8 @@ define a chain of functions that handles every web requests.
 
 This page covers:
 
-<div class="check-list"></div>
-* Introduction to middlewares.
-* How to use function decorators to avoid code repetition.
+- [X] Introduction to middlewares.
+- [X] How to use function decorators to avoid code repetition.
 
 ## Introduction to middlewares
 

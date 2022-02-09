@@ -9,12 +9,11 @@ as:
 
 This page documents:
 
-<div class="check-list"></div>
-* How to use OpenID Connect integration to provide sign-in and sign-up features,
+- [X] How to use OpenID Connect integration to provide sign-in and sign-up features,
   and to identify users who use the application
-* How to use OpenID Connect integration to obtain `access_token`s to use APIs
+- [X] How to use OpenID Connect integration to obtain `access_token`s to use APIs
   (in addition, or instead of `id_token`s)
-* How tokens are protected and how to configure applications to support
+- [X] How tokens are protected and how to configure applications to support
   multiple instances and regions
 
 !!! warning
@@ -274,10 +273,11 @@ with symmetric encryption. This means that BlackSheep applications need secrets
 to protect sensitive data. When keys are not specified, they are generated
 automatically in memory, for best user's experience.
 
-This means that keys are <strong>not persisted</strong> when applications
-restart, and not consistent when multiple instances of the same application
-are deployed across regions, or within a same server. This is acceptable during
-local development, but should not be the case in production environments.
+!!! danger
+    This means that keys are <strong>not persisted</strong> when applications
+    restart, and not consistent when multiple instances of the same application
+    are deployed across regions, or within a same server. This is acceptable during
+    local development, but should not be the case in production environments.
 
 To use consistent keys, configure one or more environment variables like the
 following:
