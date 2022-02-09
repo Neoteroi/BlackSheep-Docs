@@ -3,13 +3,12 @@ BlackSheep implements automatic generation of OpenAPI Documentation for most
 common scenarios, and provides methods to enrich the documentation with
 details. This page describes the following:
 
-<div class="check-list"></div>
-* An introduction to OpenAPI Documentation.
-* Built-in support for OpenAPI Documentation.
-* How to document endpoints.
-* How to handle common responses.
-* Expose the documentation for anonymous access.
-* Support for [ReDoc UI](https://github.com/Redocly/redoc).
+- [X] An introduction to OpenAPI Documentation.
+- [X] Built-in support for OpenAPI Documentation.
+- [X] How to document endpoints.
+- [X] How to handle common responses.
+- [X] Expose the documentation for anonymous access.
+- [X] Support for [ReDoc UI](https://github.com/Redocly/redoc).
 
 ## Introduction to OpenAPI Documentation
 Citing from the [Swagger web site](https://swagger.io/specification/), at the

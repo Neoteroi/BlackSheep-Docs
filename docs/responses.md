@@ -1,10 +1,9 @@
 # Responses
 This page describes:
 
-<div class="check-list"></div>
-* How responses are handled.
-* Helper functions to handle responses.
-* Responses using asynchronous generators.
+- [X] How responses are handled.
+- [X] Helper functions to handle responses.
+- [X] Responses using asynchronous generators.
 
 ## The Response class
 A normal request handler in BlackSheep is expected to return an instance of

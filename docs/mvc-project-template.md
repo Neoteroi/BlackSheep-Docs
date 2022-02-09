@@ -3,12 +3,11 @@ This tutorial explains how to create a BlackSheep application using the
 MVC ([_Model, View, Controller_](https://en.wikipedia.org/wiki/Model–view–controller))
 project template, covering the following topics:
 
-<div class="check-list"></div>
-* Creating a blacksheep application from a project template.
-* Routes defined using classes (controllers).
-* Server side templating (views and models).
-* Handling parameters in controllers.
-* Serving static files
+- [X] Creating a blacksheep application from a project template.
+- [X] Routes defined using classes (controllers).
+- [X] Server side templating (views and models).
+- [X] Handling parameters in controllers.
+- [X] Serving static files
 
 It is recommended to follow the [previous tutorial](../getting-started) before
 reading this one.

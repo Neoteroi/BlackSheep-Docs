@@ -4,9 +4,8 @@ the ability to determine whether the user is allowed to do certain operations.
 BlackSheep implements a built-in authorization strategy for request handlers.
 This page describes:
 
-<div class="check-list"></div>
-* How to use the built-in authorization strategy.
-* How to apply authorization rules to request handlers.
+- [X] How to use the built-in authorization strategy.
+- [X] How to apply authorization rules to request handlers.
 
 It is recommended to read about [authentication](../authentication) before
 reading this page.

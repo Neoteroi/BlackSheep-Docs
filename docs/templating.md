@@ -5,10 +5,9 @@ wondeful [`Jinja2` library](https://palletsprojects.com/p/jinja/) by the
 
 This page describes:
 
-<div class="check-list"></div>
-* How to configure server side templating.
-* Returning views using [response functions]().
-* Returning views using the [MVC features]().
+- [X] How to configure server side templating.
+- [X] Returning views using [response functions]().
+- [X] Returning views using the [MVC features]().
 
 !!! info
     The [BlackSheep MVC project

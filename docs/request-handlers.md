@@ -3,9 +3,8 @@ The previous pages describe that a request handler in BlackSheep is a function
 associated to a route,  having the responsibility of handling web requests.
 This page describes `request handlers` in detail, presenting the following:
 
-<div class="check-list"></div>
-* Request handler normalization.
-* Using asynchronous and synchronous code.
+- [X] Request handler normalization.
+- [X] Using asynchronous and synchronous code.
 
 ## Request handler normalization.
 A normal request handler in BlachSheep is defined as an asynchronous function

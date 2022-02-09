@@ -4,10 +4,9 @@ The word "mounting" refers to the ability to plug ASGI applications into
 others, under specific routes. This enables reusing whole applications, or
 components, across web applications. This page describes:
 
-<div class="check-list"></div>
-* How to use the mount feature in BlackSheep.
-* Details about mounting, and handling of application events.
-* An example using [Piccolo Admin](https://github.com/piccolo-orm/piccolo_admin)
+- [X] How to use the mount feature in BlackSheep.
+- [X] Details about mounting, and handling of application events.
+- [X] An example using [Piccolo Admin](https://github.com/piccolo-orm/piccolo_admin)
 
 ## How to use mounts
 
