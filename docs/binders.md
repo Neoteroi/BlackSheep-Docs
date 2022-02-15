@@ -72,12 +72,12 @@ from `BoundValue` class, defined in `blacksheep.server.bindings`.
 
 ### Explicit binding
 Binders can be defined explicitly, using type annotations and classes from
-`blacksheep.server.bindings`.
+`blacksheep.server.bindings` (or just `blacksheep`).
 
 ```python
 from dataclasses import dataclass
 
-from blacksheep.server.bindings import FromJSON, FromServices
+from blacksheep import FromJSON, FromServices
 
 from your_business_logic.handlers.cats import CreateCatHandler  # example
 
@@ -148,7 +148,7 @@ async def example(
 ```
 
 ```python
-from blacksheep.server.bindings import FromQuery
+from blacksheep import FromQuery
 
 
 @get("/foo")
@@ -164,7 +164,7 @@ async def example(
 ```python
 from typing import Optional
 
-from blacksheep.server.bindings import FromQuery
+from blacksheep import FromQuery
 
 
 @get("/foo")
@@ -180,7 +180,7 @@ async def example(
 ```python
 from typing import Optional
 
-from blacksheep.server.bindings import FromQuery
+from blacksheep import FromQuery
 
 
 @get("/foo")
@@ -216,7 +216,7 @@ async def example(
 `name` class property:
 
 ```python
-from blacksheep.server.bindings import FromCookie, FromHeader
+from blacksheep import FromCookie, FromHeader
 
 
 class FromAcceptHeader(FromHeader[str]):
@@ -246,8 +246,7 @@ The following example demonstrates how to define a custom binder:
 ```python
 from typing import Optional
 
-from blacksheep.messages import Request
-from blacksheep.server import Application
+from blacksheep import Application, Request
 from blacksheep.server.bindings import Binder, BoundValue
 
 app = Application(show_error_details=True)

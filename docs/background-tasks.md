@@ -11,9 +11,7 @@ response status code.
 
 ```python
 import asyncio
-from blacksheep.messages import Response
-from blacksheep.server import Application
-from blacksheep.server.responses import accepted
+from blacksheep import Application, Response, accepted
 
 app = Application(show_error_details=True)
 get = app.router.get
@@ -46,7 +44,7 @@ once every second:
 import asyncio
 from datetime import datetime
 
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 

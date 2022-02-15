@@ -27,7 +27,7 @@ A basic example of the `TestClient` would look like this:
 
 ```python
 import asyncio
-from blacksheep.server import Application
+from blacksheep import Application
 from blacksheep.testing import TestClient
 
 app = Application()
@@ -218,9 +218,9 @@ Create a `main.py` file in `app` package, that declares an application:
 
 ```python
 # ./app/main.py
+from blacksheep import Application
 
 from .routes import router
-from blacksheep.server.application import Application
 
 
 app = Application(router=router)
@@ -260,9 +260,10 @@ And modify `/app/main.py` file to configure the generation of OpenAPI
 Documentation:
 
 ```python
+from blacksheep import Application
+
 from .routes import router
 from .docs import docs  # +++
-from blacksheep.server.application import Application
 
 
 app = Application(router=router)
@@ -293,7 +294,7 @@ API to work with data stored in memory:
 
 from typing import Dict, List, Optional
 
-from blacksheep.server.responses import not_found
+from blacksheep import not_found
 from domain import CreateToDoInput, ToDo
 
 from .router import delete, get, post

@@ -52,7 +52,7 @@ as in this example:
 
 **server.py**:
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 from domain.foo import Foo
 
@@ -100,8 +100,7 @@ Note that both types need to be registered in `app.services`:
 
 **server.py**:
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 from domain.foo import A, Foo
 
@@ -183,8 +182,7 @@ class Foo:
 
 **server.py**:
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 from domain.foo import A, B, C, Foo
 
@@ -410,8 +408,7 @@ Services that require asynchronous initialization can be configured inside
 
 ```python
 import asyncio
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 
 app = Application()

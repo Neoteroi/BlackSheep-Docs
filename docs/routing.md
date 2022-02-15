@@ -50,8 +50,7 @@ The following example shows how to define a request handler for the root
 path of a web application "/":
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 app = Application(show_error_details=True)
 
@@ -64,8 +63,7 @@ def hello_world():
 It is possible to assign router methods to variables, to reduce code verbosity:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 app = Application(show_error_details=True)
 get = app.router.get
@@ -120,9 +118,8 @@ the MVC architecture):
 
 ```python
 from dataclasses import dataclass
-from datetime import datetime
-from blacksheep.server import Application
-from blacksheep.server.responses import text, json
+
+from blacksheep import Application, text, json
 from blacksheep.server.controllers import Controller, get, post
 
 
@@ -142,7 +139,7 @@ class Home(Controller):
         return "Hello World"
 
     @get("/")
-    async def index(self, request: Request):
+    async def index(self):
         # HTTP GET /
         return text(self.greet())
 
@@ -286,7 +283,7 @@ parameter with path value pattern, like:
 * `{path:name}`, or `<path:name>`
 
 ```python
-from blacksheep.server.responses import text
+from blacksheep import text
 
 
 @get("/catch-all/{path:sub_path}")

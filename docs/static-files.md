@@ -13,7 +13,7 @@ To serve static files, use the method `app.serve_files` as in the following
 example:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 
@@ -105,7 +105,7 @@ To serve an SPA that uses HTML5 History API, configure files serving with a
 it happens in most scenarios).
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 
@@ -120,7 +120,7 @@ fallback document to be the same:
 
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 

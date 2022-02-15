@@ -11,7 +11,7 @@ A normal request handler in BlachSheep is defined as an asynchronous function
 having the following signature:
 
 ```python
-from blacksheep.messages import Request, Response
+from blacksheep import Request, Response
 
 async def normal_handler(request: Request) -> Response:
     ...
@@ -21,9 +21,7 @@ async def normal_handler(request: Request) -> Response:
 To be a request handler, a function must be associated to a route:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Request, Response
+from blacksheep import Application, Request, Response, text
 
 
 app = Application()
@@ -155,9 +153,7 @@ CPU intensive operation. This is the case for example of redirects, and the
 previous "Hello, There!" example:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text, redirect
-from blacksheep.messages import Request, Response
+from blacksheep import Application, Request, Response, text, redirect
 
 
 app = Application()

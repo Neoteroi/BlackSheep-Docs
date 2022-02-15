@@ -7,7 +7,7 @@ This page describes:
 - [X] Reading request bodies.
 
 ## The Request class
-BlackSheep handles requests as instances of `blacksheep.messages.Request`
+BlackSheep handles requests as instances of `blacksheep.Request`
 class. This class provides methods and properties to handle request headers,
 cookies, URL, route parameters, request body, user's identity, and other
 information like the content type of the request. Each web request results in
@@ -19,9 +19,7 @@ It is possible to read query and route parameters from an instance of
 request headers can be read from the request:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Request, Response
+from blacksheep import Application, Request, Response, text
 
 
 app = Application()
@@ -55,10 +53,7 @@ into the desired type, and improve development experience and source code.
 The same example can be achieved in the following way:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Request, Response
-from blacksheep.server.bindings import FromHeader, FromQuery
+from blacksheep import Application, Request, Response, text, FromHeader, FromQuery
 
 
 app = Application()
@@ -93,11 +88,9 @@ Something: example
 ### Reading request headers and cookies
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
-from blacksheep.messages import Response
-from blacksheep.server.bindings import FromHeader, FromCookie
 from typing import Optional
+
+from blacksheep import Application, Response, text, FromHeader, FromCookie
 
 app = Application()
 get = app.router.get
@@ -132,7 +125,7 @@ kinds.
     ```python
     from dataclasses import dataclass
 
-    from blacksheep.server.bindings import FromJSON
+    from blacksheep import FromJSON
 
 
     @dataclass
@@ -185,7 +178,7 @@ kinds.
 ===  "Using binders (recommended)"
 
     ```python
-    from blacksheep.server.bindings import FromForm
+    from blacksheep import FromForm
 
 
     class SomethingInput:
@@ -223,7 +216,7 @@ kinds.
 ===  "Using binders (recommended)"
 
     ```python
-    from blacksheep.server.bindings import FromText
+    from blacksheep import FromText
 
 
     @post("/something")
@@ -246,7 +239,7 @@ kinds.
 ===  "Using binders (recommended)"
 
     ```python
-    from blacksheep.server.bindings import FromBytes
+    from blacksheep import FromBytes
 
 
     @post("/something")
@@ -270,7 +263,7 @@ Files read from `multipart/form-data` payload.
 ===  "Using binders (recommended)"
 
     ```python
-    from blacksheep.server.bindings import FromFiles
+    from blacksheep import FromFiles
 
 
     @post("/something")
@@ -300,7 +293,7 @@ the event loop:
 === "Directly from the request"
 
     ```python
-    from blacksheep.server.responses import created
+    from blacksheep import created
 
 
     @post("/upload")

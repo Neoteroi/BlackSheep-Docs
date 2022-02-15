@@ -50,7 +50,7 @@ configure incoming web requests to expose the correct information about source
 protocol, client IP, and host:
 
 ```python
-from blacksheep.server.application import Application
+from blacksheep import Application
 from blacksheep.server.remotes.forwarding import XForwardedHeadersMiddleware
 
 
@@ -85,7 +85,7 @@ To configure a BlackSheep web application to handle `Forwarded` headers:
 
 
 ```python
-from blacksheep.server.application import Application
+from blacksheep import Application
 from blacksheep.server.remotes.forwarding import ForwardedHeadersMiddleware
 
 
@@ -117,7 +117,7 @@ When forwarded headers middlewares are not used, but it is necessary to
 validated hosts, it is possible to use the `TrustedHostsMiddleware`:
 
 ```python
-from blacksheep.server.application import Application
+from blacksheep import Application
 from blacksheep.server.remotes.hosts import TrustedHostsMiddleware
 
 
@@ -137,7 +137,7 @@ Web requests expose information about the original clients in the following
 properties, that are updated by forwarded header middlewares:
 
 ```python
-from blacksheep.messages import Request
+from blacksheep import Request
 
 request: Request
 

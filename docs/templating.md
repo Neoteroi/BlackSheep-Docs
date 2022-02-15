@@ -19,7 +19,7 @@ This page describes:
 This example shows how to use Jinja2 templating engine with BlackSheep:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 from blacksheep.server.templating import use_templates
 from jinja2 import PackageLoader
 
@@ -75,7 +75,7 @@ mode](http://jinja.pocoo.org/docs/2.10/api/#async-support), using the parameter
 `use_templates` is asynchronous:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 from blacksheep.server.templating import use_templates
 from jinja2 import PackageLoader
 

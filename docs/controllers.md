@@ -144,8 +144,7 @@ of routes and adding a common path prefix to all routes, for example prepending
 "/v1/" fragment to all routes and the name of the controller class.
 
 ```python
-from blacksheep import Response
-from blacksheep.server.bindings import FromJSON, FromQuery
+from blacksheep import Response, FromJSON, FromQuery
 from blacksheep.server.controllers import ApiController, delete, get, patch, post
 
 
