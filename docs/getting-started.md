@@ -301,6 +301,10 @@ def request_object(request: Request):
     ...
 ```
 
+!!! info 
+    You can name the request parameter any way you like (`request`, `req`, `r`, etc.), 
+    as long as you keep the correct type annotation (that is, `blacksheep.Request`).
+
 This subject will be treated in more details in a different section.
 
 ### Handling responses
