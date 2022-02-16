@@ -42,7 +42,7 @@ OpenAPI Documentation and exposing a Swagger UI in BlackSheep:
 ```python
 from dataclasses import dataclass
 
-from blacksheep.server import Application
+from blacksheep import Application
 from blacksheep.server.openapi.v3 import OpenAPIHandler
 from openapidocs.v3 import Info
 
@@ -250,10 +250,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-from blacksheep.server import Application
+from blacksheep import Application, json
 from blacksheep.server.openapi.common import ContentInfo, ResponseExample, ResponseInfo
 from blacksheep.server.openapi.v3 import OpenAPIHandler
-from blacksheep.server.responses import json
 from openapidocs.v3 import Info
 
 app = Application()
@@ -354,9 +353,8 @@ To alter the specification file upon creation, define a subclass of
 `OpenAPIHandler` that overrides `on_docs_generated` method.
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application, json
 from blacksheep.server.openapi.v3 import OpenAPIHandler
-from blacksheep.server.responses import json
 from openapidocs.v3 import Info, OpenAPI, Server
 
 app = Application()
@@ -476,8 +474,7 @@ from uuid import UUID
 
 from openapidocs.v3 import Info
 
-from blacksheep.server import Application
-from blacksheep.server.bindings import FromQuery
+from blacksheep import Application, FromQuery
 from blacksheep.server.openapi.v3 import OpenAPIHandler
 
 T = TypeVar("T")

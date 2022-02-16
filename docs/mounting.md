@@ -19,7 +19,7 @@ application_a.mount("/example-path", application_b)
 Example:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app_a = Application()
 
@@ -83,8 +83,7 @@ create non-obvious side effects.
 Consider the following example:
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import redirect
+from blacksheep import Application, redirect
 
 app_a = Application()
 

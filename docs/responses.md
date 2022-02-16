@@ -7,7 +7,7 @@ This page describes:
 
 ## The Response class
 A normal request handler in BlackSheep is expected to return an instance of
-the `blacksheep.messages.Response` class. Users of the framework can define
+the `blacksheep.Response` class. Users of the framework can define
 request handlers that return different kinds of objects, in such case they are
 normalized at application start-up, to return instances of `Response`.
 
@@ -15,9 +15,7 @@ The following example shows how to use the low level objects to create a
 response with status 200 and body "Hello, World":
 
 ```python
-from blacksheep.contents import Content
-from blacksheep.messages import Response
-from blacksheep.server import Application
+from blacksheep import Application, Response, Content
 
 app = Application()
 get = app.router.get
@@ -39,8 +37,7 @@ For example, the `json` function in `blacksheep.server.responses` produces
 a response object having a JSON body.
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import json
+from blacksheep import Application, json
 
 app = Application()
 get = app.router.get
@@ -62,7 +59,7 @@ Produces the following response body:
 The framework also allows to define a request handler this way:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 get = app.router.get
@@ -79,6 +76,10 @@ type annotations, the framework checks the function's return type at each call
 if necessary.
 
 ## Functions in `blacksheep.server.responses`
+
+!!! info
+    Note that you can import these functions from the `blacksheep` package itself.
+
 The table below describes the built-in functions to produce responses:
 
 | Method                 | Description                                                                                                                                                                                                |
@@ -146,9 +147,8 @@ not strings.
 To set a cookie, use the `set_cookie` method of the `Response` class:
 
 ```python
+from blacksheep import Application, json
 from blacksheep.cookies import Cookie
-from blacksheep.server import Application
-from blacksheep.server.responses import json
 
 app = Application()
 get = app.router.get
@@ -175,10 +175,8 @@ The following example shows how to set a cookie with `HttpOnly` and lasting
 ```python
 from datetime import datetime, timedelta
 
+from blacksheep import Application, Response, json
 from blacksheep.cookies import Cookie
-from blacksheep.messages import Response
-from blacksheep.server import Application
-from blacksheep.server.responses import json
 
 app = Application(show_error_details=True)
 get = app.router.get
@@ -286,9 +284,7 @@ using a `StreamedContent` object bound to a generator yielding bytes.
 
 ```python
 import asyncio
-from blacksheep.contents import StreamedContent
-from blacksheep.messages import Response
-from blacksheep.server import Application
+from blacksheep import Application, Response, StreamedContent
 
 app = Application(show_error_details=True)
 
@@ -308,12 +304,11 @@ async def get_chunked_text(request):
 ```
 
 Alternatively, it is possible to use the `file` function from
-`blacksheep.server.responses`:
+`blacksheep.server.responses` or directly from `blacksheep`:
 
 ```python
 import asyncio
-from blacksheep.server import Application
-from blacksheep.server.responses import ContentDispositionType, file
+from blacksheep import Application, file, ContentDispositionType
 
 app = Application(show_error_details=True)
 

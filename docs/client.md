@@ -97,7 +97,7 @@ When following this approach, the http client can be automatically injected to
 request handlers, and services that need it, like in this example:
 
 ```python
-from blacksheep.server.responses import html
+from blacksheep import html
 
 
 @app.route("/get-python-homepage")

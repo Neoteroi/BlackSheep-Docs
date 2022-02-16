@@ -8,9 +8,7 @@ built-in classes.
 To enable sessions, use the `app.use_sessions` method as in the example below:
 
 ```python
-from blacksheep.messages import Request
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, Request, text
 
 app = Application()
 

@@ -26,9 +26,8 @@ A basic example with any of the identity providers listed above, having
 implicit flow enabled for `id_token`, looks like the following:
 
 ```python
-from blacksheep.server.application import Application
+from blacksheep import Application, html, pretty_json
 from blacksheep.server.authentication.oidc import OpenIDSettings, use_openid_connect
-from blacksheep.server.responses import html, pretty_json
 from guardpost.authentication import Identity
 
 app = Application()
@@ -121,13 +120,12 @@ looks like the following:
 
 ```python
 import os
-from blacksheep.server.application import Application
+from blacksheep import Application, html, pretty_json
 from blacksheep.server.authentication.oidc import (
     OpenIDSettings,
     use_openid_connect,
     CookiesTokensStore,
 )
-from blacksheep.server.responses import html, pretty_json
 from guardpost.authentication import Identity
 
 app = Application()

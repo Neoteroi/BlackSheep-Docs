@@ -27,10 +27,8 @@ requires an authenticated user. It is modified from the example in the
 ```python
 from typing import Optional
 
-from blacksheep.messages import Request
-from blacksheep.server import Application
+from blacksheep import Application, Request, json, ok
 from blacksheep.server.authorization import Policy, auth
-from blacksheep.server.responses import json, ok
 from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
 from guardpost.authentication import User
 from guardpost.common import AuthenticatedRequirement
@@ -126,10 +124,8 @@ Full example:
 ```python
 from typing import Optional
 
-from blacksheep.messages import Request
-from blacksheep.server import Application
+from blacksheep import Application, Request, json, ok
 from blacksheep.server.authorization import Policy, auth
-from blacksheep.server.responses import json, ok
 from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
 from guardpost.authentication import User
 from guardpost.authorization import AuthorizationContext

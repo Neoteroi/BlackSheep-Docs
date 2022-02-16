@@ -24,8 +24,7 @@ object instead. For example, a middleware can be used to return an `HTTP 401
 Unauthorized` response in certain scenarios.
 
 ```python
-from blacksheep.server import Application
-from blacksheep.server.responses import text
+from blacksheep import Application, text
 
 app = Application(show_error_details=True)
 get = app.router.get
@@ -84,7 +83,7 @@ The same example including type annotations:
 ```python
 from typing import Awaitable, Callable
 
-from blacksheep.messages import Request, Response
+from blacksheep import Request, Response
 
 
 class ExampleMiddleware:

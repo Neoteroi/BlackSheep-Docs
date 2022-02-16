@@ -56,7 +56,7 @@ Create a file `server.py`, and paste the following contents into it:
 
 ```python
 from datetime import datetime
-from blacksheep.server import Application
+from blacksheep import Application
 
 
 app = Application()
@@ -138,7 +138,7 @@ router methods to variables. Edit the previous `server.py` file to replace its
 contents with the following:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 
 app = Application()
@@ -292,7 +292,7 @@ To access the HTTP Request object directly, add a parameter called "request" to
 the signature of a request handler (type annotation is optional):
 
 ```python
-from blacksheep.messages import Request
+from blacksheep import Request
 
 @app.route("/request-object/")
 def request_object(request: Request):
@@ -304,9 +304,9 @@ def request_object(request: Request):
 This subject will be treated in more details in a different section.
 
 ### Handling responses
-Request handlers must return an instance of `blacksheep.messages.Response`
+Request handlers must return an instance of `blacksheep.Response`
 class. The module `blacksheep.server.responses` provides several functions to
-produce responses.
+produce responses. You can also import them directly from the `blacksheep` package.
 
 The following example shows how to serve a JSON response, using a class defined
 with [`dataclass`](https://docs.python.org/3/library/dataclasses.html). Delete
@@ -316,8 +316,7 @@ all contents from the current `server.py` file and paste the following code:
 from dataclasses import dataclass
 from uuid import UUID, uuid4
 
-from blacksheep.server import Application
-from blacksheep.server.responses import json
+from blacksheep import Application, json
 
 
 @dataclass

@@ -51,9 +51,8 @@ implicit flow enabled for `id_token` (meaning that the code doesn't need to
 handle any secret), looks like the following:
 
 ```python
-from blacksheep.server.application import Application
+from blacksheep import Application, html, pretty_json
 from blacksheep.server.authentication.oidc import OpenIDSettings, use_openid_connect
-from blacksheep.server.responses import html, pretty_json
 from guardpost.authentication import Identity
 
 app = Application()
@@ -107,7 +106,7 @@ authorization to restrict access to certain methods, only for users who are
 successfully authenticated:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 from blacksheep.server.authorization import auth
 from guardpost.common import AuthenticatedRequirement, Policy
 
@@ -164,9 +163,7 @@ obtains user's identity for each web request.
 ```python
 from typing import Optional
 
-from blacksheep.messages import Request
-from blacksheep.server import Application
-from blacksheep.server.responses import json
+from blacksheep import Application, Request, json
 from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
 from guardpost.authentication import User
 

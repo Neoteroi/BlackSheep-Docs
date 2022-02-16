@@ -13,7 +13,7 @@ request handlers, producing a `HTTP 500 Internal Server Error` response. To see
 this in practice, start an application like the following:
 
 ```python
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application()
 get = app.router.get
@@ -47,7 +47,7 @@ can vary across environments. For example:
 
 ```python
 import os
-from blacksheep.server import Application
+from blacksheep import Application
 
 app = Application(show_error_details=bool(os.environ.get("SHOW_ERROR_DETAILS", None)))
 get = app.router.get
@@ -162,9 +162,7 @@ are fired, and the state of the application when they are executed.
     Event handlers can be registered using decorators.
 
     ```python
-    from blacksheep.server import Application
-    from blacksheep.server.responses import text
-    from blacksheep.messages import Request, Response
+    from blacksheep import Application, Request, Response, text
 
 
     app = Application()
@@ -196,9 +194,7 @@ are fired, and the state of the application when they are executed.
     In alternative to decorators, event handlers can be registered using ` += `:
 
     ```python
-    from blacksheep.server import Application
-    from blacksheep.server.responses import text
-    from blacksheep.messages import Request, Response
+    from blacksheep import Application, Request, Response, text
 
 
     app = Application()
