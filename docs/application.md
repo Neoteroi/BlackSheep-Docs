@@ -40,7 +40,7 @@ app = Application(show_error_details=True)
 Now the application returns the details of the exception with the full stack
 trace, serving a page like the following:
 
-![Internal server error page](../img/internal-server-error-page.png)
+![Internal server error page](./img/internal-server-error-page.png)
 
 Consider using environmental variables to handle this kind of settings that
 can vary across environments. For example:

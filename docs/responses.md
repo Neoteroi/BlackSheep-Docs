@@ -109,7 +109,7 @@ The table below describes the built-in functions to produce responses:
 For information on how to use these methods, refer to the type annotations
 provided in the code.
 
-![Type hints](../img/type-hints-functions.png)
+![Type hints](./img/type-hints-functions.png)
 
 !!! info
     Using an IDE like JetBrains PyCharm, or Visual Studio Code (as in

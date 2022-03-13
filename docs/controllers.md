@@ -46,7 +46,7 @@ in subclasses of `Controller` and they remove the need to import functions.
 For information on how to use these methods, refer to the type annotations
 provided in the code.
 
-![Type hints](../img/type-hints.png)
+![Type hints](./img/type-hints.png)
 
 !!! info
     Using an IDE like JetBrains PyCharm, or Visual Studio Code (as in
