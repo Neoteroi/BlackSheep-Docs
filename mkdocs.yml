@@ -27,15 +27,17 @@ nav:
   - Authorization: authorization.md
   - OpenID Connect: openid-connect.md
   - Sessions: sessions.md
-  - CORS: cors.md
+  - Security:
+      - CORS: cors.md
+      - Anti-Forgery: anti-request-forgery.md
+      - Data protection: dataprotection.md
+      - Remotes: remotes.md
   - Binders: binders.md
-  - Remotes: remotes.md
-  - Data protection: dataprotection.md
   - Background tasks: background-tasks.md
   - Settings: settings.md
   - Mounting apps: mounting.md
-  - Develop using HTTPS: develop-with-https.md
   - HTTP Client: client.md
+  - Develop using HTTPS: develop-with-https.md
   - ASGI: asgi.md
   - Extensions: extensions.md
   - Contributing: contributing.md

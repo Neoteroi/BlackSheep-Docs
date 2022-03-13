@@ -7,11 +7,16 @@
 }
 
 .md-header .md-search__input {
-  background-color: #333;
+  background-color: #fff;
+}
+
+.md-search__input, .md-header .md-search__input::placeholder, .md-search__input + .md-search__icon {
+  color: #000 !important;
 }
 
 .p + .n, .o + .n, .highlight .kc, .highlight .n {
-  color: deeppink;
+  /* ex-deeppink */
+  color: rgb(43, 65, 129);
 }
 
 .md-header-nav__button.md-logo img, .md-header-nav__button.md-logo svg {
