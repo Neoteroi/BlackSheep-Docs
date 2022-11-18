@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.9]
+        python-version: ["3.10"]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -87,10 +87,10 @@ jobs:
         run: |
           7z x -o"site" dist/site.zip
 
-      - name: Use Python 3.9
+      - name: Use Python 3.10
         uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: "3.10"
 
       - name: Install tools
         run: |
