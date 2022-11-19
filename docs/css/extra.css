@@ -60,3 +60,7 @@ span.task-list-indicator {
         background-color: #000000;
     }
 }
+
+:root {
+    --nt-color-7: #108d10;
+}

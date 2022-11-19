@@ -1,5 +1,5 @@
 .PHONY: build fixlinks
-
+include .env
 
 build:
 	mkdocs build
@@ -21,7 +21,7 @@ build-v1:
 
 # requires env variable PYAZ_ACCOUNT_KEY
 publish-dev:
-	pyazblob upload --path .build/ --account-name "neoteroideveuwstacc" -cn "\$web" -r -f
+	PYAZ_ACCOUNT_KEY=${DEV_ACCOUNT_KEY} pyazblob upload --path .build/ --account-name "neoteroideveuwstacc" -cn "\$$web" -r -f
 
 
 fixlinks:
