@@ -68,3 +68,11 @@ span.task-list-indicator {
 .version-warning {
     margin-top: 5px !important;
 }
+
+.md-typeset .tabbed-labels>label, .md-typeset .admonition, .md-typeset details {
+    font-size: .75rem !important;
+}
+
+.md-typeset code {
+    font-size: .9em !important;
+}
