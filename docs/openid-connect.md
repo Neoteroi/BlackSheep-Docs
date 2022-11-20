@@ -1,3 +1,5 @@
+# OpenID Connect
+
 BlackSheep implements built-in support for OpenID Connect authentication,
 meaning that it can be easily integrated with identity provider services such
 as:

@@ -1,3 +1,5 @@
+# Remotes
+
 The `blacksheep.server.remotes` namespace provides classes and functions to
 handle information related to remote proxies and clients.
 

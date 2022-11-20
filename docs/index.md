@@ -1,3 +1,7 @@
+---
+no_comments: true
+---
+
 # BlackSheep is an asynchronous web framework to build event based web applications with Python.
 
 <div class="img-auto-width"></div>
@@ -10,18 +14,26 @@ pip install blacksheep
 ```
 
 ## BlackSheep offers...
+
 * A rich code API, based on dependency injection and inspired by Flask and
   ASP.NET Core
 * A typing-friendly codebase, which enables a comfortable development
   experience thanks to hints when coding with IDEs
-* Built-in generation of OpenAPI Documentation, supporting version 3, YAML and
+* Built-in generation of OpenAPI Documentation, supporting version 3, YAML, and
   JSON
 * A cross platform framework, using the most modern versions of Python
-* [Good performance, as demonstrated by the results from TechEmpower
-  benchmarks](https://github.com/RobertoPrevato/BlackSheep/wiki/Server-performance)
+* Good performance
 
 ## Getting started
+
 To get started with BlackSheep, read these tutorials:
 
 * [Basics](./getting-started/)
 * [The MVC template](./mvc-project-template/)
+
+## Timeline
+
+The following timeline describe the current vision on the project, describing
+features that are under development or taken into consideration.
+
+[timeline(./docs/timeline.yml)]

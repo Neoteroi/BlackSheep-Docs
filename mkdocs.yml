@@ -1,6 +1,6 @@
 site_name: BlackSheep
 site_author: Roberto Prevato
-site_description: The official website of BlackSheep, a fast ASGI web framework for Python asyncio.
+site_description: The official documentation website of BlackSheep, a fast ASGI web framework for Python asyncio.
 site_url: https://www.neoteroi.dev/blacksheep/
 repo_name: Neoteroi/BlackSheep
 repo_url: https://github.com/Neoteroi/BlackSheep
@@ -42,18 +42,40 @@ nav:
   - Extensions: extensions.md
   - Contributing: contributing.md
   - About: about.md
+  - Neoteroi docs home: "/"
 
 theme:
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
   name: "material"
   custom_dir: overrides/
   highlightjs: true
-  favicon: img/blacksheep-favicon-white.png
+  favicon: img/favicon.ico
   logo: img/logow.svg
   icon:
     repo: fontawesome/brands/github
 
+extra:
+    version: 1
+    is_current_version: true
+
 extra_css:
-  - css/extra.css
+  - css/neoteroi.css
+  - css/extra.css?v=20221120
+
+plugins:
+  - search
+  - neoteroi.contribs:
+      contributors:
+        - email: roberto.prevato@gmail.com
+          image: https://avatars.githubusercontent.com/u/2576032?s=400&u=d8d880e8ed05bb170877dd3d561d8301c4beeeed&v=4
 
 markdown_extensions:
   - admonition
@@ -66,3 +88,9 @@ markdown_extensions:
       alternate_style: true
   - toc:
       permalink: true
+  - neoteroi.timeline
+  - neoteroi.cards
+  - neoteroi.projects
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg

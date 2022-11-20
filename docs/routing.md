@@ -1,4 +1,4 @@
-# Routing in BlackSheep
+# Routing
 
 Server side routing refers to the ability of a web application to handle web
 requests using different functions, depending on URL path and HTTP method. Each

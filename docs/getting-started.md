@@ -11,7 +11,7 @@ application. <br> It provides a general view, covering the following topics:
 
 ### Requirements
 
-* [Python](https://www.python.org) version **3.7**, **3.8**, **3.9**, or **3.10**
+* [Python](https://www.python.org) version **3.8**, **3.9**, **3.10**, or **3.11**
 * path to the python executable configured in the environment `$PATH` variable
   (tip: if you install Python on Windows using the official installer, enable
   the checkbox to update your `$PATH` variable during the installation)
@@ -301,8 +301,8 @@ def request_object(request: Request):
     ...
 ```
 
-!!! info 
-    You can name the request parameter any way you like (`request`, `req`, `r`, etc.), 
+!!! info
+    You can name the request parameter any way you like (e.g. `request`, `req`, `foo`, etc.),
     as long as you keep the correct type annotation (that is, `blacksheep.Request`).
 
 This subject will be treated in more details in a different section.

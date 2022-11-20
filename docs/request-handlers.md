@@ -1,3 +1,4 @@
+# Request handlers
 
 The previous pages describe that a request handler in BlackSheep is a function
 associated to a route,  having the responsibility of handling web requests.
