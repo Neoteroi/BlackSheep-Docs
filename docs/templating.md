@@ -1,3 +1,5 @@
+# Server Side Rendering (SSR)
+
 Server side templating refers to the ability of a web application to generate
 HTML pages from templates and dynamic variables. BlackSheep does this using the
 wondeful [`Jinja2` library](https://palletsprojects.com/p/jinja/) by the

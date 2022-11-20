@@ -1,3 +1,5 @@
+# Data protection
+
 Web applications often need to protect data, so that it can be stored in
 cookies or other storages. BlackSheep uses [`itsdangerous`](https://pypi.org/project/itsdangerous/) to sign and encrypt
 information, for example when storing `claims` obtained from `id_token`s when

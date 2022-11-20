@@ -1,3 +1,5 @@
+# HTTP Client
+
 BlackSheep includes an implementation of HTTP Client for HTTP 1.1.
 
 ## Client features

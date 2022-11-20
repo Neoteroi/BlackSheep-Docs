@@ -1,3 +1,5 @@
+# Settings
+
 While _most_ settings are described in sections that are dedicated to other
 topics, this page describes other settings that can be used in BlackSheep.
 
