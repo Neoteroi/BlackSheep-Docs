@@ -143,6 +143,13 @@ def home():
 def example():
     return "This is only for authenticated users"
 
+
+@get("/open/")
+async def open(user: User | None):
+    if user is None:
+        return json({"anonymous": True})
+    else:
+        return json(user.claims)
 ```
 
 The built-in handler for JWT Bearer authentication does not support JWTs signed
@@ -175,11 +182,11 @@ class ExampleAuthHandler(AuthenticationHandler):
     def __init__(self):
         pass
 
-    async def authenticate(self, context: Request) -> Optional[Identity]:
+    async def authenticate(self, context: Request) -> Identity | None:
         # TODO: apply the desired logic to obtain a user's identity from
         # information in the web request, for example reading a piece of
-        # information from a custom header (or cookie).
-        header_value = context.get_first_header(b"Example")
+        # information from a header (or cookie).
+        header_value = context.get_first_header(b"Authorization")
 
         if header_value:
             # implement your logic to obtain the user
@@ -249,7 +256,7 @@ request
 
 
     @get("/")
-    async def for_anybody(user: Optional[Identity]):
+    async def for_anybody(user: Identity | None):
         ...
     ```
 
