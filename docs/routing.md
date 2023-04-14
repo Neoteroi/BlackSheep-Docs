@@ -294,16 +294,10 @@ def catch_all(sub_path: str):
 For example, a request at `/catch-all/anything/really.js` would be matched by
 the route above, and the `sub_path` value would be `anything/really.js`.
 
-To read the portion of the path catched by the star sign from the request
-object, read the "tail" property of `request.route_values`.
-
-```python
-tail = request.route_values["tail"]
-```
-
-It is also possible to define a catch-all route using a star sign `*`, but in
-this case the value of the catched path can only be read from the request
-object.
+It is also possible to define a catch-all route using a star sign `*`. To read
+the portion of the path catched by the star sign from the request object, read
+the "tail" property of `request.route_values`. But in this case the value of the
+catched path can only be read from the request object.
 
 ```python
 
