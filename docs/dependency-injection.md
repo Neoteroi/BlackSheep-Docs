@@ -404,7 +404,7 @@ def home(context: OperationContext):
 ## Services that require asynchronous initialization
 
 Services that require asynchronous initialization can be configured inside
-`app_start` callbacks, like in the following example:
+`on_start` callbacks, like in the following example:
 
 ```python
 import asyncio
