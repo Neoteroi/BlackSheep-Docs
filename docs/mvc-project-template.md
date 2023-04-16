@@ -324,21 +324,6 @@ class Example(Controller):
         return self.text(f"Got: {value} in query string")
 ```
 
-Additionally, controllers support automatic injection of parameters in their
-constructor:
-
-```python
-class Example(Controller):
-
-    @get("/example/{value}")
-    def route_example(self, value: str):
-        return self.text(f"Got: {value} in route")
-
-    @get("/example")
-    def query_example(self, value: str):
-        return self.text(f"Got: {value} in query string")
-```
-
 Controllers also support dependency injection for their constructor
 (`__init__` method), this will be explained in the next page.
 
