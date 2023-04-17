@@ -130,7 +130,93 @@ async def handler_example(self, request, exc: CustomException):
 ## Application events
 
 A BlackSheep application exposes three events: **on_start**, **after_start**,
-**on_stop**.
+**on_stop**. These events can be used to configure callbacks and services that
+depend on application lifecycle. The application class also offers a useful
+method to configure objects that need to be initialized when the application
+starts, and disposed when the application stops: **lifespan**.
+
+### Using the lifespan decorator
+
+The `Application.lifespan` method can be used to register objects bound to the
+application life cycle. Common examples of such objects are HTTP clients and
+database clients, since they use connection pools that can be initialized
+and must be disposed when the application stops.
+
+The following example illustrates how to use the `@app.lifespan` decorator to
+create an HTTP `ClientSession` that will be disposed when the application
+stops. Note how the instance of `ClientSession` is also bound to application
+services, so that it can be injected into request handlers that need it.
+
+```python
+import asyncio
+from blacksheep import Application
+from blacksheep.client.pool import ClientConnectionPools
+from blacksheep.client.session import ClientSession
+
+app = Application()
+
+
+@app.lifespan
+async def register_http_client():
+    async with ClientSession(
+        pools=ClientConnectionPools(asyncio.get_running_loop())
+    ) as client:
+        print("HTTP client created and registered as singleton")
+        app.services.register(ClientSession, instance=client)
+        yield
+
+    print("HTTP client disposed")
+
+
+@app.router.get("/")
+async def home(http_client: ClientSession):
+    print(http_client)
+    return {"ok": True, "client_instance_id": id(http_client)}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=44777, log_level="debug", lifespan="on")
+```
+
+!!! info
+    The method leverages `contextlib.asynccontextmanager`. What is defined
+    before the `yield` statement executes when the application starts, and what
+    is defined after the `yield` statement executes when the application stops.
+
+The following example illustrates how a `redis-py` [connection can be disposed](https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html)
+using the same method:
+
+```python
+import redis.asyncio as redis
+
+...
+
+@app.lifespan
+async def configure_redis():
+    """
+    Configure an async Redis client, and dispose its connections when the
+    application stops.
+    See:
+    https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html
+    """
+    connection = redis.Redis()
+    print(f"Ping successful: {await connection.ping()}")
+
+    app.services.register(redis.Redis, instance=connection)
+
+    yield connection
+
+    print("Disposing the Redis connection pool...")
+    await connection.close()
+```
+
+!!! info "Example using Redis"
+    The `BlackSheep-Examples` repository includes an example where `Redis` is
+    used to store access tokens and refresh tokens obtained using
+    `OpenID Connect`: [example](https://github.com/Neoteroi/BlackSheep-Examples/blob/main/oidc/scopes_redis_aad.py). For more information on `redis-py` and its async
+    interface, refer to its [official documentation](https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html).
 
 ### on_start
 This event should be used to configure things such as new request handlers,

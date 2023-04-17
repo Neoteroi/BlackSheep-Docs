@@ -76,3 +76,7 @@ span.task-list-indicator {
 .md-typeset code {
     font-size: .9em !important;
 }
+
+table td code {
+    white-space: nowrap;
+}

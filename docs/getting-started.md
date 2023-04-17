@@ -37,7 +37,7 @@ and activate it:
 === "On Windows"
 
     ```
-    source venv\Scripts\activate
+    venv\Scripts\activate
     ```
 
 BlackSheep belongs to the category of

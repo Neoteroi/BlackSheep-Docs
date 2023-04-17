@@ -3,13 +3,14 @@
 BlackSheep includes an implementation of HTTP Client for HTTP 1.1.
 
 ## Client features
-* HTTP connection pooling
-* User friendly handling of SSL contexts (safe by default)
-* Support for client side middlewares
-* Automatic handling of redirects (can be disabled, validates circular
+
+- HTTP connection pooling
+- User friendly handling of SSL contexts (safe by default)
+- Support for client side middlewares
+- Automatic handling of redirects (can be disabled, validates circular
   redirects and maximum number of redirects - redirects to URN are simply
   returned to code using the client)
-* Automatic handling of cookies (can be disabled, `Set-Cookie` and `Cookie`
+- Automatic handling of cookies (can be disabled, `Set-Cookie` and `Cookie`
   headers)
 
 **Example:**
@@ -118,13 +119,20 @@ instances of HTTP clients:
 from blacksheep.client import ClientSession
 from blacksheep.client.pool import ClientConnectionPools
 
-# instantiate a single instance of pools
-pools = ClientConnectionPools(loop)  # loop is an asyncio loop
 
-# instantiate clients using the same pools
-client_one = ClientSession(pools=pools)
+async def client_pools():
+    # instantiate a single instance of pools
+    pools = ClientConnectionPools(loop)  # loop is an asyncio loop
 
-client_two = ClientSession(pools=pools)
+    # instantiate clients using the same pools
+    client_one = ClientSession(pools=pools)
 
-client_three = ClientSession(pools=pools)
+    client_two = ClientSession(pools=pools)
+
+    client_three = ClientSession(pools=pools)
+
+    await pools.close()
 ```
+
+!!! danger "Dispose ClientConnectionPools"
+    When
