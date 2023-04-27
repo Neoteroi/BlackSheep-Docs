@@ -109,7 +109,7 @@ class MyCacheControlMiddleware(CacheControlMiddleware):
         ...
 ```
 
-For example, a middleware that disables cache-control by default:
+For example, a middleware that disables cache-control by default can be defined in the following way:
 
 ```python
 class NoCacheControlMiddleware(CacheControlMiddleware):

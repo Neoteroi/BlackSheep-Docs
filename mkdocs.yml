@@ -33,10 +33,14 @@ nav:
       - Data protection: dataprotection.md
       - HSTS: hsts.md
       - Remotes: remotes.md
-  - Cache control: cache-control.md
+  - Response features:
+    - Cache control: cache-control.md
+    - Compression: compression.md
+  - Examples:
+    - Using Marshmallow: examples/marshmallow.md
+  - Settings: settings.md
   - Binders: binders.md
   - Background tasks: background-tasks.md
-  - Settings: settings.md
   - Mounting apps: mounting.md
   - HTTP Client: client.md
   - Develop using HTTPS: develop-with-https.md
