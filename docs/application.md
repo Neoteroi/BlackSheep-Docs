@@ -67,7 +67,7 @@ def crash_test():
 
 ### Configuring exceptions handlers
 
-The BlackSheep `Application` object has a `exception_handlers` dictionary that
+The BlackSheep `Application` object has a `exceptions_handlers` dictionary that
 defines how errors should be handled. When an exception happens while handling
 a web request and reaches the application, the application checks if there is a
 matching handler for that kind of exception. An exception handler is defined as
