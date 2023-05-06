@@ -445,7 +445,7 @@ the following example:
 2. clients needs to know the count of items that match the filters, to display
    the total number of items and the number of pages that are necessary to
    display all results (depending on page size)
-3. for such scenario, using a `Generic` like is a good solution, because many
+3. for such scenario, using a `Generic` type is a good solution, because many
    kinds of objects can be paginated
 
 _Example of generic class definition_
