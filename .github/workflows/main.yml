@@ -49,6 +49,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install -U pip
           pip install -U --no-index --find-links=deps deps/*
 
       - name: Build documentation
@@ -89,7 +90,7 @@ jobs:
           7z x -o"site" dist/site.zip
 
       - name: Use Python 3.10
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
