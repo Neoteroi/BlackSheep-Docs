@@ -2,19 +2,65 @@
 
 While _most_ settings are described in sections that are dedicated to other
 topics, this page describes other settings that can be used in BlackSheep.
+This page describes:
+
+- [X] features to describe the environment of a BlackSheep web applications.
+- [X] features to control JSON serialization and deserialization
 
 ## Environmental variables
 
-| Name                     | Category | Description                                                                                                                             |
-| ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| APP_SHOW_ERROR_DETAILS   | Settings | If "1" or "true", configures the application to display web pages with error details in case of HTTP 500 Internal Server Error.         |
-| APP_MOUNT_AUTO_EVENTS    | Settings | If "1" or "true", automatically binds lifecycle events of mounted apps between children and parents BlackSheep applications.            |
-| APP_SECRET_<i>i</i>      | Secrets  | Allows to configure the secrets used by the application to protect data.                                                                |
-| BLACKSHEEP_SECRET_PREFIX | Secrets  | Allows to specify the prefix of environment variables used to configure application secrets, defaults to "APP_SECRET" if not specified. |
+| Name                     | Category | Description                                                                                                                                                                                                     |
+| ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| APP_ENV                  | Settings | This environment variable is read to determine the environment of the application. For more information, refer to [_Defining application environment_](/blacksheep/settings/#defining-application-environment). |
+| APP_SHOW_ERROR_DETAILS   | Settings | If "1" or "true", configures the application to display web pages with error details in case of HTTP 500 Internal Server Error.                                                                                 |
+| APP_MOUNT_AUTO_EVENTS    | Settings | If "1" or "true", automatically binds lifecycle events of mounted apps between children and parents BlackSheep applications.                                                                                    |
+| APP_SECRET_<i>i</i>      | Secrets  | Allows to configure the secrets used by the application to protect data.                                                                                                                                        |
+| BLACKSHEEP_SECRET_PREFIX | Secrets  | Allows to specify the prefix of environment variables used to configure application secrets, defaults to "APP_SECRET" if not specified.                                                                         |
+
+## Defining application environment
+
+BlackSheep implements a strategy to configure the environment of the application.
+This configuration is useful to support enabling certain features depending on
+the environment. For example:
+
+- HTTP Strict Transport Security can be disabled for local development.
+- Displaying error details can be enabled only when developing locally.
+- When developing locally, application settings can be read from the user's
+  folder.
+
+The module `blacksheep.server.env` offers two functions that can be used to
+control behavior depending on app environment:
+
+| Function         | True if `APP_ENV` is...          | Description                                                                                  |
+| ---------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| `is_development` | "local", "dev", or "development" | Returns a value indicating whether the application is running for a development environment. |
+| `is_production`  | `None`, "prod", or "production"  | Returns a value indicating whether the application is running for a production environment.  |
+
+The two functions read the environment variable `APP_ENV`. If `APP_ENV` is not
+specified, the application defaults to production.
+
+In the following example, the error details page displayed for unhandled
+exceptions is enabled only for development, while [HTTP Strict Transport Security](/blacksheep/hsts/)
+is only enabled for all other environments.
+
+```python
+from blacksheep import Application
+from blacksheep.server.env import is_development
+from blacksheep.server.security.hsts import HSTSMiddleware
+
+app = Application()
+
+
+if is_development():
+    app.show_error_details = True
+else:
+    app.middlewares.append(HSTSMiddleware())
+```
 
 ## Configuring JSON settings
-Since version `1.0.9`, BlackSheep supports configuring the functions that are
-used for JSON serialization and deserialization in the web framework.
+
+BlackSheep supports configuring the functions that are used for JSON
+serialization and deserialization in the web framework.
 
 By default, the built-in `json` module is used for serializing and
 deserializing objects, but this can be changed in the way illustrated below.
