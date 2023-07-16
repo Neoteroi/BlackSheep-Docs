@@ -109,6 +109,10 @@ Exceptions inheriting from `HTTPException` can be mapped to handlers by their ty
 their status code, using `int` keys; while user defined exceptions are mapped to handlers
 by their type.
 
+When an exception handler is registered for a type of exception, all subclasses
+are also handled by that handler. It is however possible to define a more
+specific handler for one of the descendant classes.
+
 ### Configuring exception handlers using decorators
 
 It is also possible to register exception handlers using decorators, instead
@@ -123,6 +127,24 @@ class CustomException(Exception):
 async def handler_example(self, request, exc: CustomException):
     ...
 
+```
+
+### Overriding the default exception handler for unhandled exceptions
+
+To override how unhandled exceptions are handled, define a custom `Application`
+class overriding its `handle_internal_server_error` method, like in the
+following example:
+
+```python
+
+from blacksheep import Application, json
+from blacksheep.messages import Request
+
+
+class MyApp(Application):
+    async def handle_internal_server_error(self, request: Request, exc: Exception):
+        # TODO: handle this like you wish!
+        return json({"message": "Oh, no!"}, 500)
 ```
 
 ---

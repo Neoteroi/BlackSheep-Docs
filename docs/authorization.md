@@ -263,3 +263,13 @@ async def only_for_user_authenticated_with_github():
     # authentication scheme, defined overriding the scheme @property
     return ok("example")
 ```
+
+## Failure response codes
+
+When a request fails because of authorization reasons, the web framework
+returns:
+
+- status [`401 Unauthorized`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401) if authentication failed, and no valid credentials were provided
+- status [`403 Forbidden`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403) if
+  authentication succeeded as valid credentials were provided, but the user is
+  not authorized to perform an action

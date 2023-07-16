@@ -13,6 +13,11 @@ This page describes:
 It is recommended to follow the [MVC tutorial](../mvc-project-template/) before
 reading this page.
 
+!!! tip "For Flask users..."
+    If you come from Flask, controllers in BlackSheep would be the equivalent of
+    Flask's Blueprints, as they allow to group request handlers in dedicated
+    modules and classes.
+
 ## The Controller class
 Controllers implement several methods to simplify returning responses. These
 are the same described at [Responses](../responses/), but they can be overridden

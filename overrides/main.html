@@ -21,6 +21,13 @@
   <meta name="twitter:image" content="{{ image }}">
 {% endblock %}
 {% block content %}
+{% if not config.extra.is_current_version %}
+<div class="admonition warning version-warning">
+    <p class="admonition-title">Version {{config.extra.version}}</p>
+    <p>This documentation refers to the version {{config.extra.version}}.x of the web framework.
+    The current version of the <code>main</code> branch is <a href="/blacksheep/">documented here</a>.</p>
+</div>
+{% endif %}
   {{ super() }}
 {% endblock %}
 {% block analytics %}

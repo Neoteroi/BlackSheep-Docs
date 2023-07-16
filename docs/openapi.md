@@ -602,7 +602,9 @@ components:
     `FooOfTAndUAndX`.
 
 ### Describing parameters
-It is possible to describe parameters explicitly, or using docstrings.
+
+It is possible to describe parameters explicitly, using docstrings, or
+leveraging `Pydantic`.
 
 #### Documenting parameters explicitly
 
@@ -753,6 +755,41 @@ docs.ui_providers.append(ReDocUIProvider())
 # include only endpoints whose path starts with "/api/"
 docs.include = lambda path, _: path.startswith("/api/")
 ```
+
+### Changing operations ids
+When OpenAPI Documentation is generated, operation ids are obtained from the
+name of the Python function definitions.
+
+For example, having a `get_foo` request handler, generates an object having
+`operationId` equal to "get_foo":
+
+```python
+@app.router.get("/foo")
+async def get_foo() -> Foo:
+    return Foo("Hello!")
+```
+
+```json
+    "paths": {
+        "/foo": {
+            "get": {
+                …,
+                "operationId": "get_foo"
+            }
+        }
+    },
+```
+
+To change how `operationId` is generated for endpoints, define a custom type
+of `OpenAPIHandler` that overrides the `get_operation_id` method, to produce
+the desired result:
+
+```python
+class CustomOpenAPIHandler(OpenAPIHandler):
+    def get_operation_id(self, docs: Optional[EndpointDocs], handler) -> str:
+        return handler.__name__.capitalize().replace("_", " ")
+```
+
 
 ### For more details
 For more details on the OpenAPI specification and understand some details such

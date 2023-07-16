@@ -8,8 +8,8 @@ wondeful [`Jinja2` library](https://palletsprojects.com/p/jinja/) by the
 This page describes:
 
 - [X] How to configure server side templating.
-- [X] Returning views using [response functions]().
-- [X] Returning views using the [MVC features]().
+- [X] Returning views using response functions.
+- [X] Returning views using the MVC features.
 
 !!! info
     The [BlackSheep MVC project
@@ -71,6 +71,7 @@ is recommended to keep this setup in a single file, and import the `view`
 function in files that define routes for the application.
 
 ## Async mode
+
 It is possible to enable Jinja2 [async
 mode](http://jinja.pocoo.org/docs/2.10/api/#async-support), using the parameter
 `enable_async`. When `enable_async` is true, the function returned by
@@ -97,6 +98,7 @@ async def home():
 ```
 
 ## Loading templates
+
 It is possible to load templates by name including '.html', or without file
 extension; '.html' extension is added automatically. Extension must be lower
 case.
@@ -113,4 +115,48 @@ async def home(request):
 @get("/")
 async def home(request):
     return view("home", {"example": "Hello", "foo": "World"})
+```
+
+## Helpers and filters
+
+To configure custom helpers and filters for Jinja, it is possible to access
+its `Environment` using the `templates_environment` property of the application,
+once server side templating is configured.
+
+```
+.
+├── app
+│   ├── __init__.py
+│   └── views
+│       └── index.html
+└── server.py
+```
+
+```python
+# server.py
+from blacksheep import Application
+from blacksheep.server.templating import use_templates
+from jinja2 import PackageLoader, Environment
+
+app = Application(show_error_details=True)
+
+view = use_templates(app, PackageLoader("app", "views"))
+
+
+def example():
+    return "This is an example"
+
+
+app.templates_environment.globals.update({"my_function": example})  # <<<
+
+
+@app.route("/")
+async def home():
+    return view("index.html", {})
+```
+
+```html
+<!-- index.html -->
+<p>Hello, World!</p>
+{{ my_function() }}
 ```

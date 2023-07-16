@@ -31,6 +31,7 @@ load balancers, using provided classes to handle:
 - [X] How to read information about the original clients in web requests
 
 ## Handling X-Forwarded headers
+
 `X-Forwarded` headers are the _de-facto_ standard headers to propagate
 information about original web requests to web applications.
 
@@ -173,3 +174,8 @@ absolute_url_to_path = get_absolute_url_to_path(request, "/example")
     When configuring [OpenID Connect](../authentication/#oidc) authentication,
     it can be necessary to handle forward headers, so that the application can
     generate correct `redirect_uri` for authorization servers.
+
+## ASGI root_path
+
+When the `ASGI` scope includes the `root_path` information, it is automatically
+used for the request `base_path` property.

@@ -8,7 +8,7 @@ This page describes `request handlers` in detail, presenting the following:
 - [X] Using asynchronous and synchronous code.
 
 ## Request handler normalization.
-A normal request handler in BlachSheep is defined as an asynchronous function
+A normal request handler in BlackSheep is defined as an asynchronous function
 having the following signature:
 
 ```python
