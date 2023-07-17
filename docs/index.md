@@ -29,11 +29,26 @@ pip install blacksheep
 To get started with BlackSheep, read these tutorials:
 
 * [Basics](./getting-started/)
+* [The API template](./api-project-template/)
 * [The MVC template](./mvc-project-template/)
 
-## Timeline
+## Versions
 
-The following timeline describe the current vision on the project, describing
-features that are under development or taken into consideration.
+::cards:: cols=2
 
-[timeline(./docs/timeline.yml)]
+- title: Version 2 (current)
+  url: /blacksheep/
+  content: >
+    The documentation of the current version of the web framework is
+    published at `/blacksheep/`.
+
+- title: Version 1
+  url: /blacksheep/v1/
+  content: >
+    The documentation of version 1 of the web framework is published
+    at `/blacksheep/v1/`.
+
+::/cards::
+
+Refer to this page for a summary of changes between version 1 and version 2 of
+the web framework: [Migrating from version 1 to version 2](./versions/migrating-to-v2/).

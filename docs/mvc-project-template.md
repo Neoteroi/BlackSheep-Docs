@@ -1,4 +1,5 @@
 # Getting started with the MVC project template
+
 This tutorial explains how to create a BlackSheep application using the
 MVC ([_Model, View, Controller_](https://en.wikipedia.org/wiki/Model–view–controller))
 project template, covering the following topics:

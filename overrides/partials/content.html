@@ -5,13 +5,6 @@
 {% if not "\x3ch1" in page.content %}
   <h1>{{ page.title | d(config.site_name, true)}}</h1>
 {% endif %}
-{% if not config.extra.is_current_version %}
-<div class="admonition warning version-warning">
-    <p class="admonition-title">Version {{config.extra.version}}</p>
-    <p>This documentation refers to the version {{config.extra.version}}.x of the web framework.
-    The current version of the <code>main</code> branch is <a href="/blacksheep/">documented here</a>.</p>
-</div>
-{% endif %}
 {{ page.content }}
 {% if page.meta and (
   page.meta.git_revision_date_localized or
