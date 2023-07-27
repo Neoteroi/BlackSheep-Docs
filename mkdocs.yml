@@ -9,9 +9,7 @@ edit_uri: ""
 nav:
   - Overview: index.md
   - "Getting started: basics": getting-started.md
-  - "Getting started: API": api-project-template.md
   - "Getting started: MVC": mvc-project-template.md
-  - More about the CLI: cli.md
   - Dependency injection: dependency-injection.md
   - OpenAPI Docs: openapi.md
   - Application: application.md
@@ -45,6 +43,7 @@ nav:
   - Background tasks: background-tasks.md
   - Mounting apps: mounting.md
   - HTTP Client: client.md
+  - More about the CLI: cli.md
   - Develop using HTTPS: develop-with-https.md
   - ASGI: asgi.md
   - Extensions: extensions.md
@@ -53,6 +52,10 @@ nav:
   - Neoteroi docs home: "/"
 
 theme:
+  features:
+    - navigation.footer
+    - content.code.copy
+    - content.action.view
   palette:
     - scheme: slate
       toggle:

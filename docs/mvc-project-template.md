@@ -4,7 +4,7 @@ This tutorial explains how to create a BlackSheep application using the
 MVC ([_Model, View, Controller_](https://en.wikipedia.org/wiki/Model–view–controller))
 project template, covering the following topics:
 
-- [X] Creating a blacksheep application from a project template.
+- [X] Creating an application from a project template, using the BlackSheep CLI.
 - [X] Routes defined using classes (controllers).
 - [X] Server side templating (views and models).
 - [X] Handling parameters in controllers.
@@ -15,38 +15,89 @@ reading this one.
 
 ### Requirements
 
-* [Python](https://www.python.org) version **3.7**, **3.8**, **3.9**, or **3.10**
+* [Python](https://www.python.org) version >= **3.8**
 * path to the python executable configured in the environment `$PATH` variable
   (tip: if you install Python on Windows using the official installer, enable
   the checkbox to update your `$PATH` variable automatically)
 * a text editor: any is fine; this tutorial uses [Visual Studio Code](https://code.visualstudio.com/Download)
 
-## Downloading the project template
-Navigate to [the BlackSheep MVC project template repository in GitHub](https://github.com/RobertoPrevato/BlackSheepMVC)
-and download its code in one of the following ways:
+## Introduction to the BlackSheep CLI
 
-* either clone the repository using [`git`](https://git-scm.com)
-* or download the project as zip file, using the _"Download ZIP"_ button, and unzip the contents into the desired location
+The previous tutorial described the basics to create an application from
+scratch. While that knowledge is important, it is usually not desirable to
+start every project from scratch. BlackSheep offers a command-line interface
+(CLI) that can be used to start new projects. The CLI can be installed from the
+[Python Package Index](https://pypi.org/project/blacksheep-cli/) using the
+`blacksheep-cli` package:
 
-![MVC template](./img/mvc-template.png)
+```bash
+pip install blacksheep-cli
+```
 
-!!! info
-    If you have a GitHub account, you can use the _"Use this template"_ button to create a new project, then clone it.
+Once installed, the `create` command can be used to start new projects:
 
-Then create a Python virtual environment as explained in the [previous
-tutorial](./getting-started/#preparing-a-development-environment), for example
-at the root folder of the project template, and install the dependencies of the
-project template, using the following command:
+```bash
+blacksheep create
+```
+
+The CLI will prompt for input about various options. For the sake of this
+tutorial, answer:
+
+- `tutorial` for project name
+- `mvc` for the project template
+- `Yes` for OpenAPI Documentation
+- `essentials-configuration` to read settings
+- `YAML` for app settings format
 
 ```
-pip install -r requirements.txt
+✨ Project name: tutorial
+🚀 Project template: mvc
+📜 Use OpenAPI Documentation? Yes
+🔧 Library to read settings essentials-configuration
+🔩 App settings format (Use arrow keys)
+ » YAML
+   TOML
+   JSON
+   INI
 ```
+
+!!! tip "blacksheep create"
+    It is possible to use the `create` command specifying directly project name
+    and template, like in:
+
+    - `blacksheep create some_name`
+    - `blacksheep create some_name --template api`
+
+![MVC template](./img/mvc-template-v2.png)
+
+After a project is created, the CLI displays a message with instructions.
+
+```
+──────────────────────────────────────────────────────────────────────
+🏗️  Project created in tutorial
+──────────────────────────────────────────────────────────────────────
+-- What's next:
+        cd tutorial
+        pip install -r requirements.txt
+        python dev.py
+```
+
+Install the project dependencies
+
+- cd into the project folder
+- create a new Python virtual environment (recommended)
+- install its dependencies
 
 ## Starting the application
-Start the application using the following command:
 
-```
-uvicorn server:app --port 44777 --reload
+Start the application using one of the following commands:
+
+```bash
+# using the provided dev.py file (useful to debug)
+python dev.py
+
+# or using the uvicorn CLI
+uvicorn app.main:app --port 44777 --lifespan on --reload
 ```
 
 And navigate to the local page, opening a browser at [`http://localhost:44777`](http://localhost:44777)
@@ -58,10 +109,10 @@ The browser should display this page:
 
 Several things are happening because the web application is configured:
 
-* to build and serve dynamic HTML pages
-* to serve static files (e.g. pictures, JavaScript, CSS files)
-* to expose an API and offer OpenAPI Documentation about the API
-* to handle application settings and application start/stop events
+- to build and serve dynamic HTML pages
+- to serve static files (e.g. pictures, JavaScript, CSS files)
+- to expose an API and offer OpenAPI Documentation about the API
+- to handle application settings and application start/stop events
 
 Let's see these elements in order, but first let's get acquainted with the
 project's structure.
@@ -76,56 +127,50 @@ The project is organized with the following folder structure:
 │   ├── controllers
 │   │   └── (controller files, defining routes)
 │   │
+│   ├── docs
+│   │   └── (files for OpenAPI Documentation)
+│   │
 │   ├── static
 │   │   └── (static files served by the web app)
 │   │
 │   └── views
 │       └── (HTML templates, views compiled by the web app)
 │
-├── core
-│   └── (core classes, common across front-end and business layer)
-│
 ├── domain
 │   └── (domain classes, POCO)
 │
 ├── (root folder, where the main file starting the whole app resides)
-├── server.py
-└── settings.yaml
+├── dev.py  (file that can be used to start a development server, useful for debugging)
+└── settings.dev.yaml (settings used when the env variable APP_ENV == dev)
+└── settings.yaml (base settings file)
 ```
 
-* the `app` folder contains files that are specific to the web application,
-  settings, configuration, a folder for `controllers` that define routes,
-  folders for `static` files and one for `views` (HTML templates)
-* other packages at the root of the project, like `core` and `domain`, should be
+- the `app` folder contains files that are specific to the web application,
+  settings, a folder for `controllers` that define routes, folders for `static`
+  files and one for `views` (HTML templates)
+- other packages at the root of the project, like `domain`, should be
   abstracted from the web server and should be reusable in other kinds of
   applications (for example, a CLI)
-* the root folder contains the `server.py` file to start the application, and
-  a `settings.yaml` file that is loaded when the application process starts, to
-  read settings for the application
+- the root folder contains the `dev.py` file to start the application in
+  development mode, and settings files with `.yaml` extension that are read
+  when the application starts (since the YAML format was selected when using
+  the `blacksheep create` command)
 
-The project uses `onion architecture`. For example a valid scenario would be
+The project uses `onion architecture`. For example, a valid scenario would be
 to add an additional package for the data access layer, and implement the
-business logic in sub-packages inside the `domain` folder.
-
-The root folder also contains a LICENSE file: this refers to the project
-template itself and can be deleted, a `mypy.ini` file for those who use
-[`MyPy`](http://www.mypy-lang.org), and a workspace file for `Visual Studio Code`,
-for developers who use this text editor.
+business logic in modules inside the `domain` folder.
 
 ## Open the project with a text editor
-Open the project's folder using your favorite text editor. The template
-includes a workspace file for `Visual Studio Code`, which contains recommended
-settings to work with Python (recommended extensions, and [`black`](https://github.com/psf/black) formatter, [`flake8`](https://flake8.pycqa.org/en/latest/),
-[`mypy`](http://www.mypy-lang.org), and [`pylance`](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance)).
-These are of course a matter of personal preference and can be ignored or removed.
+Open the project's folder using your favorite text editor.
 
 ![Visual Studio Code](./img/vs-code-mvc.png)
 
 ## Routes defined using classes (controllers)
+
 The previous tutorial described how routes can be defined using functions:
 
 ```python
-@app.route("/")
+@get("/")
 async def home():
     ...
 ```
@@ -147,37 +192,36 @@ class Greetings(Controller):
 
 ```
 
-Finally, open `app/controllers/__init__.py` and import the new controller,
-adding this line to it:
-
-```python
-from .greetings import Greetings
-```
-
-If the application was run using the `--reload` option, its process should
-reload automatically; otherwise stop and restart the application manually. <br>
-Navigate to [`http://localhost:44777/hello-world`](http://localhost:44777/hello-world):
-it will display the response from the `Greetings.index` method.
+Stop and restart the application, then navigate to
+[`http://localhost:44777/hello-world`](http://localhost:44777/hello-world): it
+will display the response from the `Greetings.index` method.
 
 When the path of a web request matches a route defined in a controller type, a
-new instance of that `Controller` is created. In other words, every instance of controller is scoped to a specific web request. Just like function handlers,
+new instance of that `Controller` is created. In other words, every instance of
+controller is scoped to a specific web request. Just like function handlers,
 controllers support automatic injection of parameters into request handlers, and
 also dependency injection into their constructors (`__init__` methods). This is
-an excellent feature that improves development speed and enables cleaner code
-(compare this approach with a scenario where all dependencies needs to be imported
- and referenced inside function bodies by hand).
+a feature that improves development speed and enables cleaner code (compare
+this approach with a scenario where all dependencies needs to be imported and
+referenced inside function bodies by hand).
 
 The `Controller` class implements methods to return values and offers
 `on_request` and `on_response` extensibility points.
 
+!!! tip "Controllers and routes automatic import"
+    Python modules defined inside `controllers` and `routes` packages are
+    automatically imported by a BlackSheep application. The automatic import
+    happens relatively to the namespace where the application is instantiated.
+
 ## Server side templating (views and models)
+
 Server side templating refers to the ability of a web application to generate
-HTML pages from templates and dynamic variables. BlackSheep does this
-using the wondeful [`Jinja2` library](https://palletsprojects.com/p/jinja/)
+HTML pages from templates and dynamic variables. By default, BlackSheep does
+this using the [`Jinja2` library](https://palletsprojects.com/p/jinja/)
 by the [Pallets](https://palletsprojects.com) team.
 
-To see how this works in practice when using `Controllers`, add a new method to
-the new `Greetings` controller created previously to look like this:
+To see how this works in practice when using `Controllers`, edit the `Greetings`
+controller created previously to look like this:
 
 ```python
 from blacksheep.server.controllers import Controller, get
@@ -195,7 +239,7 @@ add an HTML file named "hello.html".
 
 ![New view](./img/new-view.png)
 
-Copy the following contents into the `hello.html`:
+Copy the following contents into `hello.html`:
 
 ```html
 <div>
@@ -207,7 +251,7 @@ Now navigate to [http://localhost:44777/hello-view](http://localhost:44777/hello
 to see the response from the new HTML view.
 
 Note how convention over configuration is used in this case, to determine that
-`./views/greetings/hello.html` file must be used, because of the convention:
+`./views/greetings/hello.html` file must be used, because of the convention:<br />
 `./views/{CONTROLLER_NAME}/{METHOD_NAME}.html`.
 
 The view currently is an HTML fragment, not a full document. To make it a
@@ -343,10 +387,10 @@ web requests at `http://localhost:44777/scripts/example.js` will be resolved
 with this file and related information. When handling static files, BlackSheep
 automatically takes care of several details:
 
-* it handles ETag response header, If-None-Match request header and HTTP 304 Not Modified
+- it handles ETag response header, If-None-Match request header and HTTP 304 Not Modified
   responses if files don't change on file system
-* it handles HTTP GET requests returning file information
-* it handles Range requests, to support pause and restore downloads out of the box
+- it handles HTTP GET requests returning file information
+- it handles Range requests, to support pause and restore downloads out of the box
   and enable optimal support for videos (videos can be downloaded from a certain
   point in time)
 
@@ -365,10 +409,18 @@ root of the web site.
 This tutorial covered some higher level topics of a BlackSheep application. The
 general concepts presented here apply to many kinds of web framework:
 
-* server side templating of HTML views
-* serving of static files
-* use of MVC architecture
+- server side templating of HTML views
+- serving of static files
+- use of MVC architecture
 
 The next pages describes the built-in support for
 [dependency injection](../dependency-injection), and automatic generation of
 [OpenAPI Documentation](../openapi).
+
+!!! info "For more information..."
+    For more information about the BlackSheep CLI, read [_More about the CLI_](/blacksheep/cli/).<br>
+    For more information about Server Side Rendering, read [_Templating_](/blacksheep/templating/).
+
+!!! tip "Don't miss the api project template"
+    Try also the `api` project template, to start new Web API projects that
+    don't handle HTML views.

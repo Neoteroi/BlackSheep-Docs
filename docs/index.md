@@ -34,21 +34,21 @@ To get started with BlackSheep, read these tutorials:
 
 ## Versions
 
-::cards:: cols=2
+The documentation here refers to the current version of the web framework. For
+the documentation of first version of the framework, use the links below:
 
-- title: Version 2 (current)
-  url: /blacksheep/
-  content: >
-    The documentation of the current version of the web framework is
-    published at `/blacksheep/`.
+::cards:: cols=2
 
 - title: Version 1
   url: /blacksheep/v1/
   content: >
     The documentation of version 1 of the web framework is published
-    at `/blacksheep/v1/`.
+    at `/blacksheep/v1/`
+
+- title: Migrating from v1 to v2
+  url: /blacksheep/versions/migrating-to-v2
+  content: >
+    Go to the summary of changes between version 1 and version 2 of the web
+    framework.
 
 ::/cards::
-
-Refer to this page for a summary of changes between version 1 and version 2 of
-the web framework: [Migrating from version 1 to version 2](./versions/migrating-to-v2/).

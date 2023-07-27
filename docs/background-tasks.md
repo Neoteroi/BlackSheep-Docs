@@ -82,5 +82,5 @@ async def configure_background_tasks(app):
 
 app.on_start += configure_background_tasks
 
-app.services.add_exact_scoped(Foo)
+app.services.add_scoped(Foo)
 ```
