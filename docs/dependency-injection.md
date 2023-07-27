@@ -452,7 +452,7 @@ async def dispose_example(app: Application):
 app.on_stop += dispose_example
 ```
 
-## Alternatives to rodi
+## The container protocol
 
 Since version 2, BlackSheep supports alternatives to `rodi` for dependency
 injection. The `services` property of the `Application` class needs to conform

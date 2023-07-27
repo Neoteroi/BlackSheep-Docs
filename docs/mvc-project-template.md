@@ -405,6 +405,24 @@ only the most common file extensions used in web applications.
 Paths starting with "/" are always considered absolute paths starting from the
 root of the web site.
 
+## Strategy for application settings
+
+The `API` and the `MVC` project templates include a strategy to read and
+validate application settings, from various sources, and supporting multiple
+system environments (like `dev`, `test`, `prod` environments).
+
+- [`Pydantic`](https://docs.pydantic.dev/latest/) is always used to describe and validate application settings.
+- Application settings can be read from various sources using either
+  `Pydantic v1 BaseSettings` class, or `essentials-configuration`.
+- When using `essentials-configuration`, use the `APP_ENV` environment variable
+  to control the application environment and to use environment specific
+  settings from dedicated files using the pattern:
+  `settings.{{env_name}}.{{format}}`, like `settings.test.yaml`,
+  `settings.prod.toml`.
+
+For more information on application settings and the recommended way to apply
+configuration depending on the application environment, refer to [_Settings_](/blacksheep/settings/).
+
 ## Summary
 This tutorial covered some higher level topics of a BlackSheep application. The
 general concepts presented here apply to many kinds of web framework:
@@ -418,8 +436,8 @@ The next pages describes the built-in support for
 [OpenAPI Documentation](../openapi).
 
 !!! info "For more information..."
-    For more information about the BlackSheep CLI, read [_More about the CLI_](/blacksheep/cli/).<br>
-    For more information about Server Side Rendering, read [_Templating_](/blacksheep/templating/).
+    For more information about Server Side Rendering, read [_Templating_](/blacksheep/templating/).<br>
+    For more information about the BlackSheep CLI, read [_More about the CLI_](/blacksheep/cli/).
 
 !!! tip "Don't miss the api project template"
     Try also the `api` project template, to start new Web API projects that
