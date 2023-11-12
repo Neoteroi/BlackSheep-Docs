@@ -424,6 +424,7 @@ For more information on application settings and the recommended way to apply
 configuration depending on the application environment, refer to [_Settings_](/blacksheep/settings/).
 
 ## Summary
+
 This tutorial covered some higher level topics of a BlackSheep application. The
 general concepts presented here apply to many kinds of web framework:
 

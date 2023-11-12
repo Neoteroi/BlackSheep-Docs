@@ -44,6 +44,7 @@ nav:
   - Mounting apps: mounting.md
   - HTTP Client: client.md
   - More about the CLI: cli.md
+  - From V1 to V2: versions/migrating-to-v2.md
   - Develop using HTTPS: develop-with-https.md
   - ASGI: asgi.md
   - Extensions: extensions.md

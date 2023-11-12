@@ -96,9 +96,7 @@ To offer a better prompt, include a `questions.json` file for Python `questionar
 whose questions match the parameters described in `cookiecutter.json`; like in
 [the API template](https://github.com/Neoteroi/BlackSheep-API/blob/main/questions.json).
 
-All [sources supported by
-`cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/usage.html#grab-a-cookiecutter-template)
-will also be supported by the `blacksheep-cli`.
+The BlackSheep CLI supports all sources that are supported by [`cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/usage.html#grab-a-cookiecutter-template).
 
 Then include it in the list of available templates, using the `templates add` command,
 like in:
@@ -107,10 +105,10 @@ like in:
 blacksheep templates add foo https://github.com/Neoteroi/BlackSheep-Foo -d 'Some nice template! 🐃'
 ```
 
-To use a specific `git` tag, add a `@{tag}` suffix to the source, like:
+To use a specific `git` tag, add a `${tag}` suffix to the source, like:
 
 ```bash
-blacksheep templates add foov2 https://github.com/Neoteroi/BlackSheepFoo@v2
+blacksheep templates add foov2 'https://github.com/Neoteroi/BlackSheepFoo$v2'
 ```
 
 ## Cookiecutter

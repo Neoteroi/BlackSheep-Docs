@@ -13,6 +13,7 @@ This page describes:
 - [X] How to use route parameters.
 - [X] How to define a catch-all route.
 - [X] How to define a fallback route.
+- [X] How to use sub-routers and filters.
 
 ## Defining request handlers
 
@@ -318,4 +319,62 @@ def fallback():
 
 
 app.router.fallback = fallback
+```
+
+## Using sub-routers and filters
+
+The `Router` class supports filters for routes and sub-routers. In the following
+example, a web request for the root of the service "/" having a request header
+"X-Area" == "Test" gets the reply of the `test_home` request handler, without
+such header the reply of the `home` request handler.
+
+```python
+from blacksheep import Application, Router
+
+
+test_router = Router(headers={"X-Area": "Test"})
+
+router = Router(sub_routers=[test_router])
+
+@router.get("/")
+def home():
+    return "Home 1"
+
+@test_router.get("/")
+def test_home():
+    return "Home 2"
+
+
+app = Application(router=router)
+
+```
+
+A router can have filters based on headers, host name, query string parameters,
+and custom user-defined filters.
+
+Query string filters can be defined using the `params` parameter, by host using
+the `host` parameter:
+
+```python
+filter_by_query = Router(params={"version": "1"})
+
+filter_by_host  = Router(host="neoteroi.xyz")
+```
+
+To define a custom filter, define a type of `RouteFilter` and set it using the
+`filters` parameter:
+
+```python
+from blacksheep import Application, Request, Router
+from blacksheep.server.routing import RouteFilter
+
+
+class CustomFilter(RouteFilter):
+
+    def handle(self, request: Request) -> bool:
+        # implement here the desired logic
+        return True
+
+
+example_router = Router(filters=[CustomFilter()])
 ```
