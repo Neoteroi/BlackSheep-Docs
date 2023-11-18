@@ -77,7 +77,7 @@ Binders can be defined explicitly, using type annotations and classes from
 ```python
 from dataclasses import dataclass
 
-from blacksheep import FromJSON, FromServices
+from blacksheep import FromJSON, FromServices, post
 
 from your_business_logic.handlers.cats import CreateCatHandler  # example
 
@@ -148,7 +148,7 @@ async def example(
 ```
 
 ```python
-from blacksheep import FromQuery
+from blacksheep import FromQuery, get
 
 
 @get("/foo")
@@ -164,7 +164,7 @@ async def example(
 ```python
 from typing import Optional
 
-from blacksheep import FromQuery
+from blacksheep import FromQuery, get
 
 
 @get("/foo")
@@ -180,7 +180,7 @@ async def example(
 ```python
 from typing import Optional
 
-from blacksheep import FromQuery
+from blacksheep import FromQuery, get
 
 
 @get("/foo")
@@ -216,7 +216,7 @@ async def example(
 `name` class property:
 
 ```python
-from blacksheep import FromCookie, FromHeader
+from blacksheep import FromCookie, FromHeader, get
 
 
 class FromAcceptHeader(FromHeader[str]):

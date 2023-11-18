@@ -42,9 +42,11 @@ The name _BlackSheep_ was chosen for two reasons:
   intentional
   rebelliousness_](https://idioms.thefreedictionary.com/the+black+sheep) -
   especially for the choice of giving so much importance to _dependency
-  injection_ (which is not very popular in Python community), asynchronous
-  coding and type annotations (which are still debated upon in Python
-  community), and for being a Python web framework inspired by ASP.NET&nbsp;Core.
+  injection_ (which is not very popular in Python community, or _was not_
+  popular when BlackSheep was started), asynchronous coding and type
+  annotations (which are still debated upon in Python community, or _were_
+  debated upon when BlackSheep was started), and for being a Python web
+  framework inspired by ASP.NET&nbsp;Core.
 * as a tribute to the song _The Sinking Belle (Black Sheep)_ of the album
   [_Altar_](https://en.wikipedia.org/wiki/Altar_(album)), by Boris and
   Sunn&nbsp;O))).

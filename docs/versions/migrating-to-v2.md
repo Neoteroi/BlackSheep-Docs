@@ -3,6 +3,7 @@ version 2 of the web framework. The most relevant changes are:
 
 - [X] Improved project templates and the `blacksheep-cli` to bootstrap new projects.
 - [X] Automatic import of `routes` and `controllers`.
+- [X] Added functions to support the notion of application environment.
 - [X] Improved dependency injection, with support for alternatives to `rodi`.
 - [X] Improved server side rendering, with support for alternatives to `Jinja2`.
 - [X] Added support for dependency injection in authentication and authorization handlers.
@@ -72,6 +73,23 @@ app/
 The difference in code verbosity is considerable, because previously definining
 routes and controllers explicitly was not sufficient to have them registered in
 applications.
+
+## Notion of application environment
+
+The namespace `blacksheep.server.env` provide an abstraction layer to support
+the notion of _application environment_. It provides functions that can be used
+to apply logic depending on whether the application is running for local
+development, or a different kind of environment (e.g. `dev`, `test`, `prod`).
+
+These functions use the environment variable `APP_ENV` to determine the type
+of environment, defaulting to `production` if such variable is missing.
+
+```python
+from blacksheep.server.env import is_development, is_production
+
+# is_development returns true if APP_ENV (lower) is in {"local", "dev", "development"}
+# is_production returns true if APP_ENV (lower) is missing or in {"prod", "production"}
+```
 
 ## Changes to dependency injection
 
