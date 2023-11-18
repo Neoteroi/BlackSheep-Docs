@@ -172,7 +172,7 @@ absolute_url_to_path = get_absolute_url_to_path(request, "/example")
 
 !!! warning
     When configuring [OpenID Connect](../authentication/#oidc) authentication,
-    it can be necessary to handle forward headers, so that the application can
+    it can be necessary to handle forwarded headers, so that the application can
     generate correct `redirect_uri` for authorization servers.
 
 ## ASGI root_path
