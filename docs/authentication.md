@@ -1,5 +1,5 @@
 # Authentication in BlackSheep
-The words "authentication strategy" in the context of a web application refer
+The words _authentication strategy_ in the context of a web application refer
 to the ability to identify the user who is using the application. BlackSheep
 implements a built-in authentication strategy for request handlers. This page
 describes:
@@ -23,9 +23,9 @@ pypi](https://pypi.org/project/guardpost/)).
 
 Examples of common strategies to identify users in web applications include:
 
-* reading an `Authorization: Bearer xxx` request header containing a [JWT](https://jwt.io/introduction/)
+- reading an `Authorization: Bearer xxx` request header containing a [JWT](https://jwt.io/introduction/)
   with claims that identify the user
-* reading a signed token from a cookie
+- reading a signed token from a cookie
 
 The next paragraphs explain first how to use the built-in support for JWT
 Bearer tokens, and how to write a custom authentication handler.
@@ -33,7 +33,7 @@ Bearer tokens, and how to write a custom authentication handler.
 !!! info
     The word "user" is usually used only to refer to human users, while
     the word "service" is used to describe non-human clients. In Java and .NET, a
-    common word to describe a generic client is "principal".
+    common word to describe a generic identity is "principal".
 
 ## OIDC
 
@@ -41,10 +41,15 @@ BlackSheep implements built-in support for OpenID Connect authentication,
 meaning that it can be easily integrated with identity provider services such
 as:
 
-* [Auth0](https://auth0.com)
-* [Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/)
-* [Azure Active Directory B2C](https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview)
-* [Okta](https://www.okta.com)
+- [Auth0](https://auth0.com)
+- [Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id)
+- [Azure Active Directory B2C](https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview)
+- [Okta](https://www.okta.com)
+
+!!! tip "Examples in GitHub"
+    The [Neoteroi/BlackSheep-Examples/](https://github.com/Neoteroi/BlackSheep-Examples/)
+    repository in GitHub contains examples of JWT Bearer authentication and
+    OpenID Connect integrations.
 
 A basic example integration with any of the identity providers above, having
 implicit flow enabled for `id_token` (meaning that the code doesn't need to
@@ -106,12 +111,12 @@ authorization to restrict access to certain methods, only for users who are
 successfully authenticated:
 
 ```python
-from blacksheep import Application
-from blacksheep.server.authorization import auth
-from guardpost.common import AuthenticatedRequirement, Policy
+from guardpost import Policy, User
+from guardpost.common import AuthenticatedRequirement
 
+from blacksheep import Application, get, json
 from blacksheep.server.authentication.jwt import JWTBearerAuthentication
-
+from blacksheep.server.authorization import auth
 
 app = Application()
 
@@ -119,9 +124,7 @@ app.use_authentication().add(
     JWTBearerAuthentication(
         authority="https://login.microsoftonline.com/<YOUR_TENANT_NAME>.onmicrosoft.com",
         valid_audiences=["<YOUR_APP_CLIENT_ID>"],
-        valid_issuers=[
-            "https://login.microsoftonline.com/<YOUR_TENANT_ID>/v2.0"
-        ],
+        valid_issuers=["https://login.microsoftonline.com/<YOUR_TENANT_ID>/v2.0"],
     )
 )
 
@@ -129,8 +132,6 @@ app.use_authentication().add(
 authorization = app.use_authorization()
 
 authorization += Policy("example_name", AuthenticatedRequirement())
-
-get = app.router.get
 
 
 @get("/")
@@ -150,6 +151,7 @@ async def open(user: User | None):
         return json({"anonymous": True})
     else:
         return json(user.claims)
+
 ```
 
 The built-in handler for JWT Bearer authentication does not support JWTs signed
@@ -168,14 +170,11 @@ The example below shows how to configure a custom authentication handler that
 obtains user's identity for each web request.
 
 ```python
-from typing import Optional
+from blacksheep import Application, Request, auth, get, json
+from guardpost import AuthenticationHandler, Identity, User
 
-from blacksheep import Application, Request, json
-from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
-from guardpost.authentication import User
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 class ExampleAuthHandler(AuthenticationHandler):
@@ -202,6 +201,26 @@ class ExampleAuthHandler(AuthenticationHandler):
 
 
 app.use_authentication().add(ExampleAuthHandler())
+
+
+@get("/")
+def home():
+    return "Hello, World"
+
+
+@auth("example_name")
+@get("/api/message")
+def example():
+    return "This is only for authenticated users"
+
+
+@get("/open/")
+async def open(user: User | None):
+    if user is None:
+        return json({"anonymous": True})
+    else:
+        return json(user.claims)
+
 ```
 
 It is possible to configure several authentication handlers to implement
@@ -237,17 +256,22 @@ the following body:
 For example, to generate web requests using `curl`:
 
 ```bash
-$ curl  http://127.0.0.1:44555/open {"anonymous":true}
-
-$ curl -H "Authorization: foo" http://127.0.0.1:44555/open {"name":"Jan
-Kowalski"}
+curl  http://127.0.0.1:44555/open
 ```
+
+Gets the output: `{"anonymous":true}`.
+
+```bash
+curl -H "Authorization: foo" http://127.0.0.1:44555/open
+```
+
+Gets the output: `{"name":"Jan Kowalski"}`.
 
 _The application has been started on port 44555 (e.g. `uvicorn server:app --port=44555`)._
 
 ## Reading user's context
-The example below show how the user's identity can be read from the web
-request
+
+The example below shows how user's identity can be read from the web request:
 
 === "Using binders (recommended)"
 

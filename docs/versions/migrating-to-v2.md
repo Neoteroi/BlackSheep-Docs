@@ -311,7 +311,7 @@ The full list of changes in alpha versions released for `v2`:
   prevent leaking. See [the OIDC
   examples](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/oidc) for
   more information.
-- Renames `blacksheep.server.authentication.oidc.BaseTokensStore` to `TokensStore`.
+- Renames `blacksheep.server.authentication.oidc.TokensStore` to `TokensStore`.
 - Removes the `tokens_store` parameter from the `use_openid_connect` method;
   it is still available as optional parameter of the two built-in classes used
   to handle tokens.

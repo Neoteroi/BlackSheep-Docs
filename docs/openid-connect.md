@@ -5,7 +5,7 @@ meaning that it can be easily integrated with identity provider services such
 as:
 
 * [Auth0](https://auth0.com)
-* [Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/)
+* [Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id)
 * [Azure Active Directory B2C](https://docs.microsoft.com/en-us/azure/active-directory-b2c/overview)
 * [Okta](https://www.okta.com)
 
@@ -74,13 +74,13 @@ async def home(user: Identity):
 
 ### use_openid_connect
 
-| Parameter          | Type, default                      | Description                                                                                                                                                            |
-| ------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| app                | Application                        | Instance of BlackSheep application.                                                                                                                                    |
-| settings           | OpenIDSettings                     | Instance of OpenIDSettings.                                                                                                                                            |
-| tokens_store       | Optional[BaseTokensStore] = None   | Optional instance of `BaseTokensStore`, used to store and restore `access_token`s and `refresh_token`s.                                                                |
-| parameters_builder | Optional[ParametersBuilder] = None | Optional instance of `ParametersBuilder`, used to handle parameters configured in redirects and requests to the authorization server.                                  |
-| is_default         | bool = True                        | If default, clients are automatically redirected to the `sign-in` page when a non-authenticated user tries to access in `GET` a web page that requires authentication. |
+| Parameter          | Type, default                                                     | Description                                                                                                                                                                                                                       |
+| ------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| app                | Application                                                       | Instance of BlackSheep application.                                                                                                                                                                                               |
+| settings           | OpenIDSettings                                                    | Instance of OpenIDSettings.                                                                                                                                                                                                       |
+| auth_handler       | Optional[OpenIDTokensHandler] = None (CookiesOpenIDTokensHandler) | Instance of OpenIDTokensHandler that can handle tokens for requests and responses for the OpenID Connect flow. This class is responsible of communicating tokens to clients, and restoring tokens context for following requests. |
+| parameters_builder | Optional[ParametersBuilder] = None                                | Optional instance of `ParametersBuilder`, used to handle parameters configured in redirects and requests to the authorization server.                                                                                             |
+| is_default         | bool = True                                                       | If default, clients are automatically redirected to the `sign-in` page when a non-authenticated user tries to access in `GET` a web page that requires authentication.                                                            |
 
 ### OpenIDSettings
 
@@ -97,10 +97,13 @@ The `OpenIDSettings` class has the following properties:
 | logout_path               | str = "/sign-out"               | The local path to the sign-out endpoint (this removes authentication cookie).                                                                                                         |
 | post_logout_redirect_path | str = "/"                       | The local path to which a user is redirected after signing-out.                                                                                                                       |
 | callback_path             | str = "/authorization-callback" | The local path to handle the redirect after a user signs-in (the reply_url in the identity server must be configured accordingly).                                                    |
+| refresh_token_path        | str = "/refresh-token"          | The local path used to handle refresh tokens to obtain new tokens .                                                                                                                   |
 | scope                     | str = "openid profile email"    | The scope of the request, by default an `id_token` is obtained with email and profile.                                                                                                |
+| response_type             | str = "code"                    | Type of OAuth response.                                                                                                                                                               |
 | redirect_uri              | Optional[str] = None            | If specified, the redirect URL that must match the one configured for the application. If not provided, a redirect_url is obtained automatically (see note 🗡️).                        |
 | scheme_name               | str = "OpenIDConnect"           | The name of the authentication scheme, affecting the name of authentication cookies (see note 🍒).                                                                                     |
 | error_redirect_path       | Optional[str] = None            | If specified, the local path to which a user is redirected in case of error.                                                                                                          |
+| end_session_endpoint      | Optional[str] = None            | If specified, the local path to which the user can log out.                                                                                                                           |
 
 Notes:
 
@@ -121,56 +124,60 @@ application obtains both an `id_token` and an `access_token` for an API,
 looks like the following:
 
 ```python
-import os
-from blacksheep import Application, html, pretty_json
-from blacksheep.server.authentication.oidc import (
-    OpenIDSettings,
-    use_openid_connect,
-    CookiesTokensStore,
-)
-from guardpost.authentication import Identity
+"""
+This example shows how to configure an OpenID Connect integration with Auth0, obtaining
+an id_token, an access_token, and a refresh_token. The id_token is exchanged with the
+client using a response cookie (also used to authenticate users
+for following requests), while access token and the refresh token are not stored and
+can only be accessed using optional events.
+"""
+import uvicorn
+from blacksheep.server.application import Application
+from blacksheep.server.authentication.oidc import OpenIDSettings, use_openid_connect
+from dotenv import load_dotenv
 
-app = Application()
+from common.routes import register_routes
+from common.secrets import Secrets
+
+load_dotenv()
+secrets = Secrets.from_env()
+app = Application(show_error_details=True)
 
 
-# basic Auth0 integration that handles only an id_token
+# Auth0 with custom scope
 use_openid_connect(
     app,
     OpenIDSettings(
-        authority="<YOUR_AUTHORITY>",
-        audience="<API_ID>",
-        client_id="<CLIENT_ID>",
-        client_secret=os.environ["AUTH0_APP_SECRET"],
-        callback_path="<CALLBACK_PATH>",
-        scope="openid profile custom_scope",
+        authority="https://neoteroi.eu.auth0.com",
+        audience="http://localhost:5000/api/todos",
+        client_id="OOGPl4dgG7qKsm2IOWq72QhXV4wsLhbQ",
+        client_secret=secrets.auth0_client_secret,
+        callback_path="/signin-oidc",
+        scope="openid profile read:todos",
+        error_redirect_path="/sign-in-error",
     ),
-    tokens_store=CookiesTokensStore(),
 )
 
+register_routes(app)
 
-@get("/")
-async def home(user: Identity):
-    if user.is_authenticated():
-        response = pretty_json(user.claims)
 
-        return response
-
-    return html("<a href='/sign-in'>Sign in</a><br/>")
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=5000, log_level="debug")
 
 ```
 
-An integration with `Azure Active Directory`:
+An integration with `Entra ID`:
 
 ```python
-use_openid_connect(
+handler = use_openid_connect(
     app,
     OpenIDSettings(
-        authority="https://login.microsoftonline.com/<YOUR_TENANT_ID>/v2.0/",
-        client_id="<CLIENT_ID>",
-        client_secret=os.environ["AAD_APP_SECRET"],
-        scope="openid profile custom_scope",
+        authority="https://login.microsoftonline.com/b62b317a-19c2-40c0-8650-2d9672324ac4/v2.0/",
+        client_id="499adb65-5e26-459e-bc35-b3e1b5f71a9d",
+        client_secret=secrets.aad_client_secret,
+        scope="openid profile offline_access email "
+        "api://65d21481-4f1a-4731-9508-ad965cb4d59f/example",
     ),
-    tokens_store=CookiesTokensStore(),
 )
 ```
 
@@ -180,12 +187,12 @@ An integration with `Okta`, using the `default` authorization server:
 use_openid_connect(
     app,
     OpenIDSettings(
-        discovery_endpoint="https://<YOUR_DOMAIN>.okta.com/oauth2/default/.well-known/oauth-authorization-server",
-        client_id="<CLIENT_ID>",
-        client_secret=os.environ["OKTA_APP_SECRET"],
-        scope="openid email custom_scope",
+        discovery_endpoint="https://dev-34685660.okta.com/oauth2/default/.well-known/oauth-authorization-server",
+        client_id="0oa2gy88qiVyuOClI5d7",
+        client_secret=secrets.okta_client_secret,
+        callback_path="/authorization-code/callback",
+        scope="openid read:todos",
     ),
-    tokens_store=CookiesTokensStore(),
 )
 ```
 
@@ -238,10 +245,13 @@ async def on_error(context, data: Dict[str, Any]):
 ## Storing tokens
 
 By default, `access_token`(s) and `refresh_token`(s) are not stored. To store
-them, the `use_openid_connect` function supports a `BaseTokensStore` parameter
-that will handle storing and restoring tokens. A concrete implementation is
+them, the `auth_handler.tokens_store` property. The examples repository includes
+an example that shows how to use `Redis` to store tokens:
+_[Redis example](https://github.com/Neoteroi/BlackSheep-Examples/blob/main/oidc/scopes_redis_aad.py)_
+
+A concrete implementation is
 provided in `CookiesTokenStore`, storing tokens in cookies. It is possible to
-create custom implementations of the `BaseTokensStore`, to use other mechanisms,
+create custom implementations of the `TokensStore`, to use other mechanisms,
 for example to store tokens in a Redis cache.
 
 When a user is authenticated, and has an `access_token` (and/or a
@@ -256,7 +266,7 @@ async def home(user: Identity):
         ...
 ```
 
-To see how to use a `BaseTokensStore`, refer to the examples above that use
+To see how to use a `TokensStore`, refer to the examples above that use
 the built-in `CookiesTokensStore`.
 
 ## Useful references

@@ -71,7 +71,9 @@ files with these extensions are served (case insensitive check):
 '.eot',
 '.svg',
 '.mp4',
-'.mp3'
+'.mp3',
+'.webp',
+'.webm'
 ```
 
 To configure extensions, use the dedicated parameter:
