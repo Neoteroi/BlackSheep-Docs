@@ -42,7 +42,7 @@ OpenAPI Documentation and exposing a Swagger UI in BlackSheep:
 ```python
 from dataclasses import dataclass
 
-from blacksheep import Application
+from blacksheep import Application, get
 from blacksheep.server.openapi.v3 import OpenAPIHandler
 from openapidocs.v3 import Info
 
@@ -57,7 +57,7 @@ class Foo:
     foo: str
 
 
-@app.route("/foo")
+@get("/foo")
 async def get_foo() -> Foo:
     return Foo("Hello!")
 ```
@@ -159,7 +159,7 @@ instance of `OpenAPIHandler` as a decorator:
 ```python
 
 @docs(responses={200: "Returns a text saying OpenAPI Example"})
-@app.route("/")
+@get("/")
 def home():
     return "OpenAPI Example"
 ```
@@ -186,7 +186,7 @@ An endpoint description can be specified either using a `docstring`:
 
 ```python
 @docs(responses={200: "Returns a text saying OpenAPI Example"})
-@app.route("/")
+@get("/")
 async def home():
     """
     This example is used to demonstrate support for OpenAPI in BlackSheep.
@@ -202,7 +202,7 @@ Or in the `@docs` decorator:
     description="The endpoint itself doesn't do anything useful.",
     responses={200: "Returns a text saying OpenAPI Example"},
 )
-@app.route("/")
+@get("/")
 async def home():
     return "OpenAPI Example"
 ```
@@ -224,7 +224,7 @@ To exclude certain endpoints from the API documentation, use `@docs.ignore()`:
 
 ```python
 @docs.ignore()
-@app.route("/hidden-from-docs")
+@get("/hidden-from-docs")
 async def hidden_endpoint():
     return "This endpoint won't appear in documentation"
 ```
@@ -293,7 +293,7 @@ class Cat:
         404: "Cat not found",
     },
 )
-@app.route("/api/cats/{cat_id}")
+@get("/api/cats/{cat_id}")
 def get_cat_by_id(cat_id: UUID):
     cat = ...  # TODO: implement the logic that fetches a cat by id
     return json(cat)
@@ -326,7 +326,7 @@ code clean:
 from apidocs.cats import get_cat_docs
 
 @docs(get_cat_docs)
-@app.route("/api/cats/{cat_id}")
+@get("/api/cats/{cat_id}")
 def get_cat_by_id(cat_id: UUID):
     cat = ...  # TODO: implement the logic that fetches a cat by id
     return json(cat)
@@ -342,7 +342,7 @@ To mark and endpoint as deprecated, use `@docs.deprecated()`:
 
 ```python
 @docs.deprecated()
-@app.route("/some-deprecated-api")
+@get("/some-deprecated-api")
 async def deprecated_endpoint():
     return "This endpoint is deprecated"
 ```

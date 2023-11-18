@@ -1,17 +1,17 @@
-This page describes the differences between version 1 and version 2 of the
-web framework.
+This page describes the most relevant differences between version 1 and
+version 2 of the web framework. The most relevant changes are:
 
 - [X] Improved project templates and the `blacksheep-cli` to bootstrap new projects.
 - [X] Automatic import of `routes` and `controllers`.
 - [X] Changes to dependency injection, with support for alternatives to `rodi`.
 - [X] Changes to server side rendering, with support for alternatives to `Jinja2`.
 - [X] Support for dependency injection in authentication and authorization handlers.
-- [X] Resolved several bugs in the client implementation and improved its support.
 - [X] Improved the `Router` class to support sub-routers and filters.
 - [X] Improved the OIDC features to support storing tokens in the HTML5 Storage
   API instead of cookies.
 - [X] The full list of changes is at the bottom of this page. It includes
   changes that were applied to version 1 of the framework, too.
+- [X] Some classes have been renamed to better follow Python naming conventions.
 
 ## BlackSheep-CLI
 
@@ -21,10 +21,13 @@ a dedicated CLI for project scaffolding. For more information on the CLI, read
 
 ![CLI help](/blacksheep/img/cli-help.png)
 
+The improved project templates also include a strategy to validate settings
+using [`Pydantic`](https://docs.pydantic.dev/latest/).
+
 ## Automatic import of routes and controllers
 
-The second version of the framework includes features to reduce code verbosity
-when defining routes and controllers.
+The second version of the framework includes features to considerably reduce
+code verbosity when defining routes and controllers.
 
 The framework now exposes methods of a default singleton `Router` instance, to
 be used to register routes independently from application instantiation. This
@@ -66,12 +69,11 @@ app/
 
 The difference in code verbosity is considerable, because previously definining
 routes and controllers explicitly was not sufficient to have them registered in
-applications, but also required explicit import, when defined in dedicated
-modules.
+applications.
 
 ## Changes to dependency injection
 
-In v2, `rodi` and `BlackSheep` have been both modified to enable alternative
+In v2, `rodi` and `BlackSheep` have been modified to enable alternative
 implementations of dependency injection. `rodi` now defines a
 `ContainerProtocol` with a basic API to register and resolve dependencies, and
 `BlackSheep` relies on that protocol instead of its specific implementation in
@@ -160,7 +162,86 @@ The functions that implement OpenID Connect (OIDC) support have been improved to
 support storing tokens (id_token, access_token, refresh_token) in any kind of
 store, and with built-in support for the HTML5 Storage API.
 
+!!! into "Examples in GitHub"
+    Refer to the [OIDC examples](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/oidc)
+
+The following **partial** example shows how to use the `use_openid_connect`
+function to configure a web app to:
+
+- use OpenID Connect with [Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id) to implement authentication
+- store `id_token`, `access_token`, and `refresh_token` using the HTML5
+  Storage API
+- configure the back-end API to use `JWT Bearer` authentication (clients must
+  send requests with `Authorization: Bearer <JWT>` headers)
+
+```python
+"""
+This example shows how to configure an OpenID Connect integration having tokens
+exchanged with the client using the HTML5 Storage API, instead of response cookies.
+This scenario enables better reusability of web APIs.
+See how the id_token is used in ./static/index.html to authenticate following requests
+('Authorization: Bearer ***' headers), and how the refresh token endpoint can be used
+to obtain fresh tokens.
+"""
+import uvicorn
+from blacksheep.server.application import Application
+from blacksheep.server.authentication.jwt import JWTBearerAuthentication
+from blacksheep.server.authentication.oidc import (
+    JWTOpenIDTokensHandler,
+    OpenIDSettings,
+    use_openid_connect,
+)
+from dotenv import load_dotenv
+
+from common.routes import register_routes
+from common.secrets import Secrets
+
+load_dotenv()
+secrets = Secrets.from_env()
+app = Application(show_error_details=True)
+
+
+AUTHORITY = (
+    "https://login.microsoftonline.com/b62b317a-19c2-40c0-8650-2d9672324ac4/v2.0"
+)
+CLIENT_ID = "499adb65-5e26-459e-bc35-b3e1b5f71a9d"
+use_openid_connect(
+    app,
+    OpenIDSettings(
+        authority=AUTHORITY,
+        client_id=CLIENT_ID,
+        client_secret=secrets.aad_client_secret,
+        scope=(
+            "openid profile offline_access email "
+            "api://65d21481-4f1a-4731-9508-ad965cb4d59f/example"
+        ),
+    ),
+    auth_handler=JWTOpenIDTokensHandler(
+        JWTBearerAuthentication(
+            authority=AUTHORITY,
+            valid_audiences=[CLIENT_ID],
+        ),
+    ),
+)
+
+register_routes(app, static_home=True)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=5000, log_level="debug")
+
+```
+
+## Changes to follow naming conventions
+
+Some classes have been renamed to better follow Python naming conventions. For
+example the aliases 'HtmlContent' and 'JsonContent' that were kept for backward
+compatibility in `v1`, as alternative names for `HTMLContent` and
+`JSONContent`, were removed in `v2`.
+
 ## List of changes
+
+The full list of changes in alpha versions released for `v2`:
 
 - Renames the `plugins` namespace to `settings`.
 - Upgrades `rodi` to v2, which includes improvements.
@@ -330,9 +411,10 @@ if __name__ == "__main__":
   (C int max value). Reported and fixed by @thomafred.
 - Add support for `.jinja` extension by @thearchitector.
 - Makes the `.jinja` extension default for Jinja templates.
-- Adds support for Python 3.12, by @bymoye
+- Adds support for Python 3.12, by [@bymoye](https://github.com/bymoye)
 - Replaces `pkg_resources` with `importlib.resources` for all supported Python
   versions except for `3.8`.
 - Runs tests against Pydantic `2.4.2` instead of Pydantic `2.0` to check
   support for Pydantic v2.
-- Upgrades dependencies.
+- Adds `.webp` and `.webm` to the list of extensions of files that are served
+  by default.

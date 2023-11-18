@@ -64,7 +64,7 @@ app = Application()
 
 @get("/")
 def home():
-    return f"Hello, World! {datetime.utcnow().isoformat()}"
+    return f"Hello, World! {datetime.now().isoformat()}"
 ```
 
 Use the command below to start the application using port `44777`, with

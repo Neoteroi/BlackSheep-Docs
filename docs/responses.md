@@ -191,7 +191,7 @@ def home() -> Response:
             "foo2",
             "value2",
             http_only=True,
-            expires=datetime.utcnow() + timedelta(minutes=15),
+            expires=datetime.now() + timedelta(minutes=15),
         )
     )
 
@@ -200,17 +200,17 @@ def home() -> Response:
 
 Cookie's options:
 
-| Parameter     | Type (default value)                                | Description                                                                                                                                                                                            |
-| ------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **name**      | `str`                                               | Cookie's name.                                                                                                                                                                                         |
-| **value**     | `str`                                               | Cookie's value.                                                                                                                                                                                        |
-| **expires**   | `datetime | null` (`null`)                          | The maximum lifetime of the cookie as an HTTP-date timestamp. If unspecified, the cookie becomes a session cookie. A session finishes when the client shuts down, and session cookies will be removed. |
-| **domain**    | `str | null` (`null`)                               | Host to which the cookie will be sent.                                                                                                                                                                 |
-| **path**      | `str | null` (`null`)                               | Optional path to restrict access to the cookie.                                                                                                                                                        |
-| **http_only** | `bool` (`False`)                                    | Optional boolean to forbid JavaScript access to the cookie.                                                                                                                                            |
-| **secure**    | `bool` (`False`)                                    | Optionally instructs browsers to send the cookie only over HTTPS (or `localhost`).                                                                                                                     |
-| **max_age**   | `int` (`-1`)                                        | Optional number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.                                                                                     |
-| **same_site** | `CookieSameSiteMode` (CookieSameSiteMode.UNDEFINED) | Controls the cookie's `Same-Site` attribute.                                                                                                                                                           |
+| Parameter     | Type (default value)                                | Description                                                                                                        |
+| ------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **name**      | `str`                                               | Cookie's name.                                                                                                     |
+| **value**     | `str`                                               | Cookie's value.                                                                                                    |
+| **expires**   | `datetime                                           | null` (`null`)                                                                                                     | The maximum lifetime of the cookie as an HTTP-date timestamp. If unspecified, the cookie becomes a session cookie. A session finishes when the client shuts down, and session cookies will be removed. |
+| **domain**    | `str                                                | null` (`null`)                                                                                                     | Host to which the cookie will be sent.                                                                                                                                                                 |
+| **path**      | `str                                                | null` (`null`)                                                                                                     | Optional path to restrict access to the cookie.                                                                                                                                                        |
+| **http_only** | `bool` (`False`)                                    | Optional boolean to forbid JavaScript access to the cookie.                                                        |
+| **secure**    | `bool` (`False`)                                    | Optionally instructs browsers to send the cookie only over HTTPS (or `localhost`).                                 |
+| **max_age**   | `int` (`-1`)                                        | Optional number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. |
+| **same_site** | `CookieSameSiteMode` (CookieSameSiteMode.UNDEFINED) | Controls the cookie's `Same-Site` attribute.                                                                       |
 
 #### `CookieSameSiteMode` enum
 

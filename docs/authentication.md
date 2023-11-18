@@ -51,7 +51,7 @@ implicit flow enabled for `id_token` (meaning that the code doesn't need to
 handle any secret), looks like the following:
 
 ```python
-from blacksheep import Application, html, pretty_json
+from blacksheep import Application, get, html, pretty_json
 from blacksheep.server.authentication.oidc import OpenIDSettings, use_openid_connect
 from guardpost.authentication import Identity
 
@@ -69,7 +69,7 @@ use_openid_connect(
 )
 
 
-@app.route("/")
+@get("/")
 async def home(user: Identity):
     if user.is_authenticated():
         response = pretty_json(user.claims)

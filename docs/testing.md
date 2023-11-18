@@ -33,7 +33,7 @@ from blacksheep.testing import TestClient
 app = Application()
 
 
-@app.route("/")
+@get("/")
 async def hello(name: str = "World"):
     return f"Hello, {name}!"
 

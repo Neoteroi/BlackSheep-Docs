@@ -100,10 +100,10 @@ When following this approach, the http client can be automatically injected to
 request handlers, and services that need it, like in this example:
 
 ```python
-from blacksheep import html
+from blacksheep import get, html
 
 
-@app.route("/get-python-homepage")
+@get("/get-python-homepage")
 async def get_python_homepage(http_client):
     response = await http_client.get("https://docs.python.org/3/")
 

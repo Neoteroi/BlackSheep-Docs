@@ -45,7 +45,7 @@ use_openid_connect(
 )
 
 
-@app.route("/")
+@get("/")
 async def home(user: Identity):
     if user.is_authenticated():
         response = pretty_json(user.claims)
@@ -66,7 +66,7 @@ request by an authentication middleware, and can be read as in the provided
 examples:
 
 ```python
-@app.route("/")
+@get("/")
 async def home(user: Identity):
     if user.is_authenticated():
         ...
@@ -148,7 +148,7 @@ use_openid_connect(
 )
 
 
-@app.route("/")
+@get("/")
 async def home(user: Identity):
     if user.is_authenticated():
         response = pretty_json(user.claims)
@@ -248,7 +248,7 @@ When a user is authenticated, and has an `access_token` (and/or a
 `refresh_token`), they are accessible through the `Identity`:
 
 ```python
-@app.route("/")
+@get("/")
 async def home(user: Identity):
     if user.is_authenticated():
         print(user.access_token)

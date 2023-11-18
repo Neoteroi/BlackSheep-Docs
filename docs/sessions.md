@@ -16,7 +16,7 @@ app = Application()
 app.use_sessions("<SIGNING_KEY>")
 
 
-@app.route("/")
+@get("/")
 def home(request: Request):
     session = request.session
 
@@ -64,7 +64,7 @@ The sessions middleware takes care of setting a response cookie whenever the
 session is modified, session cookies are signed and encrypted by default.
 
 ```python
-@app.route("/")
+@get("/")
 def home(request: Request):
     session = request.session
 

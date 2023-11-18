@@ -113,7 +113,7 @@ async def enabled():
     ...
 
 @app.cors("deny")
-@app.router.get("/disabled-for-cors")
+@get("/disabled-for-cors")
 async def disabled():
     ...
 ```

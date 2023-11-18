@@ -86,7 +86,7 @@ Alternatively, the application offers a `route` method:
 
 ```python
 
-@app.route("/foo")
+@get("/foo")
 async def example_foo():
     # HTTP GET /foo
     return "Hello, World!"

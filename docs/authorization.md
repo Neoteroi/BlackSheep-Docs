@@ -27,14 +27,13 @@ requires an authenticated user. It is modified from the example in the
 ```python
 from typing import Optional
 
-from blacksheep import Application, Request, json, ok
+from blacksheep import Application, Request, json, ok, get
 from blacksheep.server.authorization import Policy, auth
 from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
 from guardpost.authentication import User
 from guardpost.common import AuthenticatedRequirement
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 class ExampleAuthHandler(AuthenticationHandler):
@@ -133,7 +132,6 @@ from guardpost.common import AuthenticatedRequirement
 from guardpost.synchronous.authorization import Requirement
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 class ExampleAuthHandler(AuthenticationHandler):

@@ -38,7 +38,7 @@ The expected folder structure for this example:
 ```
 ⬑ app
      ⬑ views
-          home.html   <-- template file loaded by `view` function
+          home.jinja   <-- template file loaded by `view` function
      __init__.py
 
 server.py
@@ -108,7 +108,7 @@ To configure custom helpers and filters for Jinja, access the renderer through
 ├── app
 │   ├── __init__.py
 │   └── views
-│       └── index.html
+│       └── index.jinja
 └── server.py
 ```
 
@@ -139,7 +139,7 @@ def configure_templating(
 ```
 
 ```html
-<!-- index.html -->
+<!-- index.jinja -->
 <p>Hello, World!</p>
 {{ copy() }}
 ```

@@ -53,7 +53,7 @@ as in this example:
 
 **server.py**:
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 
 from domain.foo import Foo
 
@@ -63,7 +63,7 @@ app = Application()
 app.services.add_scoped(Foo)  # <-- register Foo type as a service
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):  # <-- foo is referenced in type annotation
     return f"Hello, {foo.foo}!"
 
@@ -101,7 +101,7 @@ Note that both types need to be registered in `app.services`:
 
 **server.py**:
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 from domain.foo import A, Foo
 
@@ -112,7 +112,7 @@ app.services.add_transient(A)
 app.services.add_scoped(Foo)
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):
     return text(
         f"""
@@ -183,7 +183,7 @@ class Foo:
 
 **server.py**:
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 from domain.foo import A, B, C, Foo
 
@@ -197,7 +197,7 @@ app.services.add_singleton(C)
 app.services.add_scoped(Foo)
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):
     return text(
         f"""
@@ -251,11 +251,12 @@ Produces responses like the following at "/":
 
 Note how:
 
-* transient services are always instantiated whenever they are activated (A)
-* scoped services are instantiated once per web request (B)
-* a singleton service is activated only once (C)
+- transient services are always instantiated whenever they are activated (A)
+- scoped services are instantiated once per web request (B)
+- a singleton service is activated only once (C)
 
 ## Options to create services
+
 `rodi` provides several ways to define and instantiate services.
 
 1. registering an exact instance as singleton
@@ -339,7 +340,7 @@ app.services.add_scoped(CatsRepository, PostgreSQLCatsRepository)
 
 # a request handler needing the CatsRepository doesn't need to know about
 # the exact implementation (e.g. PostgreSQL, SQLite, etc.)
-@app.route("/api/cats/{cat_id}")
+@get("/api/cats/{cat_id}")
 async def get_cat(cat_id: str, repo: CatsRepository):
 
     cat = await repo.get_cat_by_id(cat_id)
@@ -392,7 +393,7 @@ instantiated once per web request:
 app.services.add_scoped(OperationContext)
 
 
-@app.route("/")
+@get("/")
 def home(context: OperationContext):
     return text(
         f"""
@@ -409,7 +410,7 @@ Services that require asynchronous initialization can be configured inside
 
 ```python
 import asyncio
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 
 app = Application()
@@ -429,9 +430,9 @@ async def configure_something(app: Application):
 app.on_start += configure_something
 
 
-@app.route("/")
+@get("/")
 async def home(service: Example):
-    return text(f"{service.text}")
+    return service.text
 
 ```
 
@@ -528,7 +529,7 @@ container.register(Foo)
 app = Application(services=PunqDI(container), show_error_details=True)
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):  # <-- foo is referenced in type annotation
     return f"Hello, {foo.foo}!"
 

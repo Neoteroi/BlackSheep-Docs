@@ -16,7 +16,6 @@ this in practice, start an application like the following:
 from blacksheep import Application
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -50,7 +49,6 @@ import os
 from blacksheep import Application
 
 app = Application(show_error_details=bool(os.environ.get("SHOW_ERROR_DETAILS", None)))
-get = app.router.get
 
 
 @get("/")
@@ -97,7 +95,7 @@ async def exception_handler(self, request, exc: CustomException):
 app.exceptions_handlers[CustomException] = exception_handler
 
 
-@app.router.get(b'/')
+@get('/')
 async def home(request):
     # of course, the exception can be risen at any point
     # for example in the business logic layer
@@ -270,11 +268,10 @@ are fired, and the state of the application when they are executed.
     Event handlers can be registered using decorators.
 
     ```python
-    from blacksheep import Application, Request, Response, text
+    from blacksheep import Application, Request, Response, text, get
 
 
     app = Application()
-    get = app.router.get
 
 
     @get("/")
@@ -302,11 +299,10 @@ are fired, and the state of the application when they are executed.
     In alternative to decorators, event handlers can be registered using ` += `:
 
     ```python
-    from blacksheep import Application, Request, Response, text
+    from blacksheep import Application, Request, Response, text, get
 
 
     app = Application()
-    get = app.router.get
 
 
     @get("/")

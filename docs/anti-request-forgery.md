@@ -61,7 +61,7 @@ Consider an example having this folder structure:
 Where `server.py` contains the following code:
 
 ```python
-from blacksheep import Application, FromForm
+from blacksheep import Application, FromForm, get, post
 from blacksheep.server.csrf import use_anti_forgery
 from blacksheep.server.templating import use_templates
 from jinja2 import PackageLoader
@@ -74,7 +74,7 @@ render = use_templates(app, PackageLoader("app", "views"))
 use_anti_forgery(app)
 
 
-@app.router.get("/")
+@get("/")
 async def home(request):
     return render("index", {}, request=request)
 
@@ -84,7 +84,7 @@ class CreateUserInput:
         self.username = username
 
 
-@app.router.post("/user")
+@post("/user")
 async def create_user(data: FromForm[CreateUserInput]):
     """Calls to this endpoint require an anti-forgery token."""
     return {"example": True, "username": data.value.username}
@@ -231,7 +231,7 @@ from blacksheep.server.csrf import ignore_anti_forgery
 
 
 @ignore_anti_forgery()
-@app.router.post("/example")
+@post("/example")
 async def create_example():
     """This endpoint does not require an anti-forgery token."""
 ```
