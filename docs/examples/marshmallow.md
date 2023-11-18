@@ -2,8 +2,8 @@ The following example describes how
 [`Marshmallow`](https://marshmallow.readthedocs.io/en/stable/) can be used to
 implement validation of input bodies from the client. For the sake of
 simplicity, the example shows a case in which an array of items is validated
-(the marshmallow scheme is validated using `(many=True)`).
-A similar approach can be used to
+(the marshmallow scheme is validated using `(many=True)`). A similar approach
+can be used with [`msgspec`](https://jcristharif.com/msgspec/)
 
 Implementing a generic solution to validate input and produce user friendly
 error messages is not in the scope of BlackSheep, but the framework offers ways
