@@ -15,7 +15,8 @@ reading this one.
 
 ### Requirements
 
-* [Python](https://www.python.org) version >= **3.8**
+* [Python](https://www.python.org) version >= **3.10** (3.8 and 3.9 are
+  supported but not recommended to follow this tutorial)
 * path to the python executable configured in the environment `$PATH` variable
   (tip: if you install Python on Windows using the official installer, enable
   the checkbox to update your `$PATH` variable automatically)
@@ -85,8 +86,8 @@ After a project is created, the CLI displays a message with instructions.
 Install the project dependencies
 
 - cd into the project folder
-- create a new Python virtual environment (recommended)
-- install its dependencies
+- create a new [Python virtual environment](https://docs.python.org/3/library/venv.html) (recommended but optional)
+- install its dependencies with `pip install -r requirements.txt`
 
 ## Starting the application
 
@@ -122,7 +123,7 @@ The project is organized with the following folder structure:
 
 ```
 ├── app
-│   ├── (application files related to blacksheep front-end)
+│   ├── (application files)
 │   │
 │   ├── controllers
 │   │   └── (controller files, defining routes)
@@ -235,11 +236,11 @@ class Greetings(Controller):
 ```
 
 Then, create a new folder inside `views` directory, called "greetings", and
-add an HTML file named "hello.html".
+add an HTML file named "hello.jinja".
 
 ![New view](./img/new-view.png)
 
-Copy the following contents into `hello.html`:
+Copy the following contents into `hello.jinja`:
 
 ```html
 <div>
@@ -251,14 +252,14 @@ Now navigate to [http://localhost:44777/hello-view](http://localhost:44777/hello
 to see the response from the new HTML view.
 
 Note how convention over configuration is used in this case, to determine that
-`./views/greetings/hello.html` file must be used, because of the convention:<br />
-`./views/{CONTROLLER_NAME}/{METHOD_NAME}.html`.
+`./views/greetings/hello.jinja` file must be used, because of the convention:<br />
+`./views/{CONTROLLER_NAME}/{METHOD_NAME}.jinja`.
 
 The view currently is an HTML fragment, not a full document. To make it a
-full page, modify `hello.html` to use the application layout:
+full page, modify `hello.jinja` to use the application layout:
 
 ```html
-{%- extends "layout.html" -%}
+{%- extends "layout.jinja" -%}
 {%- block title -%}
   Hello Page!
 {%- endblock -%}
@@ -280,8 +281,8 @@ full page, modify `hello.html` to use the application layout:
 
 Refresh the page at [http://localhost:44777/hello-view](http://localhost:44777/hello-view) to see the result.
 
-In this case, a page layout is applied using: `{%- extends "layout.html" -%}`,
-with several blocks going in various area of `layout.html`. For more information
+In this case, a page layout is applied using: `{%- extends "layout.jinja" -%}`,
+with several blocks going in various area of `layout.jinja`. For more information
 on layouts and features of the templating library, refer to
 [Jinja2 documentation](https://jinja2docs.readthedocs.io/en/stable/).
 
@@ -292,7 +293,7 @@ To include dynamic content into an HTML template, use mustaches _`{{name}}`_
 placeholders and pass a model having properties whose names match their key
 to the `view` function.
 
-For example, modify `hello.html` to use dynamic content from a model:
+For example, modify `hello.jinja` to use dynamic content from a model:
 
 ```html
   <div style="margin: 10em 2em;">

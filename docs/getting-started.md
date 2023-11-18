@@ -11,7 +11,8 @@ application. <br> It provides a general view, covering the following topics:
 
 ### Requirements
 
-* [Python](https://www.python.org) version >= **3.8**
+* [Python](https://www.python.org) version >= **3.10** (3.8 and 3.9 are
+  supported but not recommended to follow this tutorial)
 * path to the python executable configured in the environment `$PATH` variable
   (tip: if you install Python on Windows using the official installer, enable
   the checkbox to update your `$PATH` variable during the installation)
@@ -100,9 +101,10 @@ This means that whenever a [HTTP GET](https://developer.mozilla.org/en-US/docs/W
 the application (e.g. http://127.0.0.1:44777), the `home` function is used to
 handle the request and produce a response.
 
-To handle more routes and [HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods), register more request handlers. Update your `server.py` file to contain the
-following example, which includes two request handlers: one for `HTTP GET /`,
-and one for `HTTP POST /`.
+Register more request handlers to handle more routes and
+[HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods).
+Update your `server.py` file to contain the following example, which includes
+two request handlers: one for `HTTP GET /`, and one for `HTTP POST /`.
 
 ```python
 from blacksheep import Application, get, post
@@ -147,9 +149,9 @@ For example, using [`curl`](https://curl.haxx.se):
 
 !!! info
     The application automatically handles requests for any path that
-    is not handled by the router, returning an `HTTP 404 Not Found` response; and
-    returns `HTTP 500 Internal Server Error` in case of unhandled exceptions
-    happening during code execution.
+    is not handled by the router, returning an `HTTP 404 Not Found` response;
+    and produces `HTTP 500 Internal Server Error` responses in case of
+    unhandled exceptions happening during code execution.
 
 ### Handling route parameters
 
@@ -215,8 +217,8 @@ def only_numbers_here(number: int):
     Invoke-WebRequest: Bad Request: Invalid value ['x'] for parameter `number`; expected a valid int.
     ```
 
-Several built-in types are handled automatically: e.g. `str`, `bool`, `int`,
-`float`, `uuid.UUID`, `datetime.date`, `datetime.datetime`, `List[T]`, `Set[T]`.
+Several built-in types are handled automatically, like `str`, `bool`, `int`,
+`float`, `uuid.UUID`, `datetime.date`, `datetime.datetime`, `list[T]`, `set[T]`.
 
 ### Handling query string parameters
 
@@ -239,10 +241,8 @@ A request handler can use different query strings, and query string parameters
 support lists.
 
 ```python
-from typing import List
-
 @get("/query-list")
-def greetings_many(name: List[str]):
+def greetings_many(name: list[str]):
     return f"Hello, {', '.join(name)}!"
 
 # example:
@@ -368,7 +368,7 @@ def get_cats():
     return response
 ```
 
-However, user defined request handlers can return arbitrary objects, which will
+User defined request handlers can also return arbitrary objects, which will
 be automatically converted to JSON responses. The example above could also be
 written this way:
 
@@ -386,7 +386,8 @@ def get_cats() -> list[Cat]:
 
 The rationale for this design choice is that JSON is the most commonly used
 format to serialize objects today, and this feature is useful to reduce code
-verbosity while making the return type explicit.
+verbosity while making the return type explicit. Additionally, it enables
+better generation of OpenAI Documentation.
 
 ### Asynchronous request handlers
 The examples so far showed synchronous request handlers. To define asynchronous

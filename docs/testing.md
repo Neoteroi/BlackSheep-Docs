@@ -27,7 +27,7 @@ A basic example of the `TestClient` would look like this:
 
 ```python
 import asyncio
-from blacksheep import Application
+from blacksheep import Application, get
 from blacksheep.testing import TestClient
 
 app = Application()
@@ -152,33 +152,13 @@ class CreateToDoInput(BaseModel):
     description: str
 ```
 
-To define the API, create a `router.py` file in the `app.routes` package and
-copy the following contents into it:
-
-```python
-# ./app/routes/router.py
-
-from blacksheep.server.routing import Router
-
-
-router = Router()
-
-get = router.get
-post = router.post
-delete = router.delete
-```
-
-!!! info
-    💡 Declaring the router in a dedicated file is useful to reduce code verbosity
-    when defining request handlers.
-
-Then create a `todos.py` file in `app.routes` package, that will contain the
+Create a `todos.py` file in `app.routes` package, that will contain the
 definition of the TODOs API. Start with the following contents:
 
 ```python
 # ./app/routes/todos.py
 
-from .router import get, post, delete
+from blacksheep import get, post, delete
 from domain import ToDo, CreateToDoInput
 from typing import List, Optional
 
@@ -204,33 +184,17 @@ async def delete_todo(todo_id) -> None:
 
 ```
 
-Edit the `__init__.py` file in `app.routes` package, to load
-the API definition:
-
-```python
-# ./app/routes/__init__.py
-
-from .router import *
-from .todos import *
-```
-
 Create a `main.py` file in `app` package, that declares an application:
 
 ```python
-# ./app/main.py
 from blacksheep import Application
 
-from .routes import router
-
-
-app = Application(router=router)
+app = Application()
 ```
 
 And finally a `server.py` file at the project's root:
 
 ```python
-# ./server.py
-
 from app.main import app
 ```
 
@@ -294,10 +258,8 @@ API to work with data stored in memory:
 
 from typing import Dict, List, Optional
 
-from blacksheep import not_found
+from blacksheep import get, delete, not_found, post
 from domain import CreateToDoInput, ToDo
-
-from .router import delete, get, post
 
 
 _MOCKED: Dict[int, ToDo] = {

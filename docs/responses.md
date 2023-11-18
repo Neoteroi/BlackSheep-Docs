@@ -15,10 +15,9 @@ The following example shows how to use the low level objects to create a
 response with status 200 and body "Hello, World":
 
 ```python
-from blacksheep import Application, Response, Content
+from blacksheep import Application, Response, Content, get
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -37,10 +36,9 @@ For example, the `json` function in `blacksheep.server.responses` produces
 a response object having a JSON body.
 
 ```python
-from blacksheep import Application, json
+from blacksheep import Application, get, json
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -59,10 +57,9 @@ Produces the following response body:
 The framework also allows to define a request handler this way:
 
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -147,11 +144,10 @@ not strings.
 To set a cookie, use the `set_cookie` method of the `Response` class:
 
 ```python
-from blacksheep import Application, json
+from blacksheep import Application, get, json
 from blacksheep.cookies import Cookie
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -175,11 +171,10 @@ The following example shows how to set a cookie with `HttpOnly` and lasting
 ```python
 from datetime import datetime, timedelta
 
-from blacksheep import Application, Response, json
+from blacksheep import Application, Response, get, json
 from blacksheep.cookies import Cookie
 
-app = Application(show_error_details=True)
-get = app.router.get
+app = Application()
 
 
 @get("/")
@@ -284,12 +279,12 @@ using a `StreamedContent` object bound to a generator yielding bytes.
 
 ```python
 import asyncio
-from blacksheep import Application, Response, StreamedContent
+from blacksheep import Application, Response, StreamedContent, get
 
-app = Application(show_error_details=True)
+app = Application()
 
 
-@app.router.get("/chunked-text")
+@get("/chunked-text")
 async def get_chunked_text(request):
     async def provider():
         yield b"Lorem "
@@ -308,12 +303,12 @@ Alternatively, it is possible to use the `file` function from
 
 ```python
 import asyncio
-from blacksheep import Application, file, ContentDispositionType
+from blacksheep import Application, ContentDispositionType, file, get
 
 app = Application(show_error_details=True)
 
 
-@app.router.get("/chunked-text")
+@router.get("/chunked-text")
 async def get_chunked_text(request):
     async def provider():
         yield b"Lorem "

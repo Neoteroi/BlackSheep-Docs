@@ -9,6 +9,7 @@ details. This page describes the following:
 - [X] How to handle common responses.
 - [X] Expose the documentation for anonymous access.
 - [X] Support for [ReDoc UI](https://github.com/Redocly/redoc).
+- [X] How to implement a custom `UIProvider`.
 
 ## Introduction to OpenAPI Documentation
 Citing from the [Swagger web site](https://swagger.io/specification/), at the
@@ -501,7 +502,7 @@ docs = OpenAPIHandler(info=Info(title="Example", version="0.0.1"))
 docs.bind_app(app)
 
 
-@app.router.get("/api/orders")
+@router.get("/api/orders")
 async def get_orders(
     page: FromQuery[int] = FromQuery(1),
     page_size: FromQuery[int] = FromQuery(30),
@@ -623,7 +624,7 @@ docs = OpenAPIHandler(info=Info(title="Example", version="0.0.1"))
 docs.bind_app(app)
 
 
-@app.router.get("/api/orders")
+@router.get("/api/orders")
 @docs(
     parameters={
         "page": ParameterInfo(description="Page number"),
@@ -653,7 +654,7 @@ The following sections show the previous example re-written to use docstrings.
 
     ```python
 
-    @app.router.get("/api/orders")
+    @router.get("/api/orders")
     async def get_orders(
         page: FromQuery[int] = FromQuery(1),
         page_size: FromQuery[int] = FromQuery(30),
@@ -673,7 +674,7 @@ The following sections show the previous example re-written to use docstrings.
 
     ```python
 
-    @app.router.get("/api/orders")
+    @router.get("/api/orders")
     async def get_orders(
         page: FromQuery[int] = FromQuery(1),
         page_size: FromQuery[int] = FromQuery(30),
@@ -692,7 +693,7 @@ The following sections show the previous example re-written to use docstrings.
 
     ```python
 
-    @app.router.get("/api/orders")
+    @router.get("/api/orders")
     async def get_orders(
         page: FromQuery[int] = FromQuery(1),
         page_size: FromQuery[int] = FromQuery(30),
@@ -756,6 +757,109 @@ docs.ui_providers.append(ReDocUIProvider())
 docs.include = lambda path, _: path.startswith("/api/")
 ```
 
+### How to implement a custom UIProvider
+
+The BlackSheep package includes some static files to offer a good user
+experience in some circumstances. These include HTML pages used when enabling
+Swagger UI or ReDoc UI.
+
+To control those pages, for example to alter the HTML structure or use different
+sources for JavaScript and CSS files (which by the way could be the BlackSheep
+application serving the OpenAPI specification files), it is recommended to:
+
+- define a custom implementation of `UIProvider`
+- maintain the desired HTML file
+
+Example:
+
+
+```python
+from dataclasses import dataclass
+from pathlib import Path
+
+from blacksheep import Application
+from blacksheep.server.openapi.v3 import OpenAPIHandler
+from blacksheep.server.openapi.ui import SwaggerUIProvider, UIOptions
+from openapidocs.v3 import Info
+
+app = Application()
+
+
+class CustomUIProvider(SwaggerUIProvider):
+    def get_openapi_ui_html(self, options: UIOptions) -> str:
+        _template = Path("example.html").read_text()
+        return _template.replace("{options.spec_url}", options.spec_url)
+
+
+docs = OpenAPIHandler(info=Info(title="Example API", version="0.0.1"))
+# Set the UI provider as desired:
+docs.ui_providers = [CustomUIProvider()]
+docs.bind_app(app)
+
+
+@dataclass
+class Foo:
+    foo: str
+
+
+@route("/foo")
+async def get_foo() -> Foo:
+    return Foo("Hello!")
+```
+
+_example.html_:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My desired title</title>
+    <link rel="icon" href="/favicon.png"/>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.0/swagger-ui.css">
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.0/swagger-ui-bundle.min.js"></script>
+    <script>
+    const ui = SwaggerUIBundle({
+        url: '{options.spec_url}',
+        oauth2RedirectUrl: window.location.origin + '/docs/oauth2-redirect',
+        dom_id: '#swagger-ui',
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+        layout: "BaseLayout",
+        deepLinking: true,
+        showExtensions: true,
+        showCommonExtensions: true
+    })
+    </script>
+</body>
+</html>
+```
+
+Python code highlight:
+
+```diff
++from blacksheep.server.openapi.ui import SwaggerUIProvider, UIOptions
+from openapidocs.v3 import Info
+
+app = Application()
+
+
++class CustomUIProvider(SwaggerUIProvider):
++    def get_openapi_ui_html(self, options: UIOptions) -> str:
++        _template = Path("example.html").read_text()
++        return _template.replace("{options.spec_url}", options.spec_url)
+
+
+docs = OpenAPIHandler(info=Info(title="Example API", version="0.0.1"))
+# Set the UI provider as desired:
++docs.ui_providers = [CustomUIProvider()]
+docs.bind_app(app)
+```
+
 ### Changing operations ids
 When OpenAPI Documentation is generated, operation ids are obtained from the
 name of the Python function definitions.
@@ -764,7 +868,7 @@ For example, having a `get_foo` request handler, generates an object having
 `operationId` equal to "get_foo":
 
 ```python
-@app.router.get("/foo")
+@router.get("/foo")
 async def get_foo() -> Foo:
     return Foo("Hello!")
 ```

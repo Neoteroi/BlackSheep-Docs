@@ -26,7 +26,7 @@ You can use route parameters just like with the regular request handlers.
     app = Application()
 
 
-    @app.router.ws("/ws/{client_id}")
+    @router.ws("/ws/{client_id}")
     async def ws(websocket: WebSocket, client_id: str):
         ...
     ```
@@ -69,7 +69,7 @@ that your application agrees to accept.
     and response headers.
 
 ```py
-@app.router.ws("/ws")
+@router.ws("/ws")
 async def ws(websocket: WebSocket):
     # Parameters are purely optional.
     await websocket.accept(
@@ -101,7 +101,7 @@ until either the client disconnects or the server shut down.
 === "Text"
 
     ```py
-    @app.router.ws("/ws")
+    @router.ws("/ws")
     async def echo(websocket: WebSocket):
         await websocket.accept()
 
@@ -114,7 +114,7 @@ until either the client disconnects or the server shut down.
 === "Bytes"
 
     ```py
-    @app.router.ws("/ws")
+    @router.ws("/ws")
     async def echo(websocket: WebSocket):
         await websocket.accept()
 
@@ -127,7 +127,7 @@ until either the client disconnects or the server shut down.
 === "JSON"
 
     ```py
-    @app.router.ws("/ws")
+    @router.ws("/ws")
     async def echo(websocket: WebSocket):
         await websocket.accept()
 
@@ -150,7 +150,7 @@ from blacksheep import WebSocket, WebSocketDisconnectError
 
 ...
 
-@app.router.ws("/ws")
+@router.ws("/ws")
 async def echo(websocket: WebSocket):
     await websocket.accept()
 

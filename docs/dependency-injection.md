@@ -4,7 +4,7 @@ injected directly in request handlers, by function signature. BlackSheep
 also supports dependency injection of services configured for the application.
 This page describes:
 
-- [X] An introduction to dependency injection in BlackSheep.
+- [X] An introduction to dependency injection in BlackSheep, with a focus on `rodi`.
 - [X] Service resolution.
 - [X] Service lifetime.
 - [X] Options to create services.

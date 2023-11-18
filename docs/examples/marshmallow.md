@@ -73,7 +73,7 @@ async def invalid_body_handler(app, request, exc: InvalidBodyError):
     return pretty_json(exc.details, 400)
 
 
-@app.router.post("/")
+@router.post("/")
 def example(data: FromMultiSchema[BandMemberSchema]):
     return pretty_json(data.value)
 

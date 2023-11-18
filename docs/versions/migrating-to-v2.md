@@ -3,15 +3,17 @@ version 2 of the web framework. The most relevant changes are:
 
 - [X] Improved project templates and the `blacksheep-cli` to bootstrap new projects.
 - [X] Automatic import of `routes` and `controllers`.
-- [X] Changes to dependency injection, with support for alternatives to `rodi`.
-- [X] Changes to server side rendering, with support for alternatives to `Jinja2`.
-- [X] Support for dependency injection in authentication and authorization handlers.
+- [X] Improved dependency injection, with support for alternatives to `rodi`.
+- [X] Improved server side rendering, with support for alternatives to `Jinja2`.
+- [X] Added support for dependency injection in authentication and authorization handlers.
+- [X] Removed the `@app.route` decorator and moved it to the `Router` class.
 - [X] Improved the `Router` class to support sub-routers and filters.
 - [X] Improved the OIDC features to support storing tokens in the HTML5 Storage
   API instead of cookies.
-- [X] The full list of changes is at the bottom of this page. It includes
-  changes that were applied to version 1 of the framework, too.
 - [X] Some classes have been renamed to better follow Python naming conventions.
+
+The full list of changes is at the bottom of this page. It includes changes
+that were applied to version 1 of the framework, too.
 
 ## BlackSheep-CLI
 
@@ -150,6 +152,40 @@ For more information, read the updated
 
 `GuardPost` has been modified to support the new `ContainerProtocol` in `rodi`,
 and authentication and authorization handlers now support dependency injection.
+
+## Removed the app.route method
+
+The `Application` class was modified to remove the `route` method, which is now
+available in the `Router` class. The reason for this change it to make the
+code API consistent between methods used to register request handlers.
+The `route` method of the singleton default `Router` instance is also exposed
+by `blacksheep` package like the other methods to register request handlers.
+
+=== "Now in v2"
+
+    ```python
+    from blacksheep import Application, route
+
+    app = Application()
+
+
+    @route("/")
+    def home():
+        return "Example"
+    ```
+
+=== "Before in v1"
+
+    ```python
+    from blacksheep import Application
+
+    app = Application()
+
+
+    @app.route("/")
+    def home():
+        return "Example"
+    ```
 
 ## Improvements to the Router class
 
@@ -334,7 +370,7 @@ async def register_http_client():
     print("HTTP client disposed")
 
 
-@app.router.get("/")
+@router.get("/")
 async def home(http_client: ClientSession):
     print(http_client)
     return {"ok": True, "client_instance_id": id(http_client)}

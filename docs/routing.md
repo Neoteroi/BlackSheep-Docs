@@ -51,12 +51,12 @@ The following example shows how to define a request handler for the root
 path of a web application "/":
 
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get
 
 app = Application(show_error_details=True)
 
 
-@app.router.get("/")
+@get("/")
 def hello_world():
     return "Hello World"
 ```
@@ -64,11 +64,9 @@ def hello_world():
 It is possible to assign router methods to variables, to reduce code verbosity:
 
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get, post
 
 app = Application(show_error_details=True)
-get = app.router.get
-post = app.router.post
 
 
 @get("/")
@@ -79,20 +77,15 @@ def hello_world():
 @post("/message")
 def create_message(text: str):
     return "TODO"
-
 ```
 
-Alternatively, the application offers a `route` method:
+Alternatively, the application router offers a `route` method:
 
 ```python
-
-@get("/foo")
-async def example_foo():
-    # HTTP GET /foo
-    return "Hello, World!"
+from blacksheep import route
 
 
-@app.route("/example", methods=["GET", "HEAD", "TRACE"])
+@route("/example", methods=["GET", "HEAD", "TRACE"])
 async def example():
     # HTTP GET /example
     # HTTP HEAD /example
