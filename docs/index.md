@@ -45,7 +45,7 @@ the documentation of first version of the framework, use the links below:
     at `/blacksheep/v1/`
 
 - title: Migrating from v1 to v2
-  url: /blacksheep/versions/migrating-to-v2
+  url: /blacksheep/versions/migrating-to-v2/
   content: >
     Go to the summary of changes between version 1 and version 2 of the web
     framework.
