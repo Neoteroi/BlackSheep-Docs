@@ -70,7 +70,7 @@ theme:
 
 extra:
     version: 1
-    is_current_version: true
+    is_current_version: false
 
 extra_css:
   - css/neoteroi.css

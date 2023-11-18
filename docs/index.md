@@ -30,10 +30,3 @@ To get started with BlackSheep, read these tutorials:
 
 * [Basics](./getting-started/)
 * [The MVC template](./mvc-project-template/)
-
-## Timeline
-
-The following timeline describe the current vision on the project, describing
-features that are under development or taken into consideration.
-
-[timeline(./docs/timeline.yml)]
