@@ -117,7 +117,7 @@ When `known_proxies` is not provided, it is set by default to handle `localhost`
 
 ## Handling trusted hosts
 When forwarded headers middlewares are not used, but it is necessary to
-validated hosts, it is possible to use the `TrustedHostsMiddleware`:
+validate hosts, it is possible to use the `TrustedHostsMiddleware`:
 
 ```python
 from blacksheep import Application
