@@ -51,6 +51,8 @@ async def add_example(self, example: str):
     ...
 ```
 
+For more information on the above, read [_Using the default router and other routers_](/blacksheep/routing/#using-the-default-router-and-other-routers).
+
 All modules inside `routes` and `controllers` packages are imported
 automatically in v2. Automatic import works relatively to where a BlackSheep
 application is instantiated. In the structure described below, the modules in

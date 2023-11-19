@@ -160,16 +160,15 @@ definition of the TODOs API. Start with the following contents:
 
 from blacksheep import get, post, delete
 from domain import ToDo, CreateToDoInput
-from typing import List, Optional
 
 
 @get("/api/todos")
-async def get_todos() -> List[ToDo]:
+async def get_todos() -> list[ToDo]:
     ...
 
 
 @get("/api/todos/{todo_id}")
-async def get_todo(todo_id) -> Optional[ToDo]:
+async def get_todo(todo_id) -> ToDo | None:
     ...
 
 
@@ -255,13 +254,11 @@ API to work with data stored in memory:
 ```python
 # ./app/routes/todos.py
 
-from typing import Dict, List, Optional
-
 from blacksheep import get, delete, not_found, post
 from domain import CreateToDoInput, ToDo
 
 
-_MOCKED: Dict[int, ToDo] = {
+_MOCKED: dict[int, ToDo] = {
     1: ToDo(
         id=1,
         title="BlackSheep Documentation",
@@ -281,16 +278,16 @@ _MOCKED: Dict[int, ToDo] = {
 
 
 @get("/api/todos")
-async def get_todos() -> List[ToDo]:
+async def get_todos() -> list[ToDo]:
     return list(_MOCKED.values())
 
 
 @get("/api/todos/{todo_id}")
-async def get_todo(todo_id: int) -> Optional[ToDo]:
+async def get_todo(todo_id: int) -> ToDo | None:
     try:
         return _MOCKED[todo_id]
     except KeyError:
-        return not_found()
+        return not_found()  # type: ignore
 
 
 @post("/api/todos")
@@ -306,7 +303,6 @@ async def delete_todo(todo_id: int) -> None:
         del _MOCKED[todo_id]
     except KeyError:
         pass
-
 ```
 
 Now that the API is mocked, let's see how to add tests for it.

@@ -16,7 +16,7 @@ For example:
   original client IP address must also be forwarded in a header.
 * the *path* of web requests can be changed while being proxied (e.g. NGINX
   configured to proxy requests to `/example` to the root `/` of a web
-  application)
+  application).
 
 This information may be important in request processing, for example in
 redirects, authentication, link generation when absolute URLs are needed, and
