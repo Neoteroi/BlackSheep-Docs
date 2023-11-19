@@ -117,7 +117,7 @@ When `known_proxies` is not provided, it is set by default to handle `localhost`
 
 ## Handling trusted hosts
 When forwarded headers middlewares are not used, but it is necessary to
-validated hosts, it is possible to use the `TrustedHostsMiddleware`:
+validate hosts, it is possible to use the `TrustedHostsMiddleware`:
 
 ```python
 from blacksheep import Application
@@ -172,7 +172,7 @@ absolute_url_to_path = get_absolute_url_to_path(request, "/example")
 
 !!! warning
     When configuring [OpenID Connect](../authentication/#oidc) authentication,
-    it can be necessary to handle forward headers, so that the application can
+    it can be necessary to handle forwarded headers, so that the application can
     generate correct `redirect_uri` for authorization servers.
 
 ## ASGI root_path
