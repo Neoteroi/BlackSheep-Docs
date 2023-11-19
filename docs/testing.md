@@ -370,6 +370,7 @@ file to include fixtures definition to arrange tests for the web application:
 import asyncio
 
 import pytest
+import pytest_asyncio
 from blacksheep.testing import TestClient
 from server import app as app_server
 
@@ -381,14 +382,14 @@ def event_loop(request):
     loop.close()
 
 
-@pytest.fixture(scope="session")
+@pytest_asyncio.fixture(scope="session")
 async def api():
     await app_server.start()
     yield app_server
     await app_server.stop()
 
 
-@pytest.fixture(scope="session")
+@pytest_asyncio.fixture(scope="session")
 async def test_client(api):
     return TestClient(api)
 
