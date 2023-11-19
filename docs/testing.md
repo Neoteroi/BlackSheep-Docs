@@ -226,11 +226,10 @@ Documentation:
 ```python
 from blacksheep import Application
 
-from .routes import router
 from .docs import docs  # +++
 
 
-app = Application(router=router)
+app = Application()
 docs.bind_app(app)  # +++
 ```
 
