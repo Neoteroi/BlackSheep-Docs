@@ -18,20 +18,20 @@ The following example illustrates how the `cache_control` decorator can be used
 to control caching for specific request handlers:
 
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 from blacksheep.server.headers.cache import cache_control
 
 
 app = Application()
 
 
-@app.router.get("/")
+@get("/")
 @cache_control(no_cache=True, no_store=True)
 async def home():
     return "This response should not be cached or stored!"
 
 
-@app.router.get("/api/cats")
+@get("/api/cats")
 @cache_control(max_age=120)
 async def get_cats():
     ...

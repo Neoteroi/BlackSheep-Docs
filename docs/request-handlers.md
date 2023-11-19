@@ -2,7 +2,7 @@
 
 The previous pages describe that a request handler in BlackSheep is a function
 associated to a route,  having the responsibility of handling web requests.
-This page describes `request handlers` in detail, presenting the following:
+This page describes `request handlers` in detail, covering the following:
 
 - [X] Request handler normalization.
 - [X] Using asynchronous and synchronous code.
@@ -22,11 +22,10 @@ async def normal_handler(request: Request) -> Response:
 To be a request handler, a function must be associated to a route:
 
 ```python
-from blacksheep import Application, Request, Response, text
+from blacksheep import Application, Request, Response, get, text
 
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -50,6 +49,14 @@ def sync_handler(request: Request) -> Response:
     return text("Example")
 
 ```
+
+!!! danger "Avoid blocking code in synchronous methods!"
+    When a request handler is defined as synchronous method, BlackSheep
+    assumes that the author of the code knows what they are doing and about
+    asynchronous programming, and the response can be returned immediately
+    without I/O or CPU intensive operations that would block the event loop.
+    BlackSheep does nothing to prevent blocking the event loop, if you add
+    blocking operations in your code.
 
 Similarly, request handlers are normalized when their function signature is
 different than the normal one. For example a request handler can be defined
@@ -84,8 +91,8 @@ def get_example_cat() -> Cat:
 
 ### Automatic binding of parameters
 
-An important feature enabled by function normalization is the automatic binding
-of request parameters, as described in the `Getting Started` pages. Common
+An important feature enabled by function normalization is automatic binding of
+request parameters, as described in the `Getting Started` pages. Common
 scenarios are using route parameters, and query string parameters:
 
 ```python
@@ -109,6 +116,7 @@ from the query string and parsed, if present, otherwise default values are
 used.
 
 ### Explicit and implicit binding
+
 All examples so far showed how to use implicit binding of request parameters.
 In the `get_cats` example above, all parameters are _implicitly_ bound from the
 request query string. To enable more scenarios, `BlackSheep` provides also
@@ -141,12 +149,14 @@ async def create_cat(
 More details about bindings are described in _[Binders](../binders/)_.
 
 ### Normalization and OpenAPI Documentation
+
 Request handler normalization enables also a more accurate generation of
 [OpenAPI Documentation](../openapi/), since the web framework knows that request
 handlers need input from query string, routes, headers, cookies, etc.; and
 produce responses of a certain type.
 
 ## Using asynchronous and synchronous code.
+
 BlackSheep supports both asynchronous and synchronous request handlers. Request
 handlers don't need to be asynchronous in those scenarios when the response is
 well-known and can be produced without doing any I/O bound operation or any
@@ -154,11 +164,10 @@ CPU intensive operation. This is the case for example of redirects, and the
 previous "Hello, There!" example:
 
 ```python
-from blacksheep import Application, Request, Response, text, redirect
+from blacksheep import Application, Request, Response, get, text, redirect
 
 
 app = Application()
-get = app.router.get
 
 
 @get("/sync")
@@ -172,10 +181,10 @@ def redirect_example() -> Response:
 ```
 
 Request handlers that do I/O bound operations or CPU intensive operations
-should be instead `async`, to not impede the work of the web server's loop. For
-example, if information are fetched from a database or a remote API when
-handling a web request handler, it is a good practice to use asynchronous code
-to reduce RAM consumption and not impede the event loop of the web application.
+should be instead `async`, to not hinder the performance of the web server. For
+example, if information is fetched from a database or a remote API when
+handling a web request handler, it is correct to use asynchronous code
+to reduce RAM consumption and not block the event loop of the web application.
 
 !!! warning
     If an operation is CPU intensive (e.g. involving file operations,

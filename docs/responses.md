@@ -15,10 +15,9 @@ The following example shows how to use the low level objects to create a
 response with status 200 and body "Hello, World":
 
 ```python
-from blacksheep import Application, Response, Content
+from blacksheep import Application, Response, Content, get
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -37,10 +36,9 @@ For example, the `json` function in `blacksheep.server.responses` produces
 a response object having a JSON body.
 
 ```python
-from blacksheep import Application, json
+from blacksheep import Application, get, json
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -59,10 +57,9 @@ Produces the following response body:
 The framework also allows to define a request handler this way:
 
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -147,11 +144,10 @@ not strings.
 To set a cookie, use the `set_cookie` method of the `Response` class:
 
 ```python
-from blacksheep import Application, json
+from blacksheep import Application, get, json
 from blacksheep.cookies import Cookie
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -175,11 +171,10 @@ The following example shows how to set a cookie with `HttpOnly` and lasting
 ```python
 from datetime import datetime, timedelta
 
-from blacksheep import Application, Response, json
+from blacksheep import Application, Response, get, json
 from blacksheep.cookies import Cookie
 
-app = Application(show_error_details=True)
-get = app.router.get
+app = Application()
 
 
 @get("/")
@@ -191,7 +186,7 @@ def home() -> Response:
             "foo2",
             "value2",
             http_only=True,
-            expires=datetime.utcnow() + timedelta(minutes=15),
+            expires=datetime.now() + timedelta(minutes=15),
         )
     )
 
@@ -200,17 +195,17 @@ def home() -> Response:
 
 Cookie's options:
 
-| Parameter     | Type (default value)                                | Description                                                                                                                                                                                            |
-| ------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **name**      | `str`                                               | Cookie's name.                                                                                                                                                                                         |
-| **value**     | `str`                                               | Cookie's value.                                                                                                                                                                                        |
-| **expires**   | `datetime | null` (`null`)                          | The maximum lifetime of the cookie as an HTTP-date timestamp. If unspecified, the cookie becomes a session cookie. A session finishes when the client shuts down, and session cookies will be removed. |
-| **domain**    | `str | null` (`null`)                               | Host to which the cookie will be sent.                                                                                                                                                                 |
-| **path**      | `str | null` (`null`)                               | Optional path to restrict access to the cookie.                                                                                                                                                        |
-| **http_only** | `bool` (`False`)                                    | Optional boolean to forbid JavaScript access to the cookie.                                                                                                                                            |
-| **secure**    | `bool` (`False`)                                    | Optionally instructs browsers to send the cookie only over HTTPS (or `localhost`).                                                                                                                     |
-| **max_age**   | `int` (`-1`)                                        | Optional number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.                                                                                     |
-| **same_site** | `CookieSameSiteMode` (CookieSameSiteMode.UNDEFINED) | Controls the cookie's `Same-Site` attribute.                                                                                                                                                           |
+| Parameter     | Type (default value)                                | Description                                                                                                        |
+| ------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **name**      | `str`                                               | Cookie's name.                                                                                                     |
+| **value**     | `str`                                               | Cookie's value.                                                                                                    |
+| **expires**   | `datetime                                           | null` (`null`)                                                                                                     | The maximum lifetime of the cookie as an HTTP-date timestamp. If unspecified, the cookie becomes a session cookie. A session finishes when the client shuts down, and session cookies will be removed. |
+| **domain**    | `str                                                | null` (`null`)                                                                                                     | Host to which the cookie will be sent.                                                                                                                                                                 |
+| **path**      | `str                                                | null` (`null`)                                                                                                     | Optional path to restrict access to the cookie.                                                                                                                                                        |
+| **http_only** | `bool` (`False`)                                    | Optional boolean to forbid JavaScript access to the cookie.                                                        |
+| **secure**    | `bool` (`False`)                                    | Optionally instructs browsers to send the cookie only over HTTPS (or `localhost`).                                 |
+| **max_age**   | `int` (`-1`)                                        | Optional number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. |
+| **same_site** | `CookieSameSiteMode` (CookieSameSiteMode.UNDEFINED) | Controls the cookie's `Same-Site` attribute.                                                                       |
 
 #### `CookieSameSiteMode` enum
 
@@ -284,12 +279,12 @@ using a `StreamedContent` object bound to a generator yielding bytes.
 
 ```python
 import asyncio
-from blacksheep import Application, Response, StreamedContent
+from blacksheep import Application, Response, StreamedContent, get
 
-app = Application(show_error_details=True)
+app = Application()
 
 
-@app.router.get("/chunked-text")
+@get("/chunked-text")
 async def get_chunked_text(request):
     async def provider():
         yield b"Lorem "
@@ -308,12 +303,12 @@ Alternatively, it is possible to use the `file` function from
 
 ```python
 import asyncio
-from blacksheep import Application, file, ContentDispositionType
+from blacksheep import Application, ContentDispositionType, file, get
 
 app = Application(show_error_details=True)
 
 
-@app.router.get("/chunked-text")
+@router.get("/chunked-text")
 async def get_chunked_text(request):
     async def provider():
         yield b"Lorem "

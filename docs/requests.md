@@ -19,11 +19,10 @@ It is possible to read query and route parameters from an instance of
 request headers can be read from the request:
 
 ```python
-from blacksheep import Application, Request, Response, text
+from blacksheep import Application, Request, Response, get, text
 
 
 app = Application()
-get = app.router.get
 
 
 @get("/{something}")
@@ -53,11 +52,10 @@ into the desired type, and improve development experience and source code.
 The same example can be achieved in the following way:
 
 ```python
-from blacksheep import Application, Request, Response, text, FromHeader, FromQuery
+from blacksheep import Application, Request, Response, get, text, FromHeader, FromQuery
 
 
 app = Application()
-get = app.router.get
 
 
 class FromAcceptHeader(FromHeader[str]):
@@ -90,10 +88,9 @@ Something: example
 ```python
 from typing import Optional
 
-from blacksheep import Application, Response, text, FromHeader, FromCookie
+from blacksheep import Application, Response, get, text, FromHeader, FromCookie
 
 app = Application()
-get = app.router.get
 
 
 class FromAcceptHeader(FromHeader[str]):
@@ -125,7 +122,7 @@ kinds.
     ```python
     from dataclasses import dataclass
 
-    from blacksheep import FromJSON
+    from blacksheep import FromJSON, post
 
 
     @dataclass
@@ -178,7 +175,7 @@ kinds.
 ===  "Using binders (recommended)"
 
     ```python
-    from blacksheep import FromForm
+    from blacksheep import FromForm, post
 
 
     class SomethingInput:
@@ -293,7 +290,7 @@ the event loop:
 === "Directly from the request"
 
     ```python
-    from blacksheep import created
+    from blacksheep import created, post
 
 
     @post("/upload")

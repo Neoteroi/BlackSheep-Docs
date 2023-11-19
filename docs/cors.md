@@ -50,6 +50,7 @@ The example below shows how to enable CORS only for certain endpoints:
 ```python
 
 app.use_cors()
+cors = app.cors
 
 app.add_cors_policy(
     "example",
@@ -57,12 +58,12 @@ app.add_cors_policy(
     allow_origins="*",
 )
 
-@app.route("/", methods=["GET", "POST"])
+@route("/", methods=["GET", "POST"])
 async def home():
     ...
 
-@app.cors("example")
-@app.route("/specific-rules", methods=["GET", "POST"])
+@cors("example")
+@route("/specific-rules", methods=["GET", "POST"])
 async def enabled():
     ...
 
@@ -103,17 +104,17 @@ app.add_cors_policy(
 app.add_cors_policy("deny")
 
 
-@app.route("/", methods=["GET", "POST"])
+@route("/", methods=["GET", "POST"])
 async def home():
     ...
 
 @app.cors("one")
-@app.route("/specific-rules", methods=["GET", "POST"])
+@route("/specific-rules", methods=["GET", "POST"])
 async def enabled():
     ...
 
 @app.cors("deny")
-@app.router.get("/disabled-for-cors")
+@get("/disabled-for-cors")
 async def disabled():
     ...
 ```

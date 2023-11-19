@@ -1,4 +1,5 @@
 # Controllers
+
 BlackSheep has built-in features to support MVC (Model, View, Controller)
 architecture. A `Controller` is a class having at least one method registered
 as request handler (i.e. associated to a route). A Controller is instantiated
@@ -14,11 +15,12 @@ It is recommended to follow the [MVC tutorial](../mvc-project-template/) before
 reading this page.
 
 !!! tip "For Flask users..."
-    If you come from Flask, controllers in BlackSheep would be the equivalent of
-    Flask's Blueprints, as they allow to group request handlers in dedicated
-    modules and classes.
+    If you come from Flask, controllers in BlackSheep can be considered
+    equivalent of Flask's Blueprints, as they allow to group request handlers
+    in dedicated modules and classes.
 
 ## The Controller class
+
 Controllers implement several methods to simplify returning responses. These
 are the same described at [Responses](../responses/), but they can be overridden
 in subclasses of `Controller` and they remove the need to import functions.
@@ -142,18 +144,18 @@ app.controllers_router = RoutesRegistry()
 get = app.controllers_router.get
 ```
 
-## The ApiController class
-The `ApiController` class is a kind of `Controller` dedicated to API
-definitions. An ApiController offers some properties to enable versioning
+## The APIController class
+The `APIController` class is a kind of `Controller` dedicated to API
+definitions. An APIController offers some properties to enable versioning
 of routes and adding a common path prefix to all routes, for example prepending
 "/v1/" fragment to all routes and the name of the controller class.
 
 ```python
 from blacksheep import Response, FromJSON, FromQuery
-from blacksheep.server.controllers import ApiController, delete, get, patch, post
+from blacksheep.server.controllers import APIController, delete, get, patch, post
 
 
-class Cats(ApiController):
+class Cats(APIController):
     @get()
     def get_cats(
         self,
@@ -195,7 +197,7 @@ To include a version number in the API, implement a `version` `@classmethod` lik
 following example:
 
 ```python
-class Cats(ApiController):
+class Cats(APIController):
 
     @classmethod
     def version(cls) -> str:
@@ -219,7 +221,7 @@ To specify a name for the API, different than the default one, implement a
 `route` `@classmethod` like in the following example:
 
 ```python
-class Cats(ApiController):
+class Cats(APIController):
 
     @classmethod
     def route(cls) -> str:

@@ -27,14 +27,13 @@ requires an authenticated user. It is modified from the example in the
 ```python
 from typing import Optional
 
-from blacksheep import Application, Request, json, ok
+from blacksheep import Application, Request, json, ok, get
 from blacksheep.server.authorization import Policy, auth
 from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
 from guardpost.authentication import User
 from guardpost.common import AuthenticatedRequirement
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 class ExampleAuthHandler(AuthenticationHandler):
@@ -99,10 +98,10 @@ validates user's claims (looking for a "role" claim that might be coming from a
 JWT).
 
 ```python
-from blacksheep.server.authorization import Policy, auth
+from blacksheep.server.authorization import Policy
 
 from guardpost.authorization import AuthorizationContext
-from guardpost.synchronous.authorization import Requirement
+from guardpost.authorization import Requirement
 
 
 class AdminRequirement(Requirement):
@@ -116,7 +115,6 @@ class AdminRequirement(Requirement):
 class AdminsPolicy(Policy):
     def __init__(self):
         super().__init__("admin", AdminRequirement())
-
 ```
 
 Full example:
@@ -124,16 +122,18 @@ Full example:
 ```python
 from typing import Optional
 
-from blacksheep import Application, Request, json, ok
+from blacksheep import Application, Request, get, json, ok
 from blacksheep.server.authorization import Policy, auth
-from guardpost.asynchronous.authentication import AuthenticationHandler, Identity
-from guardpost.authentication import User
-from guardpost.authorization import AuthorizationContext
+from guardpost import (
+    AuthenticationHandler,
+    Identity,
+    User,
+    AuthorizationContext,
+    Requirement,
+)
 from guardpost.common import AuthenticatedRequirement
-from guardpost.synchronous.authorization import Requirement
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 class ExampleAuthHandler(AuthenticationHandler):
@@ -195,7 +195,6 @@ async def only_for_authenticated_users():
 async def only_for_administrators():
     # This method requires "admin" role in user's claims
     return ok("example")
-
 ```
 
 ## Using the default policy

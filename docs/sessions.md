@@ -8,7 +8,7 @@ built-in classes.
 To enable sessions, use the `app.use_sessions` method as in the example below:
 
 ```python
-from blacksheep import Application, Request, text
+from blacksheep import Application, Request, get, text
 
 app = Application()
 
@@ -16,7 +16,7 @@ app = Application()
 app.use_sessions("<SIGNING_KEY>")
 
 
-@app.route("/")
+@get("/")
 def home(request: Request):
     session = request.session
 
@@ -27,14 +27,13 @@ def home(request: Request):
 
 The `use_sessions` method accepts the following parameters:
 
-| Name            | Description                                                                             | Defaults to                           |
-| --------------- | --------------------------------------------------------------------------------------- | ------------------------------------- |
-| secret_key      | required secret key used for signing                                                    | N/A                                   |
-| session_cookie  | optional session cookie name                                                            | "session"                             |
-| serializer      | optional `blacksheep.sessions.Serializer` to serialize and deserialize session values   | `blacksheep.sessions.JSONSerializer`  |
-| signer          | optional `itsdangerous.Serializer` to sign and encrypt the session cookie               | `itsdangerous.URLSafeTimedSerializer` |
-| encryptor       | (**deprecated**) optional `blacksheep.sessions.Encryptor` to encrypt the session cookie | `None`                                |
-| session_max_age | Optional session max age, in **seconds**                                                | `None`                                |
+| Name            | Description                                                                           | Defaults to                           |
+| --------------- | ------------------------------------------------------------------------------------- | ------------------------------------- |
+| secret_key      | required secret key used for signing                                                  | N/A                                   |
+| session_cookie  | optional session cookie name                                                          | "session"                             |
+| serializer      | optional `blacksheep.sessions.Serializer` to serialize and deserialize session values | `blacksheep.sessions.JSONSerializer`  |
+| signer          | optional `itsdangerous.Serializer` to sign and encrypt the session cookie             | `itsdangerous.URLSafeTimedSerializer` |
+| session_max_age | Optional session max age, in **seconds**                                              | `None`                                |
 
 ```python
     def use_sessions(
@@ -44,7 +43,6 @@ The `use_sessions` method accepts the following parameters:
         session_cookie: str = "session",
         serializer: Optional[SessionSerializer] = None,
         signer: Optional[Signer] = None,
-        encryptor: Optional[Encryptor] = None,
         session_max_age: Optional[int] = None,
     ) -> None:
         ...
@@ -57,6 +55,7 @@ protection](../dataprotection/) for more information on how tokens are signed
 and encrypted.
 
 ## Using sessions
+
 When sessions are enabled, they are always populated for the `request` object,
 and can be accessed through the `request.session` property.
 
@@ -64,7 +63,7 @@ The sessions middleware takes care of setting a response cookie whenever the
 session is modified, session cookies are signed and encrypted by default.
 
 ```python
-@app.route("/")
+@get("/")
 def home(request: Request):
     session = request.session
 

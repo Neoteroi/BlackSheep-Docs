@@ -11,10 +11,9 @@ response status code.
 
 ```python
 import asyncio
-from blacksheep import Application, Response, accepted
+from blacksheep import Application, Response, accepted, get
 
 app = Application(show_error_details=True)
-get = app.router.get
 
 
 async def background_work():
@@ -44,18 +43,18 @@ once every second:
 import asyncio
 from datetime import datetime
 
-from blacksheep import Application
+from blacksheep import Application, get
 
 app = Application()
 
 
-@app.route("/")
+@get("/")
 def home():
-    return f"Hello, World! {datetime.utcnow().isoformat()}"
+    return f"Hello, World! {datetime.now().isoformat()}"
 
 
 def get_current_timestamp():
-    return datetime.utcnow().isoformat()
+    return datetime.now().isoformat()
 
 
 class Foo:
@@ -82,5 +81,5 @@ async def configure_background_tasks(app):
 
 app.on_start += configure_background_tasks
 
-app.services.add_exact_scoped(Foo)
+app.services.add_scoped(Foo)
 ```

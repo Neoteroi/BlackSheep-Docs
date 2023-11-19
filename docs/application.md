@@ -13,10 +13,9 @@ request handlers, producing a `HTTP 500 Internal Server Error` response. To see
 this in practice, start an application like the following:
 
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 
 app = Application()
-get = app.router.get
 
 
 @get("/")
@@ -50,7 +49,6 @@ import os
 from blacksheep import Application
 
 app = Application(show_error_details=bool(os.environ.get("SHOW_ERROR_DETAILS", None)))
-get = app.router.get
 
 
 @get("/")
@@ -59,11 +57,9 @@ def crash_test():
 
 ```
 
-!!! info
-    BlackSheep project templates use a library to handle application
-    settings and configuration roots. Consider using
-    [`essentials-configuration`](https://github.com/Neoteroi/essentials-configuration)
-    for this.
+!!! info "Settings strategy"
+    BlackSheep project templates include a strategy to handle application
+    settings and configuration roots.
 
 ### Configuring exceptions handlers
 
@@ -74,7 +70,7 @@ matching handler for that kind of exception. An exception handler is defined as
 a function with the following signature:
 
 ```python
-from blacksheep import Request, Response
+from blacksheep import Request, Response, text
 
 async def exception_handler(self, request: Request, exc: Exception) -> Response:
     pass
@@ -90,14 +86,14 @@ async def exception_handler(self, request, exc: CustomException):
     nonlocal app
     assert self is app
     assert isinstance(exc, CustomException)
-    return Response(200, content=TextContent('Called'))
+    return text("Called")
 
 
 # Register the exception handler for the CustomException type:
 app.exceptions_handlers[CustomException] = exception_handler
 
 
-@app.router.get(b'/')
+@get('/')
 async def home(request):
     # of course, the exception can be risen at any point
     # for example in the business logic layer
@@ -105,9 +101,9 @@ async def home(request):
 
 ```
 
-Exceptions inheriting from `HTTPException` can be mapped to handlers by their type or by
-their status code, using `int` keys; while user defined exceptions are mapped to handlers
-by their type.
+Exceptions inheriting from `HTTPException` can be mapped to handlers by their
+type or by their status code, using `int` keys; while user defined exceptions
+are mapped to handlers by their type.
 
 When an exception handler is registered for a type of exception, all subclasses
 are also handled by that handler. It is however possible to define a more
@@ -190,7 +186,7 @@ async def register_http_client():
     print("HTTP client disposed")
 
 
-@app.router.get("/")
+@router.get("/")
 async def home(http_client: ClientSession):
     print(http_client)
     return {"ok": True, "client_instance_id": id(http_client)}
@@ -241,11 +237,13 @@ async def configure_redis():
     interface, refer to its [official documentation](https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html).
 
 ### on_start
+
 This event should be used to configure things such as new request handlers,
 and service registered in `app.services`, such as database connection pools,
 HTTP client sessions.
 
 ### after_start
+
 This event should be used to configure things that must happen after request
 handlers are normalized. At this point, the application router contains information
 about actual routes handled by the web application, and routes can be inspected.
@@ -253,6 +251,7 @@ For example, the built-in generation of OpenAPI Documentation generates the
 API specification file at this point.
 
 ### on_stop
+
 This event should be used to fire callbacks that need to happen when the application
 is stopped. For example, disposing of services that require disposal, such as
 database connection pools, HTTP client sessions using connection pools.
@@ -270,11 +269,10 @@ are fired, and the state of the application when they are executed.
     Event handlers can be registered using decorators.
 
     ```python
-    from blacksheep import Application, Request, Response, text
+    from blacksheep import Application, Request, Response, text, get
 
 
     app = Application()
-    get = app.router.get
 
 
     @get("/")
@@ -302,11 +300,10 @@ are fired, and the state of the application when they are executed.
     In alternative to decorators, event handlers can be registered using ` += `:
 
     ```python
-    from blacksheep import Application, Request, Response, text
+    from blacksheep import Application, Request, Response, text, get
 
 
     app = Application()
-    get = app.router.get
 
 
     @get("/")
@@ -342,4 +339,5 @@ are fired, and the state of the application when they are executed.
     ```
 
 ## Next
+
 Read about the details of [routing in BlackSheep](../routing).

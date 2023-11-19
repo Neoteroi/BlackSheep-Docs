@@ -1,15 +1,16 @@
 # Server Side Rendering (SSR)
 
 Server side templating refers to the ability of a web application to generate
-HTML pages from templates and dynamic variables. BlackSheep does this using the
-wondeful [`Jinja2` library](https://palletsprojects.com/p/jinja/) by the
-[Pallets](https://palletsprojects.com) team.
+HTML pages from templates and dynamic variables. By default, BlackSheep does
+this using [`Jinja2` library](https://palletsprojects.com/p/jinja/) by the
+[Pallets](https://palletsprojects.com) team, but it supports custom renderers.
 
 This page describes:
 
 - [X] How to configure server side templating.
 - [X] Returning views using response functions.
 - [X] Returning views using the MVC features.
+- [X] Using alternatives to `Jinja2`.
 
 !!! info
     The [BlackSheep MVC project
@@ -18,33 +19,26 @@ This page describes:
     configured.
 
 ## Configuration
+
 This example shows how to use Jinja2 templating engine with BlackSheep:
 
 ```python
-from blacksheep import Application
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader
+from blacksheep import Application, get
+from blacksheep.server.responses import view
 
-app = Application(show_error_details=True, debug=True)
-get = app.router.get
-
-# NB: this example requires a package called "app";
-# containing a 'templates' folder
-# The server file must be in the same folder that contains "app"
-view = use_templates(app, loader=PackageLoader("app", "templates"))
+app = Application()
 
 
 @get("/")
 def home():
     return view("home", {"example": "Hello", "foo": "World"})
-
 ```
 
 The expected folder structure for this example:
 ```
 ⬑ app
-     ⬑ templates
-          home.html   <-- template file loaded by `view` function
+     ⬑ views
+          home.jinja   <-- template file loaded by `view` function
      __init__.py
 
 server.py
@@ -55,8 +49,6 @@ server.py
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Example.">
 </head>
 <body>
   <h1>{{example}}</h1>
@@ -65,48 +57,37 @@ server.py
 </html>
 ```
 
-If the `use_templates` function is called more than once, the Jinja2
-environment is configured only once, but new `view` functions are returned. It
-is recommended to keep this setup in a single file, and import the `view`
-function in files that define routes for the application.
-
 ## Async mode
 
 It is possible to enable Jinja2 [async
-mode](http://jinja.pocoo.org/docs/2.10/api/#async-support), using the parameter
-`enable_async`. When `enable_async` is true, the function returned by
-`use_templates` is asynchronous:
+mode](http://jinja.pocoo.org/docs/2.10/api/#async-support), in the following
+way:
 
 ```python
-from blacksheep import Application
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader
+from blacksheep import Application, get
+from blacksheep.server.rendering.jinja2 import JinjaRenderer
+from blacksheep.server.responses import view_async
+from blacksheep.settings.html import html_settings
 
-app = Application(show_error_details=True, debug=True)
-get = app.router.get
-
-# NB: this example requires a package called "app";
-# containing a 'templates' folder
-# The server file must be in the same folder that contains "app"
-view = use_templates(app, loader=PackageLoader("app", "templates"), enable_async=True)
-
+app = Application()
+html_settings.use(JinjaRenderer(enable_async=True))
 
 @get("/")
 async def home():
-    return await view("home", {"example": "Hello", "foo": "World"})
+    return await view_async("home", {"example": "Hello", "foo": "World"})
 
 ```
 
 ## Loading templates
 
-It is possible to load templates by name including '.html', or without file
-extension; '.html' extension is added automatically. Extension must be lower
-case.
+It is possible to load templates by name including '.jinja', or without file
+extension; '.jinja' extension is added automatically. The extension must be
+lower case.
 
 ```python
 @get("/")
 async def home(request):
-    return view("home.html", {"example": "Hello", "foo": "World"})
+    return view("home.jinja", {"example": "Hello", "foo": "World"})
 
 
 # or...
@@ -119,44 +100,81 @@ async def home(request):
 
 ## Helpers and filters
 
-To configure custom helpers and filters for Jinja, it is possible to access
-its `Environment` using the `templates_environment` property of the application,
-once server side templating is configured.
+To configure custom helpers and filters for Jinja, access the renderer through
+`blacksheep.settings.html.html_settings`:
 
 ```
 .
 ├── app
 │   ├── __init__.py
 │   └── views
-│       └── index.html
+│       └── index.jinja
 └── server.py
 ```
 
 ```python
-# server.py
-from blacksheep import Application
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader, Environment
+from datetime import datetime
 
-app = Application(show_error_details=True)
+from blacksheep.server import Application
+from blacksheep.server.rendering.jinja2 import JinjaRenderer
+from blacksheep.settings.html import html_settings
 
-view = use_templates(app, PackageLoader("app", "views"))
+def configure_templating(
+    application: Application
+) -> None:
+    """
+    Configures server side rendering for HTML views.
+    """
+    renderer = html_settings.renderer
+    assert isinstance(renderer, JinjaRenderer)
 
+    def get_copy():
+        now = datetime.now()
+        return "{} {}".format(now.year, "Example")
 
-def example():
-    return "This is an example"
+    helpers = {"_": lambda x: x, "copy": get_copy}
 
-
-app.templates_environment.globals.update({"my_function": example})  # <<<
-
-
-@app.route("/")
-async def home():
-    return view("index.html", {})
+    env = renderer.env
+    env.globals.update(helpers)
 ```
 
 ```html
-<!-- index.html -->
+<!-- index.jinja -->
 <p>Hello, World!</p>
-{{ my_function() }}
+{{ copy() }}
+```
+
+## Using alternatives to Jinja2
+
+To use alternative classes for server side rendering:
+
+1. Define an implementation of `blacksheep.server.rendering.abc.Renderer`
+2. Configure it using `from blacksheep.settings.html import html_settings`
+
+```python
+from blacksheep.server.csrf import AntiForgeryHandler
+from blacksheep.settings.html import html_settings
+from blacksheep.server.rendering.abc import Renderer
+
+
+class CustomRenderer(Renderer):
+
+    def render(self, template: str, model, **kwargs) -> str:
+        """Renders a view synchronously."""
+        ...
+
+    async def render_async(self, template: str, model, **kwargs) -> str:
+        """Renders a view asynchronously."""
+        ...
+
+    def bind_antiforgery_handler(self, handler: AntiForgeryHandler) -> None:
+        """
+        Applies extensions for an antiforgery handler.
+
+        This method can be used to generate HTML fragments containing
+        anti-forgery tokens, for the built-in implementation of AF validation.
+        """
+
+
+html_settings.use(CustomRenderer())
 ```

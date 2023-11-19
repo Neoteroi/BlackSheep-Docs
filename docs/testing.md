@@ -27,13 +27,13 @@ A basic example of the `TestClient` would look like this:
 
 ```python
 import asyncio
-from blacksheep import Application
+from blacksheep import Application, get
 from blacksheep.testing import TestClient
 
 app = Application()
 
 
-@app.route("/")
+@get("/")
 async def hello(name: str = "World"):
     return f"Hello, {name}!"
 
@@ -152,44 +152,23 @@ class CreateToDoInput(BaseModel):
     description: str
 ```
 
-To define the API, create a `router.py` file in the `app.routes` package and
-copy the following contents into it:
-
-```python
-# ./app/routes/router.py
-
-from blacksheep.server.routing import Router
-
-
-router = Router()
-
-get = router.get
-post = router.post
-delete = router.delete
-```
-
-!!! info
-    💡 Declaring the router in a dedicated file is useful to reduce code verbosity
-    when defining request handlers.
-
-Then create a `todos.py` file in `app.routes` package, that will contain the
+Create a `todos.py` file in `app.routes` package, that will contain the
 definition of the TODOs API. Start with the following contents:
 
 ```python
 # ./app/routes/todos.py
 
-from .router import get, post, delete
+from blacksheep import get, post, delete
 from domain import ToDo, CreateToDoInput
-from typing import List, Optional
 
 
 @get("/api/todos")
-async def get_todos() -> List[ToDo]:
+async def get_todos() -> list[ToDo]:
     ...
 
 
 @get("/api/todos/{todo_id}")
-async def get_todo(todo_id) -> Optional[ToDo]:
+async def get_todo(todo_id) -> ToDo | None:
     ...
 
 
@@ -204,33 +183,17 @@ async def delete_todo(todo_id) -> None:
 
 ```
 
-Edit the `__init__.py` file in `app.routes` package, to load
-the API definition:
-
-```python
-# ./app/routes/__init__.py
-
-from .router import *
-from .todos import *
-```
-
 Create a `main.py` file in `app` package, that declares an application:
 
 ```python
-# ./app/main.py
 from blacksheep import Application
 
-from .routes import router
-
-
-app = Application(router=router)
+app = Application()
 ```
 
 And finally a `server.py` file at the project's root:
 
 ```python
-# ./server.py
-
 from app.main import app
 ```
 
@@ -262,11 +225,10 @@ Documentation:
 ```python
 from blacksheep import Application
 
-from .routes import router
 from .docs import docs  # +++
 
 
-app = Application(router=router)
+app = Application()
 docs.bind_app(app)  # +++
 ```
 
@@ -292,15 +254,11 @@ API to work with data stored in memory:
 ```python
 # ./app/routes/todos.py
 
-from typing import Dict, List, Optional
-
-from blacksheep import not_found
+from blacksheep import get, delete, not_found, post
 from domain import CreateToDoInput, ToDo
 
-from .router import delete, get, post
 
-
-_MOCKED: Dict[int, ToDo] = {
+_MOCKED: dict[int, ToDo] = {
     1: ToDo(
         id=1,
         title="BlackSheep Documentation",
@@ -320,16 +278,16 @@ _MOCKED: Dict[int, ToDo] = {
 
 
 @get("/api/todos")
-async def get_todos() -> List[ToDo]:
+async def get_todos() -> list[ToDo]:
     return list(_MOCKED.values())
 
 
 @get("/api/todos/{todo_id}")
-async def get_todo(todo_id: int) -> Optional[ToDo]:
+async def get_todo(todo_id: int) -> ToDo | None:
     try:
         return _MOCKED[todo_id]
     except KeyError:
-        return not_found()
+        return not_found()  # type: ignore
 
 
 @post("/api/todos")
@@ -345,7 +303,6 @@ async def delete_todo(todo_id: int) -> None:
         del _MOCKED[todo_id]
     except KeyError:
         pass
-
 ```
 
 Now that the API is mocked, let's see how to add tests for it.
@@ -416,20 +373,10 @@ Finally, define a first test for the TODOs API:
 ```python
 # ./tests/test_todos_api.py
 
-from typing import Any
-
 import pytest
-from blacksheep.contents import Content
+from blacksheep.contents import JSONContent
 from blacksheep.testing import TestClient
 from domain import CreateToDoInput, ToDo
-from essentials.json import dumps
-
-
-def json_content(data: Any) -> Content:
-    return Content(
-        b"application/json",
-        dumps(data, separators=(",", ":")).encode("utf8"),
-    )
 
 
 @pytest.mark.asyncio
@@ -442,7 +389,7 @@ async def test_create_and_get_todo(test_client: TestClient) -> None:
 
     response = await test_client.post(
         "/api/todos",
-        content=json_content(create_input),
+        content=JSONContent(create_input),
     )
 
     assert response is not None

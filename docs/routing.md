@@ -13,6 +13,8 @@ This page describes:
 - [X] How to use route parameters.
 - [X] How to define a catch-all route.
 - [X] How to define a fallback route.
+- [X] How to use sub-routers and filters.
+- [X] How to use the default router and other routers.
 
 ## Defining request handlers
 
@@ -50,48 +52,21 @@ The following example shows how to define a request handler for the root
 path of a web application "/":
 
 ```python
-from blacksheep import Application, text
-
-app = Application(show_error_details=True)
-
-
-@app.router.get("/")
-def hello_world():
-    return "Hello World"
-```
-
-It is possible to assign router methods to variables, to reduce code verbosity:
-
-```python
-from blacksheep import Application, text
-
-app = Application(show_error_details=True)
-get = app.router.get
-post = app.router.post
+from blacksheep import get
 
 
 @get("/")
 def hello_world():
     return "Hello World"
-
-
-@post("/message")
-def create_message(text: str):
-    return "TODO"
-
 ```
 
-Alternatively, the application offers a `route` method:
+Alternatively, the application router offers a `route` method:
 
 ```python
-
-@app.route("/foo")
-async def example_foo():
-    # HTTP GET /foo
-    return "Hello, World!"
+from blacksheep import route
 
 
-@app.route("/example", methods=["GET", "HEAD", "TRACE"])
+@route("/example", methods=["GET", "HEAD", "TRACE"])
 async def example():
     # HTTP GET /example
     # HTTP HEAD /example
@@ -183,8 +158,7 @@ def get_cat(cat_id):
     ...
 ```
 
-It is also possible to specify the expected type, using standard `typing`
-annotations:
+It is also possible to specify the expected type, using `typing` annotations:
 
 ```python
 
@@ -253,11 +227,11 @@ The following value patterns are built-in:
 
 | Value pattern | Description                                                                       |
 | ------------- | --------------------------------------------------------------------------------- |
-| str           | Any value that doesn't contain a slash "/".                                       |
-| int           | Any value that contains only numeric characters.                                  |
-| float         | Any value that contains only numeric characters and eventually a dot with digits. |
-| path          | Any value to the end of the path.                                                 |
-| uuid          | Any value that matches the UUID value pattern.                                    |
+| `str`         | Any value that doesn't contain a slash "/".                                       |
+| `int`         | Any value that contains only numeric characters.                                  |
+| `float`       | Any value that contains only numeric characters and eventually a dot with digits. |
+| `path`        | Any value to the end of the path.                                                 |
+| `uuid`        | Any value that matches the UUID value pattern.                                    |
 
 To define custom value patterns, extend the `Route.value_patterns` dictionary.
 The key of the dictionary is the name used by the parameter, while the value is
@@ -319,3 +293,214 @@ def fallback():
 
 app.router.fallback = fallback
 ```
+
+## Using sub-routers and filters
+
+The `Router` class supports filters for routes and sub-routers. In the following
+example, a web request for the root of the service "/" having a request header
+"X-Area" == "Test" gets the reply of the `test_home` request handler, without
+such header the reply of the `home` request handler.
+
+```python
+from blacksheep import Application, Router
+
+
+test_router = Router(headers={"X-Area": "Test"})
+
+router = Router(sub_routers=[test_router])
+
+@router.get("/")
+def home():
+    return "Home 1"
+
+@test_router.get("/")
+def test_home():
+    return "Home 2"
+
+
+app = Application(router=router)
+
+```
+
+A router can have filters based on headers, host name, query string parameters,
+and custom user-defined filters.
+
+Query string filters can be defined using the `params` parameter, by host using
+the `host` parameter:
+
+```python
+filter_by_query = Router(params={"version": "1"})
+
+filter_by_host  = Router(host="neoteroi.xyz")
+```
+
+To define a custom filter, define a type of `RouteFilter` and set it using the
+`filters` parameter:
+
+```python
+from blacksheep import Application, Request, Router
+from blacksheep.server.routing import RouteFilter
+
+
+class CustomFilter(RouteFilter):
+
+    def handle(self, request: Request) -> bool:
+        # implement here the desired logic
+        return True
+
+
+example_router = Router(filters=[CustomFilter()])
+```
+
+## Using the default router and other routers
+
+The examples in the documentation show how to register routes using methods
+imported from the BlackSheep package:
+
+```python
+from blacksheep import get
+
+@get("")
+async def home():
+    ...
+```
+
+Or, for controllers:
+
+```python
+from blacksheep.server.controllers import Controller, get
+
+
+class Home(Controller):
+
+    @get("/")
+    async def index(self):
+        ...
+```
+
+In this case routes are registered using default singleton routers, used if an
+application is instantiated without specifying a router:
+
+```python
+from blacksheep import Application
+
+
+# This application uses the default sigleton routers exposed by BlackSheep:
+app = Application()
+```
+
+This works in most scenarios, when a single `Application` instance per process
+is used. For more complex scenarios, it is possible to instantiate a router
+and use it as desired:
+
+```python
+# app/router.py
+
+from blacksheep import Router
+
+
+router = Router()
+```
+
+And use it when registering routes:
+
+```python
+from app.router import router
+
+
+@router.get("/")
+async def home():
+    ...
+```
+
+It is also possible to expose the router methods to reduce code verbosity, like
+the BlackSheep package does:
+
+```python
+# app/router.py
+
+from blacksheep import Router
+
+
+router = Router()
+
+
+get = router.get
+post = router.post
+
+# ...
+```
+
+
+```python
+from app.router import get
+
+
+@get("/")
+async def home():
+    ...
+```
+
+Then specify the router when instantiating the application:
+
+```python
+from blacksheep import Application
+
+from app.router import router
+
+
+# This application uses the router instantiated in app.router:
+app = Application(router=router)
+```
+
+### Controllers dedicated router
+
+Controllers need a different kind of router, an instance of
+`blacksheep.server.routing.RoutesRegistry`. If using dedicated router for
+controllers is desired, do instead:
+
+```python
+# app/controllers.py
+
+from blacksheep import RoutesRegistry
+
+
+controllers_router = RoutesRegistry()
+
+
+get = controllers_router.get
+post = controllers_router.post
+
+# ...
+```
+
+Then when defining your controllers:
+
+```python
+from blacksheep.server.controllers import Controller
+
+from app.controllers import get, post
+
+
+class Home(Controller):
+
+    @get("/")
+    async def index(self):
+        ...
+```
+
+```python
+from blacksheep import Application
+
+from app.controllers import controllers_router
+
+
+# This application uses the controllers' router instantiated in app.controllers:
+app = Application()
+app.controllers_router = controllers_router
+```
+
+!!! info "About Router and RoutesRegistry"
+    Controllers routes use a "RoutesRegistry" to support dynamic generation of
+    paths by controller class name. Controllers routes are evaluated and merged
+    into `Application.router` when the application starts.

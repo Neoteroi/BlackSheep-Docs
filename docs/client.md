@@ -72,67 +72,44 @@ client.configure()
 ```
 
 ## Considerations about the ClientSession class
-To make the client more user-friendly, default connection pools are reused by
-loop id. This is to prevent users from killing the performance of their
-applications simply by instantiating many times `ClientSession` (for example,
-at every web request).
 
-However, it is recommended to instantiate a single instance of HTTP client and
-register it as service of the application:
+The `ClientSession` owns by default a connections pool, if none is specified for
+it. The connections pool is automatically disposed when the client is exited,
+if it was created for the client.
+
+!!! danger "Connection pooling is important"
+    Avoid instantiating a new `ClientSession` at each web request, unless the
+    same `ConnectionsPool` is reused among the instances. Instantiating a new
+    `ClientSession` without reusing the same TCP connections pool has
+    negative effects on the performance of the application.
+
+It is recommended to instantiate a single instance of HTTP client and
+register it as service of the application, using the `@app.lifespan` method:
 
 ```python
+```python
+from blacksheep import Application
+from blacksheep.client.session import ClientSession
 
-async def configure_http_client(app):
-    http_client = ClientSession()
-    app.services.add_instance(http_client)  # register a singleton
+app = Application()
 
-app.on_start += configure_http_client
 
-async def dispose_http_client(app):
-    http_client = app.service_provider.get(ClientSession)
-    await http_client.close()
+@app.lifespan
+async def register_http_client():
+    async with ClientSession() as client:
+        print("HTTP client created and registered as singleton")
+        app.services.register(ClientSession, instance=client)
+        yield
 
-app.on_stop += dispose_http_client
+    print("HTTP client disposed")
 
+
+@router.get("/")
+async def home(http_client: ClientSession):
+    print(http_client)
+    return {"ok": True, "client_instance_id": id(http_client)}
 ```
 
 When following this approach, the http client can be automatically injected to
-request handlers, and services that need it, like in this example:
-
-```python
-from blacksheep import html
-
-
-@app.route("/get-python-homepage")
-async def get_python_homepage(http_client):
-    response = await http_client.get("https://docs.python.org/3/")
-
-    assert response is not None
-    data = await response.text()
-    return html(data)
-```
-
-Otherwise, instantiate a single connection pools and use it across several
-instances of HTTP clients:
-
-```python
-from blacksheep.client import ClientSession
-from blacksheep.client.pool import ClientConnectionPools
-
-
-async def client_pools():
-    # instantiate a single instance of pools
-    pools = ClientConnectionPools(loop)  # loop is an asyncio loop
-
-    # instantiate clients using the same pools
-    client_one = ClientSession(pools=pools)
-
-    client_two = ClientSession(pools=pools)
-
-    client_three = ClientSession(pools=pools)
-
-    await pools.close()
-```
-
-!!! danger "Dispose ClientConnectionPools"
-    When
+request handlers, and services that need it, and is automatically disposed when
+the application is stopped.

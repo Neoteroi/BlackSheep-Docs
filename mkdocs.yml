@@ -43,6 +43,8 @@ nav:
   - Background tasks: background-tasks.md
   - Mounting apps: mounting.md
   - HTTP Client: client.md
+  - More about the CLI: cli.md
+  - From V1 to V2: versions/migrating-to-v2.md
   - Develop using HTTPS: develop-with-https.md
   - ASGI: asgi.md
   - Extensions: extensions.md
@@ -51,6 +53,10 @@ nav:
   - Neoteroi docs home: "/"
 
 theme:
+  features:
+    - navigation.footer
+    - content.code.copy
+    - content.action.view
   palette:
     - scheme: slate
       toggle:
@@ -69,7 +75,7 @@ theme:
     repo: fontawesome/brands/github
 
 extra:
-    version: 1
+    version: 2
     is_current_version: true
 
 extra_css:
@@ -87,7 +93,11 @@ markdown_extensions:
   - admonition
   - markdown.extensions.codehilite:
       guess_lang: false
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tabbed:

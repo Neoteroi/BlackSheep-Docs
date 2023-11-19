@@ -4,11 +4,12 @@ injected directly in request handlers, by function signature. BlackSheep
 also supports dependency injection of services configured for the application.
 This page describes:
 
-- [X] An introduction to dependency injection in BlackSheep.
+- [X] An introduction to dependency injection in BlackSheep, with a focus on `rodi`.
 - [X] Service resolution.
 - [X] Service lifetime.
 - [X] Options to create services.
 - [X] Examples of dependency injection.
+- [X] How to use alternatives to `rodi`.
 
 ## Introduction
 
@@ -52,17 +53,17 @@ as in this example:
 
 **server.py**:
 ```python
-from blacksheep import Application
+from blacksheep import Application, get
 
 from domain.foo import Foo
 
 
 app = Application()
 
-app.services.add_exact_scoped(Foo)  # <-- register Foo type as a service
+app.services.add_scoped(Foo)  # <-- register Foo type as a service
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):  # <-- foo is referenced in type annotation
     return f"Hello, {foo.foo}!"
 
@@ -100,18 +101,18 @@ Note that both types need to be registered in `app.services`:
 
 **server.py**:
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 from domain.foo import A, Foo
 
 
 app = Application()
 
-app.services.add_exact_transient(A)
-app.services.add_exact_scoped(Foo)
+app.services.add_transient(A)
+app.services.add_scoped(Foo)
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):
     return text(
         f"""
@@ -182,21 +183,21 @@ class Foo:
 
 **server.py**:
 ```python
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 from domain.foo import A, B, C, Foo
 
 
 app = Application()
 
-app.services.add_exact_transient(A)
-app.services.add_exact_scoped(B)
-app.services.add_exact_singleton(C)
+app.services.add_transient(A)
+app.services.add_scoped(B)
+app.services.add_singleton(C)
 
-app.services.add_exact_scoped(Foo)
+app.services.add_scoped(Foo)
 
 
-@app.route("/")
+@get("/")
 def home(foo: Foo):
     return text(
         f"""
@@ -250,11 +251,12 @@ Produces responses like the following at "/":
 
 Note how:
 
-* transient services are always instantiated whenever they are activated (A)
-* scoped services are instantiated once per web request (B)
-* a singleton service is activated only once (C)
+- transient services are always instantiated whenever they are activated (A)
+- scoped services are instantiated once per web request (B)
+- a singleton service is activated only once (C)
 
 ## Options to create services
+
 `rodi` provides several ways to define and instantiate services.
 
 1. registering an exact instance as singleton
@@ -292,7 +294,7 @@ class HelloHandler:
         return "Hello"
 
 
-app.services.add_exact_transient(HelloHandler)
+app.services.add_transient(HelloHandler)
 
 ```
 
@@ -338,7 +340,7 @@ app.services.add_scoped(CatsRepository, PostgreSQLCatsRepository)
 
 # a request handler needing the CatsRepository doesn't need to know about
 # the exact implementation (e.g. PostgreSQL, SQLite, etc.)
-@app.route("/api/cats/{cat_id}")
+@get("/api/cats/{cat_id}")
 async def get_cat(cat_id: str, repo: CatsRepository):
 
     cat = await repo.get_cat_by_id(cat_id)
@@ -388,10 +390,10 @@ instantiated once per web request:
 
 ```python
 
-app.services.add_exact_scoped(OperationContext)
+app.services.add_scoped(OperationContext)
 
 
-@app.route("/")
+@get("/")
 def home(context: OperationContext):
     return text(
         f"""
@@ -408,7 +410,7 @@ Services that require asynchronous initialization can be configured inside
 
 ```python
 import asyncio
-from blacksheep import Application, text
+from blacksheep import Application, get, text
 
 
 app = Application()
@@ -428,9 +430,9 @@ async def configure_something(app: Application):
 app.on_start += configure_something
 
 
-@app.route("/")
+@get("/")
 async def home(service: Example):
-    return text(f"{service.text}")
+    return service.text
 
 ```
 
@@ -450,3 +452,134 @@ async def dispose_example(app: Application):
 
 app.on_stop += dispose_example
 ```
+
+## The container protocol
+
+Since version 2, BlackSheep supports alternatives to `rodi` for dependency
+injection. The `services` property of the `Application` class needs to conform
+to the following container protocol:
+
+- `register` method to register types
+- `resolve` method to resolve instances of types
+- `__contains__` method to describe whether a type is defined inside the container
+
+```python
+class ContainerProtocol:
+    """
+    Generic interface of DI Container that can register and resolve services,
+    and tell if a type is configured.
+    """
+
+    def register(self, obj_type: Union[Type, str], *args, **kwargs):
+        """Registers a type in the container, with optional arguments."""
+
+    def resolve(self, obj_type: Union[Type[T], str], *args, **kwargs) -> T:
+        """Activates an instance of the given type, with optional arguments."""
+
+    def __contains__(self, item) -> bool:
+        """
+        Returns a value indicating whether a given type is configured in this container.
+        """
+```
+
+The following example shows how to use
+[`punq`](https://github.com/bobthemighty/punq) for dependency injection instead
+of `rodi`, and how a transient service can be resolved at "/" and a singleton
+service resolved at "/home":
+
+```python
+from typing import Type, TypeVar, Union, cast
+
+import punq
+
+from blacksheep import Application
+from blacksheep.messages import Request
+from blacksheep.server.controllers import Controller, get
+
+T = TypeVar("T")
+
+
+class Foo:
+    def __init__(self) -> None:
+        self.foo = "Foo"
+
+
+class PunqDI:
+    """
+    BlackSheep DI container implemented with punq
+
+    https://github.com/bobthemighty/punq
+    """
+    def __init__(self, container: punq.Container) -> None:
+        self.container = container
+
+    def register(self, obj_type, *args):
+        self.container.register(obj_type, *args)
+
+    def resolve(self, obj_type: Union[Type[T], str], *args) -> T:
+        return cast(T, self.container.resolve(obj_type))
+
+    def __contains__(self, item) -> bool:
+        return bool(self.container.registrations[item])
+
+
+container = punq.Container()
+container.register(Foo)
+
+app = Application(services=PunqDI(container), show_error_details=True)
+
+
+@get("/")
+def home(foo: Foo):  # <-- foo is referenced in type annotation
+    return f"Hello, {foo.foo}!"
+
+
+class Settings:
+    def __init__(self, greetings: str):
+        self.greetings = greetings
+
+
+container.register(Settings, instance=Settings("example"))
+
+
+class Home(Controller):
+    def __init__(self, settings: Settings):
+        # controllers are instantiated dynamically at every web request
+        self.settings = settings
+
+    async def on_request(self, request: Request):
+        print("[*] Received a request!!")
+
+    def greet(self):
+        return self.settings.greetings
+
+    @get("/home")
+    async def index(self):
+        return self.greet()
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="localhost", port=44777, log_level="debug")
+```
+
+It is also possible to configure the dependency injection container using the
+`settings` namespace, like in the following example:
+
+```python
+from blacksheep.settings.di import di_settings
+
+
+def default_container_factory():
+    return PunqDI(punq.Container())
+
+
+di_settings.use(default_container_factory)
+```
+
+!!! danger "Dependency injection libraries vary"
+    Some features might not be supported when using a different kind of container,
+    because not all libraries for dependency injection implement the notion of
+    `singleton`, `scoped`, and `transient` (most only implement `singleton` and
+    `transient`).

@@ -1,14 +1,15 @@
 # Preventing Cross-Site Request Forgery (XSRF/CSRF)
 
 Cross-site request forgery, also known as XSRF or CSRF, is a kind of attack that
-exploits situations in which browsers automatically include credentials in web requests.
+exploits situations in which browsers automatically include credentials in web
+requests.
 
 Example of such situations are:
 
-* Cookies are automatically included in web requests, so if an application uses
+- Cookies are automatically included in web requests, so if an application uses
   cookie-based authentication, credentials are sent automatically
-* After a user signs in with Basic or Digest authentication, the browser automatically
-  sends the credentials until the session ends
+- After a user signs in with Basic or Digest authentication, the browser
+  automatically sends the credentials until the session ends
 
 If a web application uses cookie based authentication or other features that
 cause credentials to be automatically included in web requests, it requires
@@ -27,18 +28,13 @@ page describes how to use the built-in solution.
 To enable anti-forgery validation, use the module `blacksheep.server.csrf`:
 
 ```python
-from blacksheep import Application, FromForm
+from blacksheep import Application
 from blacksheep.server.csrf import use_anti_forgery
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader
 
 
 app = Application(show_error_details=True)
 
-use_templates(app, PackageLoader("app", "views"))
-
 use_anti_forgery(app)
-
 ```
 
 The call to `use_anti_forgery(app)` configures a middleware that can issue and
@@ -54,29 +50,25 @@ Consider an example having this folder structure:
 ├── app
 │   ├── __init__.py
 │   └── views
-│       └── index.html
+│       └── index.jinja
 └── server.py
 ```
 
 Where `server.py` contains the following code:
 
 ```python
-from blacksheep import Application, FromForm
+from blacksheep import Application, FromForm, get, post, view
 from blacksheep.server.csrf import use_anti_forgery
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader
 
 
 app = Application(show_error_details=True)
 
-render = use_templates(app, PackageLoader("app", "views"))
-
 use_anti_forgery(app)
 
 
-@app.router.get("/")
-async def home(request):
-    return render("index", {}, request=request)
+@get("/")
+def home(request):
+    return view("index", {}, request=request)
 
 
 class CreateUserInput:
@@ -84,13 +76,13 @@ class CreateUserInput:
         self.username = username
 
 
-@app.router.post("/user")
+@post("/user")
 async def create_user(data: FromForm[CreateUserInput]):
     """Calls to this endpoint require an anti-forgery token."""
     return {"example": True, "username": data.value.username}
 ```
 
-And `index.html` contains the following template:
+And `index.jinja` contains the following template:
 
 ```html
 <!DOCTYPE html>
@@ -171,7 +163,7 @@ To use custom parameter names, refer to the `AntiForgeryHandler` class in
 │   ├── __init__.py
 │   └── views
 │       └── home
-│           └── index.html
+│           └── index.jinja
 └── server.py
 ```
 
@@ -181,12 +173,8 @@ To use custom parameter names, refer to the `AntiForgeryHandler` class in
 from blacksheep import Application, FromForm
 from blacksheep.server.controllers import Controller, get, post
 from blacksheep.server.csrf import use_anti_forgery
-from blacksheep.server.templating import use_templates
-from jinja2 import PackageLoader
 
 app = Application(show_error_details=True)
-
-use_templates(app, PackageLoader("app", "views"))
 
 use_anti_forgery(app)
 
@@ -207,7 +195,7 @@ class Home(Controller):
         return {"example": True, "username": data.value.username}
 ```
 
-`index.html` (like in the previous example).
+`index.jinja` (like in the previous example).
 
 ## Rendering anti-forgery tokens without input elements
 
@@ -231,7 +219,7 @@ from blacksheep.server.csrf import ignore_anti_forgery
 
 
 @ignore_anti_forgery()
-@app.router.post("/example")
+@post("/example")
 async def create_example():
     """This endpoint does not require an anti-forgery token."""
 ```
