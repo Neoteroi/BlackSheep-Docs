@@ -377,20 +377,10 @@ Finally, define a first test for the TODOs API:
 ```python
 # ./tests/test_todos_api.py
 
-from typing import Any
-
 import pytest
-from blacksheep.contents import Content
+from blacksheep.contents import JSONContent
 from blacksheep.testing import TestClient
 from domain import CreateToDoInput, ToDo
-from essentials.json import dumps
-
-
-def json_content(data: Any) -> Content:
-    return Content(
-        b"application/json",
-        dumps(data, separators=(",", ":")).encode("utf8"),
-    )
 
 
 @pytest.mark.asyncio
@@ -403,7 +393,7 @@ async def test_create_and_get_todo(test_client: TestClient) -> None:
 
     response = await test_client.post(
         "/api/todos",
-        content=json_content(create_input),
+        content=JSONContent(create_input),
     )
 
     assert response is not None
