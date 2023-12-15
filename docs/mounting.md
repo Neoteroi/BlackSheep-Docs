@@ -134,13 +134,13 @@ starts, and actions that must happen when the application stops.
 ASGI web frameworks handle lifecycle events when they get dedicated messages
 from the underlying ASGI server (`lifespan` messages), notifying the ASGI
 server when initialization logic has completed. However, when an application is
-mounted into another, it is not responsible of handling `lifespan` messages.
+mounted into another, it is not responsible for handling `lifespan` messages.
 
 When mounted apps define initialization and shutdown logic, the application
 that mounts them must register their initialization and shutdown functions as
 part of its own events.
 
-BlackSheep applications must always be started to work properly. To enable
+BlackSheep applications must always be started to work properly. To enable the
 automatic handling of application events for mounted applications, use of the
 following options:
 
@@ -169,7 +169,7 @@ the ASGI HTTP Server, the mounted app is also notified properly of those
 events.
 
 !!! info
-    The way the mounted app must be started and stopped depend on the
+    The way the mounted app must be started and stopped depends on the
     web framework used to implement it. The example above is correct when `child`
     is an instance of BlackSheep Application.
 
@@ -312,5 +312,5 @@ at
 _BlackSheep-Examples_](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/piccolo-admin).
 
 In this example, [Piccolo Admin](https://github.com/piccolo-orm/piccolo_admin)
-is configured as mounted app under "/admin" route, providing a UI to handle
+is configured as a mounted app under "/admin" route, providing a UI to handle
 data stored in a `SQLite` database.

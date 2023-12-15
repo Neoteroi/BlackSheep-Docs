@@ -5,12 +5,12 @@ simplicity, the example shows a case in which an array of items is validated
 (the marshmallow scheme is validated using `(many=True)`). A similar approach
 can be used with [`msgspec`](https://jcristharif.com/msgspec/)
 
-Implementing a generic solution to validate input and produce user friendly
+Implementing a generic solution to validate input and produce user-friendly
 error messages is not in the scope of BlackSheep, but the framework offers ways
 to integrate with other libraries.
 
-This is possible defining a couple of custom binders, a custom exception, and a
-custom exception handler like in the example below.
+This is possible by defining a couple of custom binders, a custom exception,
+and a custom exception handler like in the example below.
 
 ```python
 from typing import Any, TypeVar
@@ -27,7 +27,7 @@ SchemaType = TypeVar("SchemaType", bound=Schema)
 
 class InvalidBodyError(Exception):
     """
-    Kind of BadRequest exception that include error details as complex objects.
+    Kind of BadRequest exception that includes error details as complex objects.
     """
 
     def __init__(self, data: Any):
@@ -41,7 +41,7 @@ class BandMemberSchema(Schema):
     email = fields.Email()
 
 
-# Example binding for a Marshmallow schema, to be used to obtain list of objects
+# Example binding for a Marshmallow schema, to be used to obtain a list of objects
 class FromMultiSchema(BoundValue[SchemaType]):
     """
     Custom bound value that can be used to describe a list of objects validated using a
@@ -51,7 +51,7 @@ class FromMultiSchema(BoundValue[SchemaType]):
 
 class MultiSchemaBinder(Binder):
     """
-    Binder that handles a FromMultiSchema, returning list of objects from a
+    Binder that handles a FromMultiSchema, returning a list of objects from a
     Marshmallow schema.
     """
 

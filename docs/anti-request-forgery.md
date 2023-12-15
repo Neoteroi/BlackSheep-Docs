@@ -4,18 +4,18 @@ Cross-site request forgery, also known as XSRF or CSRF, is a kind of attack that
 exploits situations in which browsers automatically include credentials in web
 requests.
 
-Example of such situations are:
+Examples of such situations are:
 
 - Cookies are automatically included in web requests, so if an application uses
   cookie-based authentication, credentials are sent automatically
 - After a user signs in with Basic or Digest authentication, the browser
   automatically sends the credentials until the session ends
 
-If a web application uses cookie based authentication or other features that
+If a web application uses cookie-based authentication or other features that
 cause credentials to be automatically included in web requests, it requires
 anti-forgery measures.
 
-BlackSheep implements built-in support for anti request forgery validation, this
+BlackSheep implements built-in support for anti-request-forgery validation, this
 page describes how to use the built-in solution.
 
 !!! tip
@@ -115,7 +115,7 @@ forbid iframes.
     the objective of the tag is to obtain an input element containing an
     anti-forgery token, not to achieve Cross-Site Request Forgery!
 
-An example of rendered view looks like the following:
+An example of a rendered view looks like the following:
 
 ```html
 <!DOCTYPE html>
@@ -138,7 +138,7 @@ Validation is applied by default to all `DELETE PATCH POST PUT` web requests.
 Requests using other methods are not validated as they are not supposed to
 change the state and should execute read-only operations.
 
-!!! danger "Important note about tokens generation"
+!!! danger "Important note about token generation"
     Tokens are signed using symmetric encryption. For your production
     environments, configure application secrets using environment variables
     as described in [data protection](../dataprotection/).

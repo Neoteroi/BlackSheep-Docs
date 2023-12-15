@@ -89,7 +89,7 @@ text answer from the web application:
 
 The current code configures a request handler for [HTTP GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)
 method at the root path of the application: `"/"`. Note how a function decorator
-is used to register the `home` function as request handler:
+is used to register the `home` function as a request handler:
 
 ```python
 @get("/")
@@ -165,7 +165,7 @@ def greetings(name):
     return f"Hello, {name}!"
 ```
 
-Route parameters and function parameter are bound by matching name.
+Route parameters and function parameters are bound by matching names.
 Add the fragment of code above to `server.py` and try navigating to
 `http://127.0.0.1:44777/World`.
 
@@ -184,7 +184,7 @@ def mix(movie_id, actor_id):
 ```
 
 Route parameters are by default treated as strings, but BlackSheep supports
-automatic parsing of values, when function arguments are annotated using
+automatic parsing of values when function arguments are annotated using
 built-in [`typing` annotations](https://docs.python.org/3/library/typing.html).
 For example, to define a route that handles integer route parameters and
 returns `HTTP 400 Bad Request` for invalid values, it is sufficient to decorate
@@ -222,9 +222,9 @@ Several built-in types are handled automatically, like `str`, `bool`, `int`,
 
 ### Handling query string parameters
 
-In the same way route parameters are injected automatically into request
+In the same way, route parameters are injected automatically into request
 handlers by route parameters with matching names, `blacksheep` can handle
-query string parameters automatically. Adds this new fragment to your
+query string parameters automatically. Add this new fragment to your
 application:
 
 ```python
@@ -251,8 +251,9 @@ def greetings_many(name: list[str]):
 ```
 
 Every handler can have many input parameters from different sources: request
-headers, cookies, query, route, request body, configured application services.
-These are treated in more details in the dedicated page about [Binders](./binders).
+headers, cookies, query, route, request body, and configured application
+services. These are treated in more detail in the dedicated page about
+[Binders](./binders).
 
 ### Accessing the request object
 
@@ -273,7 +274,7 @@ def request_object(request: Request):
     You can name the request parameter any way you like (e.g. `request`, `req`, `foo`, etc.),
     as long as you keep the correct type annotation (`blacksheep.Request`).
 
-This subject will be treated in more details in a different section.
+This subject will be treated in more detail in a different section.
 
 ### Handling responses
 
@@ -368,7 +369,7 @@ def get_cats():
     return response
 ```
 
-User defined request handlers can also return arbitrary objects, which will
+User-defined request handlers can also return arbitrary objects, which will
 be automatically converted to JSON responses. The example above could also be
 written this way:
 
@@ -410,10 +411,10 @@ This tutorial covered the ABCs of creating a BlackSheep application. The
 general concepts presented here apply to any kind of web framework:
 
 - server side routing
-- handling of query strings and route parameters
-- handling of requests and responses
+- handling query strings and route parameters
+- handling requests and responses
 
-The next page will describe a more articulated scenario, including handling of
+The next page will describe a more articulated scenario, including handling
 HTML views on the server side, serving static files, and more.
 
 - [Getting started with the MVC project template](../mvc-project-template/)

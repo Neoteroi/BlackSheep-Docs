@@ -2,7 +2,7 @@
 BlackSheep implements automatic binding of parameters for request handlers, a
 feature inspired by "Model Binding" in the [ASP.NET web
 framework](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-2.2).
-This feature improves code quality and developer's experience, since it
+This feature improves code quality and the developer experience since it
 provides a strategy to read values from request objects in a consistent way and
 removes the need to write parts that read values from the request object inside
 request handlers. It also enables a more accurate generation of [OpenAPI
@@ -67,7 +67,7 @@ are not annotated with types, or are **not** annotated with types that inherit
 from `BoundValue` class, defined in `blacksheep.server.bindings`.
 
 !!! warning
-    A parameter with name "request" is always bound to the instance of
+    A parameter with the name "request" is always bound to the instance of
     the `Request` of the web request.
 
 ### Explicit binding
@@ -98,11 +98,11 @@ async def create_cat(
 In the example above, `create_cat_handler` is obtained from
 `application.services`, an exception is thrown if the the service cannot be
 resolved. This happens if the service is not registered in application
-services, or any of services on which it depends is not registered
+services, or any of the services on which it depends is not registered
 (see [_Service resolution_](../dependency-injection/#service-resolution) for
 more information on services that depend on other services).
 
-`input` is obtained reading the request payload, parsing it as JSON, and
+`input` is obtained by reading the request payload, parsing it as JSON, and
 creating an instance of CreateCatInput from it. If an exception occurs while
 trying to parse the request payload or when instantiating the `CreateCatInput`,
 the framework produces automatically a `400 Bad Request` response for the client.
@@ -112,7 +112,7 @@ is instantiated using `cls(**data)`. If it necessary to parse dates or other
 complex types that are not handled by JSON deserialization, this must be done
 in the constructor of the class. To handle gracefully a JSON payload having
 extra unused properties, use `*args` in your class constructor: `__init__(one,
-two, three, *args)__`.
+two, three, *args)`.
 
 ## Optional parameters
 Optional parameters can be defined in one of these ways:
@@ -128,8 +128,8 @@ async def example(
     page: int = 1,
     search: str = "",
 ):
-    # page is read from query string, if specified, otherwise defaults to 1
-    # search is read from query string, if specified, otherwise defaults to ""
+    # page is read from the query string, if specified, otherwise defaults to 1
+    # search is read from the query string, if specified, otherwise defaults to ""
     ...
 ```
 
@@ -142,8 +142,8 @@ async def example(
     page: Optional[int],
     search: Optional[str],
 ):
-    # page is read from query string, if specified, otherwise defaults to None
-    # search is read from query string, if specified, otherwise defaults to None
+    # page is read from the query string, if specified, otherwise defaults to None
+    # search is read from the query string, if specified, otherwise defaults to None
     ...
 ```
 
@@ -206,8 +206,8 @@ async def example(
 | FromText      | Request payload read as text, using UTF-8 encoding.                                                           |
 | FromBytes     | Request payload read as raw bytes.                                                                            |
 | FromFiles     | Request payload of file type.                                                                                 |
-| ClientInfo    | Client ip and port information obtained from the request ASGI scope, as Tuple[str, int].                      |
-| ServerInfo    | Server ip and port information obtained from the request scope.                                               |
+| ClientInfo    | Client IP and port information obtained from the request ASGI scope, as Tuple[str, int].                      |
+| ServerInfo    | Server IP and port information obtained from the request scope.                                               |
 | RequestUser   | Request's identity.                                                                                           |
 | RequestURL    | Request's URL.                                                                                                |
 | RequestMethod | Request's HTTP method.                                                                                        |

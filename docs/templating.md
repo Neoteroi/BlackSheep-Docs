@@ -82,7 +82,7 @@ async def home():
 
 It is possible to load templates by name including '.jinja', or without file
 extension; '.jinja' extension is added automatically. The extension must be
-lower case.
+lowercase.
 
 ```python
 @get("/")
@@ -167,9 +167,9 @@ class CustomRenderer(Renderer):
         """Renders a view asynchronously."""
         ...
 
-    def bind_antiforgery_handler(self, handler: AntiForgeryHandler) -> None:
+    def bind_anti_forgery_handler(self, handler: AntiForgeryHandler) -> None:
         """
-        Applies extensions for an antiforgery handler.
+        Applies extensions for an anti-forgery handler.
 
         This method can be used to generate HTML fragments containing
         anti-forgery tokens, for the built-in implementation of AF validation.

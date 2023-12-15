@@ -5,7 +5,7 @@ BlackSheep includes an implementation of HTTP Client for HTTP 1.1.
 ## Client features
 
 - HTTP connection pooling
-- User friendly handling of SSL contexts (safe by default)
+- User-friendly handling of SSL contexts (safe by default)
 - Support for client side middlewares
 - Automatic handling of redirects (can be disabled, validates circular
   redirects and maximum number of redirects - redirects to URN are simply
@@ -38,7 +38,7 @@ loop.run_until_complete(client_example(loop))
 The HTTP client in BlackSheep implements connection pooling. Meaning that
 connections to the same host and port are kept in memory and reused for
 different request-response cycles, when possible. By default, connections are
-not disposed as long as they are kept open.
+not disposed of as long as they are kept open.
 
 Implementation:
 [/blacksheep/client/pool.py](https://github.com/RobertoPrevato/BlackSheep/blob/master/blacksheep/client/pool.py).
@@ -51,7 +51,7 @@ The HTTP Client supports middlewares. Middlewares on the server are functions
 that are executed in order, at every request-response cycle and enable
 manipulation of incoming requests and outgoing responses. Middlewares support
 interruption of the chain: that is, returning an HTTP response without firing
-all handlers in the chain, for example to return HTTP 401 Unauthorized when
+all handlers in the chain, for example, to return HTTP 401 Unauthorized when
 applying an authentication strategy. The HTTP client can benefit from the same
 design pattern, and this is supported in BlackSheep.
 
@@ -63,7 +63,7 @@ async def client_example_middleware(request, next_handler):
     # do something before the request is sent
     response = await next_handler(request)
 
-    # do something with the response from remote server
+    # do something with the response from the remote server
     return response
 
 client = ClientSession()
@@ -74,7 +74,7 @@ client.configure()
 ## Considerations about the ClientSession class
 
 The `ClientSession` owns by default a connections pool, if none is specified for
-it. The connections pool is automatically disposed when the client is exited,
+it. The connections pool is automatically disposed of when the client is exited,
 if it was created for the client.
 
 !!! danger "Connection pooling is important"
@@ -84,7 +84,7 @@ if it was created for the client.
     negative effects on the performance of the application.
 
 It is recommended to instantiate a single instance of HTTP client and
-register it as service of the application, using the `@app.lifespan` method:
+register it as a service of the application, using the `@app.lifespan` method:
 
 ```python
 ```python
@@ -101,7 +101,7 @@ async def register_http_client():
         app.services.register(ClientSession, instance=client)
         yield
 
-    print("HTTP client disposed")
+    print("HTTP client disposed of")
 
 
 @router.get("/")
@@ -110,6 +110,6 @@ async def home(http_client: ClientSession):
     return {"ok": True, "client_instance_id": id(http_client)}
 ```
 
-When following this approach, the http client can be automatically injected to
-request handlers, and services that need it, and is automatically disposed when
-the application is stopped.
+When following this approach, the HTTP client can be automatically injected
+into request handlers, and services that need it, and is automatically disposed
+of when the application is stopped.

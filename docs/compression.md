@@ -36,7 +36,7 @@ use_gzip_compression(app)
 !!! warning "Not for streamed content"
     The `GzipMiddleware` does not compress bytes streamed using the
     `StreamedContent` class (used by default when serving files), it only
-    compress whole bodies like, for example, those that are generated when
+    compresses whole bodies like, for example, those that are generated when
     returning `JSON` content to the client.
 
 ### Options

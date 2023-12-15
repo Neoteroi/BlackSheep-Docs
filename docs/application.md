@@ -1,15 +1,15 @@
 # The Application class
-The `Application` class in BlackSheep is responsible of handling the
-application life cicle (start, working state, stop), routing, web requests,
-exceptions. This page describes details of the `Application` class:
+The `Application` class in BlackSheep is responsible for handling the
+application life cycle (start, working state, stop), routing, web requests,
+and exceptions. This page describes the details of the `Application` class:
 
 - [X] How to handle errors.
 - [X] Application events and life cycle.
 
 ## Handling errors
 
-BlackSheep catches any unhandled exception that happens during the execution of
-request handlers, producing a `HTTP 500 Internal Server Error` response. To see
+BlackSheep catches any unhandled exception that happen during the execution of
+request handlers, producing an `HTTP 500 Internal Server Error` response. To see
 this in practice, start an application like the following:
 
 ```python
@@ -26,7 +26,7 @@ def crash_test():
 And observe how a request to its root produces a response with HTTP status 500,
 and the text "Internal server error".
 
-Exception details are hidden to the client by default: it would be a security
+Exception details are hidden from the client by default: it would be a security
 issue if the web application returned error details to the client. However,
 while developing and occasionally while investigating issues, it is useful to
 be able to obtain error details directly from the web requests that are
@@ -41,7 +41,7 @@ trace, serving a page like the following:
 
 ![Internal server error page](./img/internal-server-error-page.png)
 
-Consider using environmental variables to handle this kind of settings that
+Consider using environmental variables to handle these kinds of settings that
 can vary across environments. For example:
 
 ```python
@@ -63,11 +63,11 @@ def crash_test():
 
 ### Configuring exceptions handlers
 
-The BlackSheep `Application` object has a `exceptions_handlers` dictionary that
-defines how errors should be handled. When an exception happens while handling
-a web request and reaches the application, the application checks if there is a
-matching handler for that kind of exception. An exception handler is defined as
-a function with the following signature:
+The BlackSheep `Application` object has an `exceptions_handlers` dictionary
+that defines how errors should be handled. When an exception happens while
+handling a web request and reaches the application, the application checks if
+there is a matching handler for that kind of exception. An exception handler is
+defined as a function with the following signature:
 
 ```python
 from blacksheep import Request, Response, text
@@ -95,14 +95,14 @@ app.exceptions_handlers[CustomException] = exception_handler
 
 @get('/')
 async def home(request):
-    # of course, the exception can be risen at any point
+    # of course, the exception can be raised at any point
     # for example in the business logic layer
     raise CustomException()
 
 ```
 
 Exceptions inheriting from `HTTPException` can be mapped to handlers by their
-type or by their status code, using `int` keys; while user defined exceptions
+type or by their status code, using `int` keys; while user-defined exceptions
 are mapped to handlers by their type.
 
 When an exception handler is registered for a type of exception, all subclasses
@@ -139,7 +139,7 @@ from blacksheep.messages import Request
 
 class MyApp(Application):
     async def handle_internal_server_error(self, request: Request, exc: Exception):
-        # TODO: handle this like you wish!
+        # TODO: handle this as you wish!
         return json({"message": "Oh, no!"}, 500)
 ```
 
@@ -149,19 +149,19 @@ class MyApp(Application):
 
 A BlackSheep application exposes three events: **on_start**, **after_start**,
 **on_stop**. These events can be used to configure callbacks and services that
-depend on application lifecycle. The application class also offers a useful
+depend on the application lifecycle. The application class also offers a useful
 method to configure objects that need to be initialized when the application
-starts, and disposed when the application stops: **lifespan**.
+starts, and disposed of when the application stops: **lifespan**.
 
 ### Using the lifespan decorator
 
 The `Application.lifespan` method can be used to register objects bound to the
 application life cycle. Common examples of such objects are HTTP clients and
 database clients, since they use connection pools that can be initialized
-and must be disposed when the application stops.
+and must be disposed of when the application stops.
 
 The following example illustrates how to use the `@app.lifespan` decorator to
-create an HTTP `ClientSession` that will be disposed when the application
+create an HTTP `ClientSession` that will be disposed of when the application
 stops. Note how the instance of `ClientSession` is also bound to application
 services, so that it can be injected into request handlers that need it.
 
@@ -183,7 +183,7 @@ async def register_http_client():
         app.services.register(ClientSession, instance=client)
         yield
 
-    print("HTTP client disposed")
+    print("HTTP client disposed of")
 
 
 @router.get("/")
@@ -203,7 +203,8 @@ if __name__ == "__main__":
     before the `yield` statement executes when the application starts, and what
     is defined after the `yield` statement executes when the application stops.
 
-The following example illustrates how a `redis-py` [connection can be disposed](https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html)
+The following example illustrates how a `redis-py` [connection can be disposed
+of](https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html)
 using the same method:
 
 ```python
@@ -214,7 +215,7 @@ import redis.asyncio as redis
 @app.lifespan
 async def configure_redis():
     """
-    Configure an async Redis client, and dispose its connections when the
+    Configure an async Redis client, and dispose of its connections when the
     application stops.
     See:
     https://redis.readthedocs.io/en/stable/examples/asyncio_examples.html
@@ -239,8 +240,8 @@ async def configure_redis():
 ### on_start
 
 This event should be used to configure things such as new request handlers,
-and service registered in `app.services`, such as database connection pools,
-HTTP client sessions.
+and services registered in `app.services`, such as database connection pools,
+and HTTP client sessions.
 
 ### after_start
 
@@ -254,7 +255,7 @@ API specification file at this point.
 
 This event should be used to fire callbacks that need to happen when the application
 is stopped. For example, disposing of services that require disposal, such as
-database connection pools, HTTP client sessions using connection pools.
+database connection pools, and HTTP client sessions using connection pools.
 
 ### Application life cycle
 
@@ -281,8 +282,8 @@ are fired, and the state of the application when they are executed.
 
 
     @app.on_start
-    async def before_start(application: Application) -> None:
-        print("Before start")
+    async def on_start(application: Application) -> None:
+        print("On start")
 
 
     @app.after_start

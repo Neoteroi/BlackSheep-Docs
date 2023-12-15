@@ -3,7 +3,7 @@ is a standard feature used to instruct clients that a site should only be
 accessed using HTTPS, and any attempt to access it using HTTP should be
 converted automatically to HTTPS.
 
-BlackSheep offers a middleware to configure HTTP Strict-Transport-Security
+BlackSheep offers a middleware to configure the HTTP Strict-Transport-Security
 response header globally. This page explains how to use the built-in middleware
 to enforce HSTS on a web application.
 
@@ -22,10 +22,10 @@ if not is_development():
 ```
 
 !!! tip "Considerations for local development"
-    It is generally undesirable enabling `HSTS` during local development, since
-    browsers get instructed to require `HTTPS` for all traffic on `localhost`.
-    This is why the example above configures the middleware only if the
-    application is not running for development.
+    It is generally undesirable to enable `HSTS` during local development,
+    since browsers get instructed to require `HTTPS` for all traffic on
+    `localhost`. This is why the example above configures the middleware only
+    if the application is not running in development mode.
     See [_Defining application environment_](/blacksheep/settings/#defining-application-environment)
     for more information.
 

@@ -91,11 +91,11 @@ or more requirements to be satisfied in order for authorization to succeed.
 The next example explains how to configure an authorization policy that checks
 for user's roles from claims.
 
-## Defining an authorization policy that checks user's claims
+## Defining an authorization policy that checks a user's claims
 
 The example below shows how to configure an authorization handler that
-validates user's claims (looking for a "role" claim that might be coming from a
-JWT).
+validates a user's claims (looking for a "role" claim that might be coming from
+a JWT).
 
 ```python
 from blacksheep.server.authorization import Policy
@@ -200,9 +200,9 @@ async def only_for_administrators():
 ## Using the default policy
 
 The method `app.use_authorization()`, when used without arguments, returns an
-instance of `AuthorizationStrategy` from `guardpost` library. This object can
-be configured to use a default policy, for example to require an authenticated
-user by default for all request handlers.
+instance of `AuthorizationStrategy` from the `guardpost` library. This object
+can be configured to use a default policy, for example to require an
+authenticated user by default for all request handlers.
 
 ```python
 authorization = app.use_authorization()
@@ -232,10 +232,10 @@ async def for_anybody(user: Optional[User]):
 ## Specifying authentication schemes for request handlers
 
 In some scenarios it is necessary to specify multiple authentication schemes
-for web applications: for example the same application might handle authentication
-obtained through `GitHub` OAuth app and `Azure Active Directory (AAD)`.
-In such scenarios, it might be necessary to restrict access to some endpoints
-by authentication method, too.
+for web applications: for example, the same application might handle
+authentication obtained through the `GitHub` OAuth app and `Azure Active
+Directory (AAD)`. In such scenarios, it might be necessary to restrict access
+to some endpoints by authentication method, too.
 
 To do so:
 

@@ -23,7 +23,7 @@ redirects, authentication, link generation when absolute URLs are needed, and
 client geolocation.
 
 This page documents how to configure BlackSheep to work with proxy servers and
-load balancers, using provided classes to handle:
+load balancers, using the provided classes to handle:
 
 - [X] X-Forwarded headers
 - [X] Forwarded header
@@ -41,11 +41,11 @@ information about original web requests to web applications.
 | X-Forwarded-Host  | Used to identify the original host requested by the client in the Host HTTP request header                                   |
 | X-Forwarded-Proto | Used to identify the protocol (HTTP or HTTPS) that a client used to connect to your proxy or load balancer.                  |
 
-BlackSheep provides a `XForwardedHeadersMiddleware` class to handle these
+BlackSheep provides an `XForwardedHeadersMiddleware` class to handle these
 headers, providing:
 
 * optional validation of trusted hosts
-* optional validation of proxies cound and IP addresses by known IPs or known
+* optional validation of proxies count and IP addresses by known IPs or known
   networks
 
 To configure a BlackSheep web application to handle `X-Forwarded` headers and

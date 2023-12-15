@@ -2,7 +2,7 @@
 no_comments: true
 ---
 
-# BlackSheep is an asynchronous web framework to build event based web applications with Python.
+# BlackSheep is an asynchronous web framework to build event-based web applications with Python.
 
 <div class="img-auto-width"></div>
 <p align="left">
@@ -21,7 +21,7 @@ pip install blacksheep
   experience thanks to hints when coding with IDEs
 - Built-in generation of OpenAPI Documentation, supporting version 3, YAML, and
   JSON
-- A cross platform framework, using the most modern versions of Python
+- A cross-platform framework, using the most modern versions of Python
 - Good performance
 
 ## Getting started
@@ -34,7 +34,7 @@ To get started with BlackSheep, read these tutorials:
 ## Versions
 
 The documentation here refers to the current version of the web framework. For
-the documentation of first version of the framework, use the links below:
+the documentation of the first version of the framework, use the links below:
 
 ::cards:: cols=2
 

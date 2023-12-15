@@ -4,7 +4,7 @@ The second version of the web framework offers a command-line interface (CLI)
 to bootstrap new projects using templates, inspired by similar CLIs of popular
 front-end web frameworks.
 
-This page describes the CLI in details, covering the following subjects:
+This page describes the CLI in detail, covering the following subjects:
 
 - [X] How to install the `blacksheep-cli`.
 - [X] How to use its help.
@@ -37,7 +37,7 @@ with the list of command groups:
 
 ![CLI help](./img/cli-help.png)
 
-To display the help of a specific commands group, use the command group name
+To display the help of a specific command group, use the command group name
 followed by `--help`, like in the following example:
 
 ![blacksheep templates --help](./img/cli-group-help.png)
@@ -68,8 +68,8 @@ in the user's folder, use the `blacksheep templates details` command:
 
 Use the `blacksheep create` command to bootstrap a project
 using one of the supported templates. The command will prompt for the necessary
-input to bootstrap a new project. Aside from project name and template type,
-each project template defines the parameters that are needed.
+input to bootstrap a new project. Aside from the project name and template
+type, each project template defines the parameters that are needed.
 
 ![blacksheep create command](./img/cli-create-demo.gif)
 
@@ -117,12 +117,12 @@ The `blacksheep-cli` uses [`Cookiecutter`](https://cookiecutter.readthedocs.io/e
 under the hood, with [`questionary`](https://pypi.org/project/questionary/) to
 offer better prompts.
 
-The official templates are `cookiecutter` templates, that can be used in non-interactive
-way if desired, using the `cookiecutter` CLI. This can be useful to bootstrap new
-projects in automated jobs (CI/CD).
+The official templates are `cookiecutter` templates, that can be used in a
+non-interactive way if desired, using the `cookiecutter` CLI. This can be
+useful to bootstrap new projects in automated jobs (CI/CD).
 
-For example, to bootstrap a new project using the API template, with name "foo"
-and using TOML files for application settings:
+For example, to bootstrap a new project using the API template, with the name
+"foo" and using TOML files for application settings:
 
 ```bash
 cookiecutter https://github.com/Neoteroi/BlackSheep-API --no-input project_name=foo app_settings_format=TOML

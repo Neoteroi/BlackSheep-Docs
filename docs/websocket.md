@@ -48,7 +48,7 @@ You can use route parameters just like with the regular request handlers.
     ```
 
 A `WebSocket` object will be bound to a parameter injected into your handler
-function when the client will try to connect to the endpoint.
+function when the client tries to connect to the endpoint.
 
 !!! warning "Be careful"
     Make sure that your function either has a parameter named **websocket** or
@@ -97,7 +97,7 @@ client sends you encoded JSON strings.
 Below is a simple example of an echo WebSocket handler.
 
 This function will receive a text message sent by the client and echo it back
-until either the client disconnects or the server shut down.
+until either the client disconnects or the server shuts down.
 
 
 === "Text"
@@ -141,8 +141,8 @@ until either the client disconnects or the server shut down.
 
 ## Handling client disconnect
 
-In event of client disconnect, the ASGI server will close the connection and
-send the corresponding message to your app. Upon receiving this message
+In the event of a client disconnect, the ASGI server will close the connection
+and send the corresponding message to your app. Upon receiving this message
 `WebSocket` object will raise the `WebSocketDisconnectError` exception.
 
 You'll likely want to catch it and handle it somehow.

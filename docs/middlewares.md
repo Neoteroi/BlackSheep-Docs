@@ -1,7 +1,7 @@
 # Middlewares
 
 A BlackSheep application supports middlewares, which provide a flexible way to
-define a chain of functions that handles every web requests.
+define a chain of functions that handle every web request.
 
 This page covers:
 
@@ -17,8 +17,8 @@ request in a specific order.
     When a function should be called only for certain routes, use
     instead a [decorator function](../middlewares/#wrapping-request-handlers).
 
-Middlewares are called in order: each receives the `Request` object as first
-parameter, and the next handler to be called as second parameter. Any
+Middlewares are called in order: each receives the `Request` object as the
+first parameter, and the next handler to be called as the second parameter. Any
 middleware can decide to not call the next handler, and return a `Response`
 object instead. For example, a middleware can be used to return an `HTTP 401
 Unauthorized` response in certain scenarios.
@@ -54,7 +54,7 @@ def home():
 
 ```
 
-In this example, the following data would be printed to console:
+In this example, the following data would be printed to the console:
 ```
 middleware one: A
 middleware two: C
@@ -143,7 +143,7 @@ async def home():
     return "OK"
 ```
 
-**The order of decorators matters**: user defined decorators must be applied
+**The order of decorators matters**: user-defined decorators must be applied
 before the route decorator (before `@get` in the example above).
 
 ### Define a wrapper compatible with synchronous and asynchronous functions

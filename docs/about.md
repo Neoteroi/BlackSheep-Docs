@@ -1,15 +1,15 @@
 # About BlackSheep
 
 BlackSheep is a web framework for Python asyncio designed to facilitate the
-implementation of stateless APIs and general purpose web applications. It is
+implementation of stateless APIs and general-purpose web applications. It is
 inspired by [Flask](https://flask.palletsprojects.com/en/1.1.x/) and [ASP.NET
 Core](https://docs.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-5.0);
 it recreates several features from both these web frameworks. The concept of
-automatic binding of request parameters by request handler's signature and
+automatic binding of request parameters by the request handler's signature and
 dependency injection of required services (as it happens in ASP.NET Core) is
 what makes BlackSheep unique today, in the context of Python web frameworks.
 
-The project, as several other web frameworks for Python, is the fruit of the
+The project, like several other web frameworks for Python, is the fruit of the
 creative ferment around Yury Selivanov’s work, and the article [uvloop: Blazing
 fast Python
 networking](https://magic.io/blog/uvloop-blazing-fast-python-networking/) from
