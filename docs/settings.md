@@ -4,7 +4,7 @@ While _most_ settings are described in sections that are dedicated to other
 topics, this page describes other settings that can be used in BlackSheep.
 This page describes:
 
-- [X] features to describe the environment of a BlackSheep web applications.
+- [X] features to describe the environment of a BlackSheep web application.
 - [X] features to control JSON serialization and deserialization
 
 ## Environmental variables
@@ -14,8 +14,8 @@ This page describes:
 | APP_ENV                  | Settings | This environment variable is read to determine the environment of the application. For more information, refer to [_Defining application environment_](/blacksheep/settings/#defining-application-environment). |
 | APP_SHOW_ERROR_DETAILS   | Settings | If "1" or "true", configures the application to display web pages with error details in case of HTTP 500 Internal Server Error.                                                                                 |
 | APP_MOUNT_AUTO_EVENTS    | Settings | If "1" or "true", automatically binds lifecycle events of mounted apps between children and parents BlackSheep applications.                                                                                    |
-| APP_SECRET_<i>i</i>      | Secrets  | Allows to configure the secrets used by the application to protect data.                                                                                                                                        |
-| BLACKSHEEP_SECRET_PREFIX | Secrets  | Allows to specify the prefix of environment variables used to configure application secrets, defaults to "APP_SECRET" if not specified.                                                                         |
+| APP_SECRET_<i>i</i>      | Secrets  | Allows configuring the secrets used by the application to protect data.                                                                                                                                         |
+| BLACKSHEEP_SECRET_PREFIX | Secrets  | Allows specifying the prefix of environment variables used to configure application secrets, defaults to "APP_SECRET" if not specified.                                                                         |
 
 ## Defining application environment
 
@@ -29,7 +29,7 @@ the environment. For example:
   folder.
 
 The module `blacksheep.server.env` offers two functions that can be used to
-control behavior depending on app environment:
+control behavior depending on the app environment:
 
 | Function         | True if `APP_ENV` is...          | Description                                                                                  |
 | ---------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -71,13 +71,13 @@ from blacksheep.plugins import json
 
 def custom_loads(value):
     """
-    This function is responsible of parsing JSON into instances of objects.
+    This function is responsible for parsing JSON into instances of objects.
     """
 
 
 def custom_dumps(value):
     """
-    This function is responsible of creating JSON representations of objects.
+    This function is responsible for creating JSON representations of objects.
     """
 
 
@@ -128,7 +128,7 @@ fee of the superfluous `decode -> encode` passage, it is recommended to:
 
 * not use the built-in `responses` functions and the built-in `JSONContent`
   class
-* use a custom defined function for JSON responses like the following example:
+* use a custom-defined function for JSON responses like the following example:
 
 ```python
 def my_json(data: Any, status: int = 200) -> Response:

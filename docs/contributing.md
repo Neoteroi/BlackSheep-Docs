@@ -107,12 +107,12 @@ pytest --cov-report html --cov=blacksheep
 
 It doesn't matter, as long as branch names don't contain anything that violates
 the _Code of Conduct_ included in the project's repository. As a general rule
-of thumb, branch names should have a descriptive name, or refer the number of
-an issue in their name (e.g. `fix_102`).
+of thumb, branch names should have a descriptive name, or refer to the number
+of an issue in their name (e.g. `fix_102`).
 
 ## setup.py
 
-It is intention of `blacksheep`'s author to always keep `setup.py` files as
+It is the intention of `blacksheep`'s author to always keep `setup.py` files as
 stupid and simple as possible. So please don't modify the `setup.py` file to
 be "smarter" or more dynamic without prior discussion in an issue.
 

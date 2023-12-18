@@ -42,7 +42,7 @@ app.use_cors(
 | expose_headers    | Controls the value of [Access-Control-Expose-Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers). 🗡️        |
 | max_age           | Controls the value of [Access-Control-Max-Age](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age), defaults to 5 seconds. |
 
-🗡️ the value can be a string of values separated by space, comma, or semi-colon, or a list.
+🗡️ The value can be a string of values separated by space, comma, or semi-colon, or a list.
 
 ## Enabling CORS for specific endpoints
 The example below shows how to enable CORS only for certain endpoints:

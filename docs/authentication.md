@@ -1,5 +1,5 @@
 # Authentication in BlackSheep
-The words _authentication strategy_ in the context of a web application refer
+The words "authentication strategy" in the context of a web application refer
 to the ability to identify the user who is using the application. BlackSheep
 implements a built-in authentication strategy for request handlers. This page
 describes:
@@ -167,7 +167,7 @@ inside **[guardpost](https://github.com/Neoteroi/guardpost)** library.
 ## Writing a custom authentication handler
 
 The example below shows how to configure a custom authentication handler that
-obtains user's identity for each web request.
+obtains the user's identity for each web request.
 
 ```python
 from blacksheep import Application, Request, auth, get, json
@@ -269,9 +269,9 @@ Gets the output: `{"name":"Jan Kowalski"}`.
 
 _The application has been started on port 44555 (e.g. `uvicorn server:app --port=44555`)._
 
-## Reading user's context
+## Reading a user's context
 
-The example below shows how user's identity can be read from the web request:
+The example below shows how a user's identity can be read from the web request:
 
 === "Using binders (recommended)"
 

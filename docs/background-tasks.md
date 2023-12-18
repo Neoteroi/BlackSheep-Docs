@@ -3,10 +3,10 @@ This page describes how to start background tasks in request handlers, and how
 to configure background tasks that run periodically during the application's
 lifetime.
 
-## How to handle a request in background
+## How to handle a request in the background
 
-The following example shows how to handle a web request in background, which
-is the use case for the [HTTP 202 Accepted](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/202)
+The following example shows how to handle a web request in the background,
+which is the use case for the [HTTP 202 Accepted](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/202)
 response status code.
 
 ```python
@@ -35,7 +35,7 @@ def home() -> Response:
 
 ## How to configure background tasks
 
-The following example shows how to configure a background tasks, including
+The following example shows how to configure a background task, including
 the activation of a service resolved by the DI container, running periodically
 once every second:
 
@@ -64,7 +64,7 @@ class Foo:
 
 async def task_example(app: Application) -> None:
     # example background task, running once every second,
-    # this example also shows how to activate a service using the CI container
+    # this example also shows how to activate a service using the DI container
     while True:
         print(get_current_timestamp())
 

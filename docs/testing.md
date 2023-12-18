@@ -78,7 +78,7 @@ A test client provides the following methods:
 
 !!! info
     By default a `TestClient` simulates web requests creating `ASGI` scopes,
-    however it can be configured with a custom implementation of
+    however, it can be configured with a custom implementation of
     `AbstractTestSimulator` to generate real HTTP requests against a real HTTP
     server. For simplicity, this is not documented here.
 
@@ -199,7 +199,7 @@ from app.main import app
 
 ### Navigating the API using OpenAPI Documentation
 
-At this point the application can already be started. The API methods are not
+At this point, the application can already be started. The API methods are not
 implemented, yet, so they cannot do anything interesting. However, the
 framework can generate OpenAPI Documentation and expose a documentation UI.
 
@@ -420,7 +420,7 @@ pytest
 ```
 
 If the steps above were done correctly, the test succeeds and `pytest` produces
-a feedback like in the following picture (using the verbose flag `-v`):
+feedback like in the following picture (using the verbose flag `-v`):
 
 ![pytest run](./img/pytest-tests.png)
 
@@ -508,7 +508,7 @@ def session_two(server_host, server_port_two):
 ```
 
 And a full example for the TODO API described in the tutorial could look like
-the following (the example requires `requests` library):
+the following (the example requires the `requests` library):
 
 ```python
 import os

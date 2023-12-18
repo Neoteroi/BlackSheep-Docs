@@ -6,9 +6,9 @@ providing integration with BlackSheep.
 ## Torino
 Torino is an advanced project built using BlackSheep for its API part,
 including a single page application built using React, TypeScript, HTML5, and
-SASS. It consists in a private files storage and photo gallery for Azure
-Storage Account. The project provides examples of how to integrate a BlackSheep
-API to PostgreSQL or SQLite using SQLAlchemy, with migrations, and also how to
+SASS. It consists of a private file storage and photo gallery for Azure Storage
+Account. The project provides examples of how to integrate a BlackSheep API to
+PostgreSQL or SQLite using SQLAlchemy, with migrations, and also how to
 structure a project using dependency injection, integrate with Azure
 Application Insights, and more.
 
@@ -27,8 +27,8 @@ provides integration to collect telemetries about web requests.
 <span class="small">[🏠 Homepage](https://github.com/Cdayz/blacksheep-prometheus)</span>
 
 ## Piccolo-ORM
-Piccolo is a fast, user friendly ORM and query builder which supports asyncio.
-Piccolo provides a CLI that lets scaffold new ASGI application, including
+Piccolo is a fast, user-friendly ORM and query builder which supports asyncio.
+Piccolo provides a CLI that lets you scaffold new ASGI applications, including
 support for BlackSheep.
 
 <span class="small">[🏠 Homepage](https://github.com/piccolo-orm/piccolo)</span>

@@ -7,15 +7,15 @@ This page describes:
 - [X] Reading request bodies.
 
 ## The Request class
-BlackSheep handles requests as instances of `blacksheep.Request`
-class. This class provides methods and properties to handle request headers,
-cookies, URL, route parameters, request body, user's identity, and other
+BlackSheep handles requests as instances of the `blacksheep.Request` class.
+This class provides methods and properties to handle request headers, cookies,
+the URL, route parameters, the request body, the user's identity, and other
 information like the content type of the request. Each web request results in
 the creation of a new instance of `Request`.
 
 ### Reading parameters from the request object
 It is possible to read query and route parameters from an instance of
-`request`. The example below shows how query string, route parameters, and
+`request`. The example below shows how the query string, route parameters, and
 request headers can be read from the request:
 
 ```python
@@ -47,7 +47,7 @@ def example(request: Request) -> Response:
 
 However, the recommended approach is to use automatic bindings, which enable a
 more accurate generation of OpenAPI Documentation, automatic parsing of values
-into the desired type, and improve development experience and source code.
+into the desired type, and improves the development experience and source code.
 
 The same example can be achieved in the following way:
 
@@ -111,7 +111,7 @@ def home(accept: FromAcceptHeader, foo: FromFooCookie) -> Response:
     )
 ```
 
-### Reading request body
+### Reading the request body
 The request class offers several methods to read request bodies of different
 kinds.
 
@@ -140,16 +140,17 @@ kinds.
     ```
 
     The type parameter for the `FromJSON` binder can be a dataclass, a model from
-    [`pydantic`](https://github.com/samuelcolvin/pydantic), a regular class with an
-    `__init__` method.
+    [`pydantic`](https://github.com/samuelcolvin/pydantic), or a regular class
+    with an `__init__` method.
 
     Note that when mapping the request's payload to an instance of the desired
     type, the type's constructor with `cls(**data)` is used. If it necessary to
     parse dates or other complex types this must be done in the constructor of the
-    class. To handle gracefully a payload with extra properties, use `*args` in
-    your class constructor: `__init__(one, two, three, *args)__`.
+    class. To gracefully handle a payload with extra properties, use `*args` in
+    your class constructor: `__init__(one, two, three, *args)`.
 
-    To read the JSON payload as a regular dictionary, use `dict` as type argument:
+    To read the JSON payload as a regular dictionary, use `dict` as the type
+    argument:
 
     ```python
     @post("/something")
@@ -170,7 +171,7 @@ kinds.
         # data is the deserialized object
     ```
 
-#### Reading form
+#### Reading a form request body
 
 ===  "Using binders (recommended)"
 
@@ -191,8 +192,8 @@ kinds.
     async def create_something(input: FromForm[SomethingInput]):
         data = input.value
 
-        # data is already deserialized from form into an instance of
-        # `SomethingInput` - however some properties need to be parsed
+        # data is already deserialized from the form body into an instance
+        # of `SomethingInput` - however some properties need to be parsed
         # from str into the desired type in the class definition -
         # see __init__ above
     ```
@@ -283,7 +284,7 @@ Files read from `multipart/form-data` payload.
     ```
 
 #### Reading streams
-Reading streams enables reading bodies of big size using asynchronous
+Reading streams enables reading large-sized bodies using an asynchronous
 generator. The example below saves a file of arbitrary size without blocking
 the event loop:
 

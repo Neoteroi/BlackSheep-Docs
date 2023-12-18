@@ -53,8 +53,8 @@ app.serve_files("app/videos", root_path="videos")
 ```
 
 ## File extensions
-Only files with configured extension are served to the client. By default, only
-files with these extensions are served (case insensitive check):
+Only files with a configured extension are served to the client. By default,
+only files with these extensions are served (case insensitive check):
 
 ```python
 '.txt',
@@ -84,7 +84,7 @@ app.serve_files("static", extensions={'.foo', '.config'})
 
 ## Accept-Ranges and Range requests
 Range requests are enabled and handled by default (since version `0.2.1`),
-meaning that BlackSheep supports serving big files with pause and resume
+meaning that BlackSheep supports serving big files with the pause and resume
 feature, and serving videos with the possibility to jump to specific points.
 
 ## ETag and If-None-Match
@@ -117,8 +117,8 @@ app.serve_files(
 )
 ```
 
-If the SPA uses a file with a different name, specify both index file name and
-fallback document to be the same:
+If the SPA uses a file with a different name, specify both the index file name
+and the fallback document to be the same:
 
 
 ```python

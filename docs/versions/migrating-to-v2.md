@@ -54,7 +54,7 @@ async def add_example(self, example: str):
 For more information on the above, read [_Using the default router and other routers_](/blacksheep/routing/#using-the-default-router-and-other-routers).
 
 All modules inside `routes` and `controllers` packages are imported
-automatically in v2. Automatic import works relatively to where a BlackSheep
+automatically in v2. Automatic import works relative to where a BlackSheep
 application is instantiated. In the structure described below, the modules in
 `app.controllers` and `app.routes` namespace are imported automatically when an
 application is instantiated inside `app.main`.
@@ -72,13 +72,13 @@ app/
 └──main.py
 ```
 
-The difference in code verbosity is considerable, because previously definining
+The difference in code verbosity is considerable, because previously defining
 routes and controllers explicitly was not sufficient to have them registered in
 applications.
 
 ## Notion of application environment
 
-The namespace `blacksheep.server.env` provide an abstraction layer to support
+The namespace `blacksheep.server.env` provides an abstraction layer to support
 the notion of _application environment_. It provides functions that can be used
 to apply logic depending on whether the application is running for local
 development, or a different kind of environment (e.g. `dev`, `test`, `prod`).
@@ -105,8 +105,8 @@ For more information, read the [_dedicated part in the Dependency Injection_](/b
 
 ## Changes to server side rendering
 
-`BlackSheep` v2 has been modified to not be strictly related to `Jinja2` for
-templates rendering. To achieve this, two new namespaces have been added:
+`BlackSheep` v2 has been modified to not be strictly reliant on `Jinja2` for
+template rendering. To achieve this, two new namespaces have been added:
 
 - `blacksheep.server.rendering.abc`, defining an abstract `Renderer` class,
 - `blacksheep.settings.html`, defining a code API to control renderer settings
@@ -324,25 +324,25 @@ The full list of changes in alpha versions released for `v2`:
 - Fixes bug #305 (`ClientSession ssl=False` not working as intended).
 - Refactors the classes for OpenID Connect integration to support alternative
   ways to share tokens with clients, and JWT Bearer token authentication out
-  of the box, in alternative to cookie based authentication.
+  of the box, in alternative to cookie-based authentication.
 - It adds built-in support for storing tokens (`id_token`, `access_token`, and
-  `refresh_token`) using the HTML5 Storage API (supportin `localStorage` and
+  `refresh_token`) using the HTML5 Storage API (supporting `localStorage` and
   `sessionStorage`). Refresh tokens, if present, are automatically protected to
   prevent leaking. See [the OIDC
   examples](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/oidc) for
   more information.
 - Renames `blacksheep.server.authentication.oidc.TokensStore` to `TokensStore`.
 - Removes the `tokens_store` parameter from the `use_openid_connect` method;
-  it is still available as optional parameter of the two built-in classes used
-  to handle tokens.
+  it is still available as an optional parameter of the two built-in classes
+  used to handle tokens.
 - Replaces `request.identity` with `request.user`. The property `identity` is
   still kept for backward compatibility, but it will be removed in `v3`.
 - Removes 'HtmlContent' and 'JsonContent' that were kept as alternative names
   for `HTMLContent` and `JSONContent`.
 - Refactors the `ClientSession` to own by default a connections pool, if none
-  is specified for it. The connections pool is automatically disposed when the
-  client is exited, if it was created for the client.
-- Makes the `ClientSession` more user friendly, supporting headers defined as
+  is specified for it. The connections pool is automatically disposed of when
+  the client is exited, if it was created for the client.
+- Makes the `ClientSession` more user-friendly, supporting headers defined as
   `dict[str, str]` or `list[tuple[str, str]]`.
 - Improves the type annotations of the `ClientSession`.
 - Corrects a bug in the `ClientSession` that would cause a task lock when the
@@ -359,7 +359,7 @@ The full list of changes in alpha versions released for `v2`:
 - Corrects the `Request` class to not generate more than one `Cookie` header
   when multiple cookies are set, to [respect the specification](https://www.rfc-editor.org/rfc/rfc6265#section-5.4).
 - Adds `@app.lifespan` to support registering objects that must be initialized
-  at application start, and disposed at application shutdown.
+  at application start, and disposed of at application shutdown.
   The solution supports registering as many objects as desired.
 - Adds features to handle `cache-control` response headers: a decorator for
   request handlers and a middleware to set a default value for all `GET`
@@ -387,7 +387,7 @@ async def register_http_client():
         app.services.register(ClientSession, instance=client)
         yield
 
-    print("HTTP client disposed")
+    print("HTTP client disposed of")
 
 
 @router.get("/")
@@ -402,7 +402,7 @@ if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=44777, log_level="debug", lifespan="on")
 ```
 
-- Adds support for user defined filters for server routes (`RouteFilter` class).
+- Adds support for user-defined filters for server routes (`RouteFilter` class).
 - Adds built-in support for routing based on request headers.
 - Adds built-in support for routing based on request query parameters.
 - Adds built-in support for routing based on host header value.
@@ -413,8 +413,8 @@ if __name__ == "__main__":
 - Adds `Cache-Control: no-cache, no-store' to all responses generated for the
   OpenID Connect flow.
 - Adds support for automatic import of modules defined under `controllers` and
-  `routes` packages, relatively to where the `Application` class is
-  instantiated. Fix #334.
+  `routes` packages, relative to where the `Application` class is instantiated.
+  Fix #334.
 - Adds a `GzipMiddleware` that can be used to enable `gzip` compression, using
   the built-in module. Contributed by @tyzhnenko :sparkles:
 - Improves how tags are generated for OpenAPI Documentation: adds the
@@ -455,7 +455,7 @@ if __name__ == "__main__":
 - Fix [#371](https://github.com/Neoteroi/BlackSheep/issues/371). Returns status
   403 Forbidden when the user is authenticated but not authorized to perform an
   action.
-- Fixes `TypeError` when writing a request without host header.
+- Fixes `TypeError` when writing a request without a host header.
 - Add support for `Pydantic` `v2`: meaning feature parity with support for
   Pydantic v1 (generating OpenAPI Documentation).
 - Add support for `Union` types in sub-properties of request handlers input and

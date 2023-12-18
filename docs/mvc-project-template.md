@@ -24,7 +24,7 @@ reading this one.
 
 ## Introduction to the BlackSheep CLI
 
-The previous tutorial described the basics to create an application from
+The previous tutorial described the basics of creating an application from
 scratch. While that knowledge is important, it is usually not desirable to
 start every project from scratch. BlackSheep offers a command-line interface
 (CLI) that can be used to start new projects. The CLI can be installed from the
@@ -63,8 +63,8 @@ tutorial, answer:
 ```
 
 !!! tip "blacksheep create"
-    It is possible to use the `create` command specifying directly project name
-    and template, like in:
+    It is possible to use the `create` command specifying the project name
+    and template directly, like in:
 
     - `blacksheep create some_name`
     - `blacksheep create some_name --template api`
@@ -83,9 +83,9 @@ After a project is created, the CLI displays a message with instructions.
         python dev.py
 ```
 
-Install the project dependencies
+Install the project dependencies:
 
-- cd into the project folder
+- `cd` into the project folder
 - create a new [Python virtual environment](https://docs.python.org/3/library/venv.html) (recommended but optional)
 - install its dependencies with `pip install -r requirements.txt`
 
@@ -200,11 +200,11 @@ will display the response from the `Greetings.index` method.
 When the path of a web request matches a route defined in a controller type, a
 new instance of that `Controller` is created. In other words, every instance of
 controller is scoped to a specific web request. Just like function handlers,
-controllers support automatic injection of parameters into request handlers, and
-also dependency injection into their constructors (`__init__` methods). This is
-a feature that improves development speed and enables cleaner code (compare
-this approach with a scenario where all dependencies needs to be imported and
-referenced inside function bodies by hand).
+controllers support the automatic injection of parameters into request
+handlers, and also dependency injection into their constructors (`__init__`
+methods). This is a feature that improves development speed and enables cleaner
+code (compare this approach with a scenario where all dependencies need to be
+imported and referenced inside function bodies by hand).
 
 The `Controller` class implements methods to return values and offers
 `on_request` and `on_response` extensibility points.
@@ -212,7 +212,7 @@ The `Controller` class implements methods to return values and offers
 !!! tip "Controllers and routes automatic import"
     Python modules defined inside `controllers` and `routes` packages are
     automatically imported by a BlackSheep application. The automatic import
-    happens relatively to the namespace where the application is instantiated.
+    happens relative to the namespace where the application is instantiated.
 
 ## Server side templating (views and models)
 
@@ -282,8 +282,8 @@ full page, modify `hello.jinja` to use the application layout:
 Refresh the page at [http://localhost:44777/hello-view](http://localhost:44777/hello-view) to see the result.
 
 In this case, a page layout is applied using: `{%- extends "layout.jinja" -%}`,
-with several blocks going in various area of `layout.jinja`. For more information
-on layouts and features of the templating library, refer to
+with several blocks going in various areas of `layout.jinja`. For more
+information on layouts and features of the templating library, refer to the
 [Jinja2 documentation](https://jinja2docs.readthedocs.io/en/stable/).
 
 ---
@@ -353,10 +353,10 @@ Models can be defined as [dictionaries](https://docs.python.org/3.9/library/stdt
 implementing a constructor.
 
 ## Handling parameters in controllers
-The previous tutorial showed how request handlers support automatic injection
-of parameters read from the HTTP request. Controllers support the same,
-therefore it is possible to have parameters read automatically and injected
-to controller methods:
+The previous tutorial showed how request handlers support the automatic
+injection of parameters read from the HTTP request. Controllers support the
+same, therefore it is possible to have parameters read automatically and
+injected into controller methods:
 
 ```python
 class Example(Controller):
@@ -375,21 +375,21 @@ Controllers also support dependency injection for their constructor
 
 ## Serving static files
 This tutorial previously showed how the homepage of the MVC project template looks
-like, at the root of the web site:
+like, at the root of the website:
 
 ![MVC Project home](./img/mvc-template-home.png)
 
 The project template includes a folder for `static` files, including pictures,
-CSS, JavaScript files. Static files are served using a catch-all route, reading
-files whose path, relatively to the static folder, matches the URL path of the request.
+CSS, and JavaScript files. Static files are served using a catch-all route, reading
+files whose path, relative to the static folder, matches the URL path of the request.
 
-For example, if the `static` folder contains such file: `scripts/example.js`,
+For example, if the `static` folder contains the file `scripts/example.js`,
 web requests at `http://localhost:44777/scripts/example.js` will be resolved
 with this file and related information. When handling static files, BlackSheep
 automatically takes care of several details:
 
-- it handles ETag response header, If-None-Match request header and HTTP 304 Not Modified
-  responses if files don't change on file system
+- it handles the ETag response header, If-None-Match request header and HTTP 304 Not
+  Modified responses if files don't change on the file system
 - it handles HTTP GET requests returning file information
 - it handles Range requests, to support pause and restore downloads out of the box
   and enable optimal support for videos (videos can be downloaded from a certain
@@ -401,22 +401,22 @@ browser.
 Relative paths are supported, but only files inside the root static folder are
 served, it is not possible to download files outside of the static folder (it would be
 a security issue if it worked otherwise!).
-Additionally, BlackSheep only handles certain files extensions:  by default
+Additionally, BlackSheep only handles certain file extensions:  by default
 only the most common file extensions used in web applications.
 Paths starting with "/" are always considered absolute paths starting from the
-root of the web site.
+root of the website.
 
 ## Strategy for application settings
 
 The `API` and the `MVC` project templates include a strategy to read and
-validate application settings, from various sources, and supporting multiple
-system environments (like `dev`, `test`, `prod` environments).
+validate application settings, from various sources, and support multiple
+system environments (like `dev`, `test`, and `prod` environments).
 
 - [`Pydantic`](https://docs.pydantic.dev/latest/) is always used to describe and validate application settings.
 - Application settings can be read from various sources using either
   `Pydantic v1 BaseSettings` class, or `essentials-configuration`.
 - When using `essentials-configuration`, use the `APP_ENV` environment variable
-  to control the application environment and to use environment specific
+  to control the application environment and to use environment-specific
   settings from dedicated files using the pattern:
   `settings.{{env_name}}.{{format}}`, like `settings.test.yaml`,
   `settings.prod.toml`.
@@ -426,14 +426,14 @@ configuration depending on the application environment, refer to [_Settings_](/b
 
 ## Summary
 
-This tutorial covered some higher level topics of a BlackSheep application. The
-general concepts presented here apply to many kinds of web framework:
+This tutorial covered some higher-level topics of a BlackSheep application. The
+general concepts presented here apply to many kinds of web frameworks:
 
 - server side templating of HTML views
 - serving of static files
 - use of MVC architecture
 
-The next pages describes the built-in support for
+The next pages describe the built-in support for
 [dependency injection](../dependency-injection), and automatic generation of
 [OpenAPI Documentation](../openapi).
 

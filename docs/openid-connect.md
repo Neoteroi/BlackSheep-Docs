@@ -78,7 +78,7 @@ async def home(user: Identity):
 | ------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | app                | Application                                                       | Instance of BlackSheep application.                                                                                                                                                                                               |
 | settings           | OpenIDSettings                                                    | Instance of OpenIDSettings.                                                                                                                                                                                                       |
-| auth_handler       | Optional[OpenIDTokensHandler] = None (CookiesOpenIDTokensHandler) | Instance of OpenIDTokensHandler that can handle tokens for requests and responses for the OpenID Connect flow. This class is responsible of communicating tokens to clients, and restoring tokens context for following requests. |
+| auth_handler       | Optional[OpenIDTokensHandler] = None (CookiesOpenIDTokensHandler) | Instance of OpenIDTokensHandler that can handle tokens for requests and responses for the OpenID Connect flow. This class is responsible for communicating tokens to clients, and restoring tokens context for following requests. |
 | parameters_builder | Optional[ParametersBuilder] = None                                | Optional instance of `ParametersBuilder`, used to handle parameters configured in redirects and requests to the authorization server.                                                                                             |
 | is_default         | bool = True                                                       | If default, clients are automatically redirected to the `sign-in` page when a non-authenticated user tries to access in `GET` a web page that requires authentication.                                                            |
 
@@ -93,15 +93,15 @@ The `OpenIDSettings` class has the following properties:
 | audience                  | Optional[str] = None            | If specified, the `audience` for requests using scopes to an API ([ref.](https://auth0.com/docs/configure/apis/scopes/sample-use-cases-scopes-and-claims#request-custom-api-access)). |
 | client_secret             | Optional[str] = None            | For requests that use `Authorization Code Grant` flow, the secret of the client application in the identity server.                                                                   |
 | discovery_endpoint        | Optional[str] = None            | If specified, the exact URL to the discovery point (useful with Okta when using custom scopes for an authorization server).                                                           |
-| entry_path                | str = "/sign-in"                | The local entry-path for sign-in (this redirects to the sign-in page of the identity server).                                                                                         |
+| entry_path                | str = "/sign-in"                | The local entry path for sign-in (this redirects to the sign-in page of the identity server).                                                                                         |
 | logout_path               | str = "/sign-out"               | The local path to the sign-out endpoint (this removes authentication cookie).                                                                                                         |
 | post_logout_redirect_path | str = "/"                       | The local path to which a user is redirected after signing-out.                                                                                                                       |
 | callback_path             | str = "/authorization-callback" | The local path to handle the redirect after a user signs-in (the reply_url in the identity server must be configured accordingly).                                                    |
-| refresh_token_path        | str = "/refresh-token"          | The local path used to handle refresh tokens to obtain new tokens .                                                                                                                   |
+| refresh_token_path        | str = "/refresh-token"          | The local path used to handle refresh tokens to obtain new tokens.                                                                                                                    |
 | scope                     | str = "openid profile email"    | The scope of the request, by default an `id_token` is obtained with email and profile.                                                                                                |
 | response_type             | str = "code"                    | Type of OAuth response.                                                                                                                                                               |
-| redirect_uri              | Optional[str] = None            | If specified, the redirect URL that must match the one configured for the application. If not provided, a redirect_url is obtained automatically (see note 🗡️).                        |
-| scheme_name               | str = "OpenIDConnect"           | The name of the authentication scheme, affecting the name of authentication cookies (see note 🍒).                                                                                     |
+| redirect_uri              | Optional[str] = None            | If specified, the redirect URL that must match the one configured for the application. If not provided, a redirect_url is obtained automatically (see note 🗡️).                       |
+| scheme_name               | str = "OpenIDConnect"           | The name of the authentication scheme, affecting the name of authentication cookies (see note 🍒).                                                                                    |
 | error_redirect_path       | Optional[str] = None            | If specified, the local path to which a user is redirected in case of error.                                                                                                          |
 | end_session_endpoint      | Optional[str] = None            | If specified, the local path to which the user can log out.                                                                                                                           |
 
@@ -119,7 +119,7 @@ Notes:
 
 ## Examples using custom scopes
 
-An integration with a `Auth0` application that uses custom scopes, where the
+An integration with an `Auth0` application that uses custom scopes, where the
 application obtains both an `id_token` and an `access_token` for an API,
 looks like the following:
 
@@ -128,8 +128,8 @@ looks like the following:
 This example shows how to configure an OpenID Connect integration with Auth0, obtaining
 an id_token, an access_token, and a refresh_token. The id_token is exchanged with the
 client using a response cookie (also used to authenticate users
-for following requests), while access token and the refresh token are not stored and
-can only be accessed using optional events.
+for following requests), while the access token and the refresh token are not stored
+and can only be accessed using optional events.
 """
 import uvicorn
 from blacksheep.server.application import Application
@@ -144,7 +144,7 @@ secrets = Secrets.from_env()
 app = Application(show_error_details=True)
 
 
-# Auth0 with custom scope
+# Auth0 with a custom scope
 use_openid_connect(
     app,
     OpenIDSettings(
@@ -252,7 +252,7 @@ _[Redis example](https://github.com/Neoteroi/BlackSheep-Examples/blob/main/oidc/
 A concrete implementation is
 provided in `CookiesTokenStore`, storing tokens in cookies. It is possible to
 create custom implementations of the `TokensStore`, to use other mechanisms,
-for example to store tokens in a Redis cache.
+for example, to store tokens in a Redis cache.
 
 When a user is authenticated, and has an `access_token` (and/or a
 `refresh_token`), they are accessible through the `Identity`:
@@ -281,13 +281,14 @@ the built-in `CookiesTokensStore`.
 Tokens that are stored in cookies are signed and encrypted using `itsdangerous`,
 with symmetric encryption. This means that BlackSheep applications need secrets
 to protect sensitive data. When keys are not specified, they are generated
-automatically in memory, for best user's experience.
+automatically in memory, for the best user experience.
 
 !!! danger
     This means that keys are <strong>not persisted</strong> when applications
-    restart, and not consistent when multiple instances of the same application
-    are deployed across regions, or within a same server. This is acceptable during
-    local development, but should not be the case in production environments.
+    restart, and are not consistent when multiple instances of the same
+    application are deployed across regions, or within the same server. This is
+    acceptable during local development, but should not be the case in
+    production environments.
 
 To use consistent keys, configure one or more environment variables like the
 following:

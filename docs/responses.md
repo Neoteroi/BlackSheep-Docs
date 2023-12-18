@@ -8,10 +8,10 @@ This page describes:
 ## The Response class
 A normal request handler in BlackSheep is expected to return an instance of
 the `blacksheep.Response` class. Users of the framework can define
-request handlers that return different kinds of objects, in such case they are
-normalized at application start-up, to return instances of `Response`.
+request handlers that return different kinds of objects. In such cases they are
+normalized at application start-up to return instances of `Response`.
 
-The following example shows how to use the low level objects to create a
+The following example shows how to use the low-level objects to create a
 response with status 200 and body "Hello, World":
 
 ```python
@@ -28,9 +28,9 @@ def home() -> Response:
 
 `BlackSheep` uses these exact types to benefit from static typing and
 compilation of [`Cython` extensions](https://cython.org). However, handling
-responses this way is not comfortable for regular use. For this reason a number
-of helper functions are provided to create `Response` objects with a simpler
-code API.
+responses this way is not comfortable for regular use. For this reason, a
+number of helper functions are provided to create `Response` objects with a
+simpler code API.
 
 For example, the `json` function in `blacksheep.server.responses` produces
 a response object having a JSON body.
@@ -79,29 +79,29 @@ if necessary.
 
 The table below describes the built-in functions to produce responses:
 
-| Method                 | Description                                                                                                                                                                                                |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ok**                 | Returns an HTTP 200 OK response, with optional message; sent as plain text or JSON.                                                                                                                        |
-| **status_code**        | Returns a plain response with given status, with optional message; sent as plain text or JSON.                                                                                                             |
-| **created**            | Returns an HTTP 201 Created response, to the given location and with optional JSON content.                                                                                                                |
-| **accepted**           | Returns an HTTP 202 Accepted response, with optional message; sent as plain text or JSON.                                                                                                                  |
-| **no_content**         | Returns an HTTP 204 No Content response.                                                                                                                                                                   |
-| **json**               | Returns a response with application/json content, and given status (default HTTP 200 OK).                                                                                                                  |
-| **pretty_json**        | Returns a response with indented application/json content, and given status (default HTTP 200 OK).                                                                                                         |
-| **text**               | Returns a response with text/plain content, and given status (default HTTP 200 OK).                                                                                                                        |
-| **moved_permanently**  | Returns an HTTP 301 Moved Permanently response, to the given location.                                                                                                                                     |
-| **redirect**           | Returns an HTTP 302 Found response (commonly called redirect), to the given location.                                                                                                                      |
-| **see_other**          | Returns an HTTP 303 See Other response, to the given location.                                                                                                                                             |
-| **not_modified**       | Returns an HTTP 304 Not Modified response.                                                                                                                                                                 |
-| **temporary_redirect** | Returns an HTTP 307 Temporary Redirect response, to the given location.                                                                                                                                    |
-| **permanent_redirect** | Returns an HTTP 308 Permanent Redirect response, to the given location.                                                                                                                                    |
-| **bad_request**        | Returns an HTTP 400 Bad Request response, with optional message; sent as plain text or JSON.                                                                                                               |
-| **unauthorized**       | Returns an HTTP 401 Unauthorized response, with optional message; sent as plain text or JSON.                                                                                                              |
-| **forbidden**          | Returns an HTTP 403 Forbidden response, with optional message; sent as plain text or JSON.                                                                                                                 |
-| **not_found**          | Returns an HTTP 404 Not Found response, with optional message; sent as plain text or JSON.                                                                                                                 |
-| **view**               | Returns a view rendered synchronously.                                                                                                                                                                     |
-| **view_async**         | Returns a view rendered asynchronously.                                                                                                                                                                    |
-| **file**               | Returns a binary file response with given content type and optional file name, for download (attachment) (default HTTP 200 OK). This method supports both call with bytes, or a generator yielding chunks. |
+| Method                 | Description                                                                                                                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ok**                 | Returns an HTTP 200 OK response, with an optional message; sent as plain text or JSON.                                                                                                                            |
+| **status_code**        | Returns a plain response with the given status, and with an optional message; sent as plain text or JSON.                                                                                                         |
+| **created**            | Returns an HTTP 201 Created response, to the given location and with optional JSON content.                                                                                                                       |
+| **accepted**           | Returns an HTTP 202 Accepted response, with an optional message; sent as plain text or JSON.                                                                                                                      |
+| **no_content**         | Returns an HTTP 204 No Content response.                                                                                                                                                                          |
+| **json**               | Returns a response with application/json content, and the given status (default HTTP 200 OK).                                                                                                                     |
+| **pretty_json**        | Returns a response with indented application/json content, and the given status (default HTTP 200 OK).                                                                                                            |
+| **text**               | Returns a response with text/plain content, and the given status (default HTTP 200 OK).                                                                                                                           |
+| **moved_permanently**  | Returns an HTTP 301 Moved Permanently response, to the given location.                                                                                                                                            |
+| **redirect**           | Returns an HTTP 302 Found response (commonly called redirect), to the given location.                                                                                                                             |
+| **see_other**          | Returns an HTTP 303 See Other response, to the given location.                                                                                                                                                    |
+| **not_modified**       | Returns an HTTP 304 Not Modified response.                                                                                                                                                                        |
+| **temporary_redirect** | Returns an HTTP 307 Temporary Redirect response, to the given location.                                                                                                                                           |
+| **permanent_redirect** | Returns an HTTP 308 Permanent Redirect response, to the given location.                                                                                                                                           |
+| **bad_request**        | Returns an HTTP 400 Bad Request response, with an optional message; sent as plain text or JSON.                                                                                                                   |
+| **unauthorized**       | Returns an HTTP 401 Unauthorized response, with an optional message; sent as plain text or JSON.                                                                                                                  |
+| **forbidden**          | Returns an HTTP 403 Forbidden response, with an optional message; sent as plain text or JSON.                                                                                                                     |
+| **not_found**          | Returns an HTTP 404 Not Found response, with an optional message; sent as plain text or JSON.                                                                                                                     |
+| **view**               | Returns a view rendered synchronously.                                                                                                                                                                            |
+| **view_async**         | Returns a view rendered asynchronously.                                                                                                                                                                           |
+| **file**               | Returns a binary file response with the given content type and optional file name, for download (attachment) (default HTTP 200 OK). This method supports being called with bytes, or a generator yielding chunks. |
 
 For information on how to use these methods, refer to the type annotations
 provided in the code.
@@ -124,7 +124,7 @@ def home():
 
     response.add_header(b"Example", b"Value")
 
-    # add supports multiple headers with same name:
+    # add supports multiple headers with the same name:
     response.headers.add(b"X-Foo", b"Foo")
 
     # set syntax overrides other headers with the same name:

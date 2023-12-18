@@ -15,8 +15,8 @@ This page describes:
 
 The `Application` object exposes a `services` property that can be used to
 configure services. When the function signature of a request handler references
-a type that is registered as service, an instance of that type is automatically
-injected when the request handler is called.
+a type that is registered as a service, an instance of that type is
+automatically injected when the request handler is called.
 
 Consider this example:
 
@@ -69,13 +69,13 @@ def home(foo: Foo):  # <-- foo is referenced in type annotation
 
 ```
 
-An instance of `Foo` is injected automatically at every web request to "/".
+An instance of `Foo` is injected automatically for every web request to "/".
 
 Dependency injection is implemented in a dedicated library from the same author:
 [`rodi`](https://github.com/RobertoPrevato/rodi). `rodi` implements dependency
-injection in an unobstrusive way: it works by inspecting `__init__` methods and
-doesn't require to alter the source code of classes registered as services.
-`rodi` can also resolve dependencies inspecting class annotations, if an
+injection in an unobtrusive way: it works by inspecting `__init__` methods and
+doesn't require altering the source code of classes registered as services.
+`rodi` can also resolve dependencies by inspecting class annotations, if an
 `__init__` method is not specified for the class to activate.
 
 ## Service resolution
@@ -130,8 +130,8 @@ Produces a response like the following at "/":
 
 ## Using class annotations
 
-In alternative to defining `__init__` methods, it is also possible to use
-class annotations, like in the example below:
+An alternative to defining `__init__` methods is to use class annotations, like
+in the example below:
 
 ```python
 class A:
@@ -142,7 +142,7 @@ class Foo:
     a: A
 ```
 
-## Understanding services' lifetime
+## Understanding service lifetimes
 
 `rodi` supports services having one of these lifetimes:
 
@@ -240,9 +240,9 @@ Produces responses like the following at "/":
 
         A2: 139976289979936
 
-        B1: 139976289979984
+        B1: 139976289979988
 
-        B2: 139976289979984
+        B2: 139976289979988
 
         C1: 139976289978736
 
@@ -259,7 +259,7 @@ Note how:
 
 `rodi` provides several ways to define and instantiate services.
 
-1. registering an exact instance as singleton
+1. registering an exact instance as a singleton
 2. registering a concrete class by its type
 3. registering an abstract class and one of its concrete implementations
 4. registering a service using a factory function
@@ -368,7 +368,7 @@ app.services.add_transient_by_factory(something_factory)
 ```
 
 #### Example: implement a request context
-A good example of scoped service is one used to assign each web request with
+A good example of a scoped service is one used to assign each web request with
 a trace id that can be used to identify requests for logging purposes.
 
 ```python
@@ -436,10 +436,10 @@ async def home(service: Example):
 
 ```
 
-Services configured this way are automatically injected in request handlers,
+Services configured this way are automatically injected in request handlers
 when a parameter name or type annotation matches a key inside `app.services`.
 
-Services that require disposing should be disposed in `on_stop` callback:
+Services that require disposing of should be disposed of in `on_stop` callback:
 
 ```python
 async def dispose_example(app: Application):

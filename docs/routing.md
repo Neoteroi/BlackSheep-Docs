@@ -1,9 +1,9 @@
 # Routing
 
 Server side routing refers to the ability of a web application to handle web
-requests using different functions, depending on URL path and HTTP method. Each
-`BlackSheep` application is bound to a router, which provides several ways to
-define routes. A function that is bound to a route is called "request
+requests using different functions, depending on the URL path and HTTP method.
+Each `BlackSheep` application is bound to a router, which provides several ways
+to define routes. A function that is bound to a route is called a "request
 handler", since its responsibility is to handle web requests and produce
 responses.
 
@@ -140,7 +140,7 @@ BlackSheep supports three ways to define route parameters:
 * `"/<example>"` - using angle brackets (i.e. [Flask notation](https://flask.palletsprojects.com/en/1.1.x/quickstart/?highlight=routing#variable-rules))
 
 Route parameters can be read from `request.route_values`, or injected
-automatically by request handler's function signature:
+automatically by the request handler's function signature:
 
 ```python
 
@@ -252,7 +252,7 @@ And then use it in routes:
 ## Catch-all routes
 
 To define a catch-all route that will match every request, use a route
-parameter with path value pattern, like:
+parameter with a path value pattern, like:
 
 * `{path:name}`, or `<path:name>`
 
@@ -269,9 +269,9 @@ For example, a request at `/catch-all/anything/really.js` would be matched by
 the route above, and the `sub_path` value would be `anything/really.js`.
 
 It is also possible to define a catch-all route using a star sign `*`. To read
-the portion of the path catched by the star sign from the request object, read
+the portion of the path caught by the star sign from the request object, read
 the "tail" property of `request.route_values`. But in this case the value of the
-catched path can only be read from the request object.
+caught path can only be read from the request object.
 
 ```python
 
@@ -298,8 +298,8 @@ app.router.fallback = fallback
 
 The `Router` class supports filters for routes and sub-routers. In the following
 example, a web request for the root of the service "/" having a request header
-"X-Area" == "Test" gets the reply of the `test_home` request handler, without
-such header the reply of the `home` request handler.
+"X-Area" == "Test" gets the reply of the `test_home` request handler, and
+without such header the reply of the `home` request handler is returned.
 
 ```python
 from blacksheep import Application, Router
@@ -325,8 +325,8 @@ app = Application(router=router)
 A router can have filters based on headers, host name, query string parameters,
 and custom user-defined filters.
 
-Query string filters can be defined using the `params` parameter, by host using
-the `host` parameter:
+Query string filters can be defined using the `params` parameter, and host name
+filters can be defined using the `host` parameter:
 
 ```python
 filter_by_query = Router(params={"version": "1"})
@@ -378,14 +378,14 @@ class Home(Controller):
         ...
 ```
 
-In this case routes are registered using default singleton routers, used if an
+In this case, routes are registered using default singleton routers, used if an
 application is instantiated without specifying a router:
 
 ```python
 from blacksheep import Application
 
 
-# This application uses the default sigleton routers exposed by BlackSheep:
+# This application uses the default singleton routers exposed by BlackSheep:
 app = Application()
 ```
 
@@ -456,8 +456,8 @@ app = Application(router=router)
 ### Controllers dedicated router
 
 Controllers need a different kind of router, an instance of
-`blacksheep.server.routing.RoutesRegistry`. If using dedicated router for
-controllers is desired, do instead:
+`blacksheep.server.routing.RoutesRegistry`. If using a dedicated router for
+controllers is desired, do this instead:
 
 ```python
 # app/controllers.py
@@ -501,6 +501,7 @@ app.controllers_router = controllers_router
 ```
 
 !!! info "About Router and RoutesRegistry"
-    Controllers routes use a "RoutesRegistry" to support dynamic generation of
-    paths by controller class name. Controllers routes are evaluated and merged
-    into `Application.router` when the application starts.
+
+    Controller routes use a "RoutesRegistry" to support the dynamic generation
+    of paths by controller class name. Controller routes are evaluated and
+    merged into `Application.router` when the application starts.

@@ -12,7 +12,7 @@ details. This page describes the following:
 - [X] How to implement a custom `UIProvider`.
 
 ## Introduction to OpenAPI Documentation
-Citing from the [Swagger web site](https://swagger.io/specification/), at the
+Citing from the [Swagger website](https://swagger.io/specification/), at the
 time of this writing:
 
 > The OpenAPI Specification (OAS) defines a standard {...}
@@ -120,8 +120,8 @@ at `/openapi.json` path:
 ```
 
 Note how the `Foo` component schema is automatically documented. `BlackSheep`
-supports both `@dataclass` and `Pydantic` models for automatic generation of
-documentation.
+supports both `@dataclass` and `Pydantic` models for the automatic generation
+of documentation.
 
 And also YAML format at `/openapi.yaml` path:
 
@@ -208,8 +208,8 @@ async def home():
     return "OpenAPI Example"
 ```
 
-When using `docstring`, the first line of the docstring is used as summary,
-and the whole docstring as description.
+When using `docstring`, the first line of the docstring is used as the summary,
+and the whole docstring as the description.
 
 ![OpenAPI description and summary](./img/openapi-description-summary.png)
 
@@ -233,7 +233,7 @@ async def hidden_endpoint():
 ### Document only certain routes
 
 To document only certain routes, use an include function like in the example below.
-For example, to include only those routes that starts with "/api":
+For example, to include only those routes that start with "/api":
 
 ```python
 docs = OpenAPIHandler(info=Info(title="Example API", version="0.0.1"))
@@ -271,7 +271,7 @@ class Cat:
 
 @docs(
     summary="Gets a cat by id",
-    description="""A sample API that uses a petstore as an
+    description="""A sample API that uses a pet store as an
           example to demonstrate features in the OpenAPI 3 specification""",
     responses={
         200: ResponseInfo(
@@ -306,14 +306,14 @@ designed to support documenting responses with different content types (e.g.
 JSON, XML, etc.) and having examples for each content type. Writing the
 documentation by hand would be much more time consuming!
 
-BlackSheep automatically generates components schemas by type (in this example,
+BlackSheep automatically generates component schemas by type (in this example,
 `Cat`) and reuses them in all API endpoints that use them:
 
 ![OpenAPI Response Examples](./img/openapi-response-examples.png)
 
 ### Avoid code pollution using EndpointDocs
 
-If you are familiar with other libraries to produce OpenAPI Documentation and
+If you are familiar with other libraries that produce OpenAPI Documentation and
 you consider the example above, you might notice that adding OpenAPI details to
 request handlers can pollute the source code and distract the programmer from
 the actual request handlers' logic.
@@ -339,7 +339,7 @@ documentation is organized and configured (in `app.docs`, `app.controllers.docs`
 
 ### Deprecating an API
 
-To mark and endpoint as deprecated, use `@docs.deprecated()`:
+To mark an endpoint as deprecated, use `@docs.deprecated()`:
 
 ```python
 @docs.deprecated()
@@ -376,9 +376,9 @@ docs.bind_app(app)
 ### Handling common responses
 
 APIs often implement a common way to handle failures, to provide clients with
-details for web requests that cannot complete successfully. For example, an API
-might return a response body like the following, in case of a bad request for
-a certain endpoint:
+details for web requests that cannot be completed successfully. For example, an
+API might return a response body like the following, in case of a bad request
+for a certain endpoint:
 
 ```json
 {"error": "The provided country code is not supported", "code": "InvalidCountryCode"}
@@ -437,16 +437,16 @@ Common responses are configured for all endpoints.
 
 ### Support for generics
 
-The generation of OpenAPI Documentation supports handling of [generic
+The generation of OpenAPI Documentation supports the handling of [generic
 types](https://docs.python.org/3/library/typing.html#typing.Generic). Consider
 the following example:
 
 1. a common task is to implement an API that returns a paginated subset of
    elements, usually given some filters (e.g. textual search)
-2. clients needs to know the count of items that match the filters, to display
+2. clients need to know the count of items that match the filters, to display
    the total number of items and the number of pages that are necessary to
    display all results (depending on page size)
-3. for such scenario, using a `Generic` type is a good solution, because many
+3. for such a scenario, using a `Generic` type is a good solution, because many
    kinds of objects can be paginated
 
 _Example of generic class definition_
@@ -763,9 +763,10 @@ The BlackSheep package includes some static files to offer a good user
 experience in some circumstances. These include HTML pages used when enabling
 Swagger UI or ReDoc UI.
 
-To control those pages, for example to alter the HTML structure or use different
-sources for JavaScript and CSS files (which by the way could be the BlackSheep
-application serving the OpenAPI specification files), it is recommended to:
+To control those pages, for example, to alter the HTML structure or use
+different sources for JavaScript and CSS files (which by the way could be the
+BlackSheep application serving the OpenAPI specification files), it is
+recommended to:
 
 - define a custom implementation of `UIProvider`
 - maintain the desired HTML file
@@ -864,7 +865,7 @@ docs.bind_app(app)
 When OpenAPI Documentation is generated, operation ids are obtained from the
 name of the Python function definitions.
 
-For example, having a `get_foo` request handler, generates an object having
+For example, having a `get_foo` request handler generates an object having
 `operationId` equal to "get_foo":
 
 ```python
@@ -896,8 +897,8 @@ class CustomOpenAPIHandler(OpenAPIHandler):
 
 
 ### For more details
-For more details on the OpenAPI specification and understand some details such
-as security settings, refer to the official [swagger.io web
-site](https://swagger.io/specification/), and the dedicated library to generate
-the specification file:
+For more details on the OpenAPI specification and to understand some details
+such as security settings, refer to the official [swagger.io
+website](https://swagger.io/specification/), and the dedicated library to
+generate the specification file:
 [essentials-openapi](https://github.com/Neoteroi/essentials-openapi).
