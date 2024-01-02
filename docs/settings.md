@@ -66,7 +66,7 @@ By default, the built-in `json` module is used for serializing and
 deserializing objects, but this can be changed in the way illustrated below.
 
 ```python
-from blacksheep.plugins import json
+from blacksheep.settings.json import json_settings
 
 
 def custom_loads(value):
@@ -81,7 +81,7 @@ def custom_dumps(value):
     """
 
 
-json.use(
+json_settings.use(
     loads=custom_loads,
     dumps=custom_dumps,
 )
@@ -101,14 +101,14 @@ deserialization with the built-in [`responses`](../responses/) and
 ```python
 import orjson
 
-from blacksheep.plugins import json
+from blacksheep.settings.json import json_settings
 
 
 def serialize(value) -> str:
     return orjson.dumps(value).decode("utf8")
 
 
-json.use(
+json_settings.use(
     loads=orjson.loads,
     dumps=serialize,
 )
@@ -156,7 +156,7 @@ this possibility, it doesn't handle objects inside lists, `@dataclass`, or
 import json
 from typing import Any
 
-from blacksheep.plugins import json as json_plugin
+from blacksheep.settings.json import json_settings
 from essentials.json import dumps
 
 
@@ -188,7 +188,7 @@ def custom_dumps(value: Any) -> str:
     return default_json_dumps(value)
 
 
-json_plugin.use(
+json_settings.use(
     loads=custom_loads,
     dumps=custom_dumps,
 )
