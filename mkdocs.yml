@@ -21,8 +21,9 @@ nav:
   - Templating: templating.md
   - Controllers: controllers.md
   - Middlewares: middlewares.md
-  - WebSocket: websocket.md
   - Serving static files: static-files.md
+  - WebSocket: websocket.md
+  - Server-sent events: server-sent-events.md
   - Authentication: authentication.md
   - Authorization: authorization.md
   - OpenID Connect: openid-connect.md
