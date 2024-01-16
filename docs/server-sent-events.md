@@ -11,8 +11,8 @@ use the built-in features for server-sent events.
 
 !!! tip
     Older versions of the web framework can also be configured to use SSE,
-    because they already supported response streaming, but this requires
-    writing functions that generate the right bytes.
+    because they all support response streaming, but don't offer dedicated
+    features to simplify their use.
 
 ## Defining a server-sent events route
 
@@ -201,6 +201,45 @@ async def events_handler(request: Request) -> AsyncIterable[ServerSentEvent]:
 
 Refer to the [server-sent events example](https://github.com/Neoteroi/BlackSheep-Examples/tree/main/server-sent-events) for an example that handles application shutdown and client
 disconnections, and also presents a basic example in JavaScript to use SSE.
+
+## Using SSE in older versions of BlackSheep
+
+The following example illustrates how to use server-sent events in older
+versions of the web framework.
+
+```python
+
+import asyncio
+import json
+from blacksheep import Application, Response, StreamedContent, get
+
+app = Application()
+
+
+@get("/events")
+def events_handler(request):
+    async def provider():
+        i = 0
+        while True:
+            # TODO: implement way to detect if the process is stopping,
+            # and if the request is still active,
+            # use await request.is_disconnected() if available...
+            obj = {"message": f"Hello World {i}"}
+            yield b"data: " + json.dumps(obj).encode("utf8") + b"\r\n\r\n"
+            i += 1
+
+            try:
+                await asyncio.sleep(1)
+            except asyncio.CancelledError:
+                pass
+
+    return Response(
+        200,
+        headers=[(b"Cache-Control", b"no-cache"), (b"Connection", b"Keep-Alive")],
+        content=StreamedContent(b"text/event-stream", provider),
+    )
+
+```
 
 ## Related technologies
 
