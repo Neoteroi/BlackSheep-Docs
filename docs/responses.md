@@ -272,9 +272,19 @@ Use the `Response.remove_cookie` method to remove a cookie from the response
 object before it's sent to the client. Note that this method does not generate
 a `Set-Cookie` header.
 
+## Response streaming
+
+BlackSheep supports response streaming using `StreamedContent` objects bound
+to a generator yielding bytes, like described in the following paragraph.
+If the content length is not known in advance, chunked encoding is used by
+default.
+If the content length is known in advance, it can be set in the instance of
+`StreamedContent` (in this case, it is responsibility of the user to ensure
+the generator will return the correct amount of bytes).
+
 ## Chunked encoding
 
-The following example shows how chunked encoding can be used in responses,
+The following example shows how response streaming can be used in responses,
 using a `StreamedContent` object bound to a generator yielding bytes.
 
 ```python
