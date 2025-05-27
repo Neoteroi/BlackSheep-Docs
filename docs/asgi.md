@@ -2,8 +2,9 @@
 
 BlackSheep belongs to the category of
 [ASGI](https://asgi.readthedocs.io/en/latest/) web frameworks, so it requires
-an ASGI HTTP server to run, such as [uvicorn](http://www.uvicorn.org/), or
-[hypercorn](https://pgjones.gitlab.io/hypercorn/). All examples in this
+an ASGI HTTP server to run, such as [uvicorn](http://www.uvicorn.org/),
+[hypercorn](https://pgjones.gitlab.io/hypercorn/) or
+[granian](https://github.com/emmett-framework/granian). All examples in this
 documentation use `Uvicorn`, but the framework has been tested also with
 `Hypercorn` and should work with any server that implements ASGI.
 

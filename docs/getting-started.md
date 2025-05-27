@@ -44,9 +44,10 @@ and activate it:
 BlackSheep belongs to the category of
 [ASGI](https://asgi.readthedocs.io/en/latest/) web frameworks, therefore it
 requires an ASGI HTTP server to run, such as
-[uvicorn](http://www.uvicorn.org/), or
-[hypercorn](https://pgjones.gitlab.io/hypercorn/). For this tutorial, install
-`uvicorn` together with `blacksheep`:
+[uvicorn](http://www.uvicorn.org/),
+[hypercorn](https://pgjones.gitlab.io/hypercorn/) or
+[granian](https://github.com/emmett-framework/granian).
+For this tutorial, install `uvicorn` together with `blacksheep`:
 
 ```bash
 pip install blacksheep uvicorn
